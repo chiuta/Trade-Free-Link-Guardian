@@ -1,0 +1,1287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-a7dX4HH0EQMRfJ8P3MEgtg6LiMwhVIIUygGFGCsgXpU='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Offline, single-file link checker and fixer: finds http links, tracking parameters, malformed URLs and inconsistencies in HTML, Markdown, WXR and sitemap files. No tracking, no network.">
+<title>Trade-Free Link Guardian</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b5cad'/%3E%3Cpath d='M16 5l9 3.5v7c0 5.5-3.8 9.6-9 11.5-5.2-1.9-9-6-9-11.5v-7z' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M11.5 16.2l3.2 3.2 6-6.4' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f4f6f9;--surface:#ffffff;--surface2:#eceff5;--text:#18202c;--muted:#465163;--border:#c3ccd9;
+  --accent:#0b5cad;--accent-text:#ffffff;--accent-soft:#e3eefb;
+  --err-bg:#fde8e8;--err:#8a1111;--warn-bg:#fff1cc;--warn:#6b4500;--info-bg:#e3eefb;--info:#0b3f7a;--ok-bg:#dff5e5;--ok:#0d5a2a;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --radius:10px;color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e131a;--surface:#161d27;--surface2:#1f2835;--text:#e8edf4;--muted:#b0bac9;--border:#344154;
+    --accent:#7bbcff;--accent-text:#04213f;--accent-soft:#16304d;
+    --err-bg:#4a1818;--err:#ffc7c7;--warn-bg:#473400;--warn:#ffe0a0;--info-bg:#15324f;--info:#c3e0ff;--ok-bg:#12402a;--ok:#bdf2cf;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e131a;--surface:#161d27;--surface2:#1f2835;--text:#e8edf4;--muted:#b0bac9;--border:#344154;
+  --accent:#7bbcff;--accent-text:#04213f;--accent-soft:#16304d;
+  --err-bg:#4a1818;--err:#ffc7c7;--warn-bg:#473400;--warn:#ffe0a0;--info-bg:#15324f;--info:#c3e0ff;--ok-bg:#12402a;--ok:#bdf2cf;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 var(--sans);overflow-wrap:break-word}
+h1,h2,h3{line-height:1.25;margin:0}
+h2{font-size:1.1rem}
+p{margin:.4em 0}
+a{color:var(--accent)}
+code,.mono{font-family:var(--mono);font-size:.88em}
+.wrap{max-width:1140px;margin:0 auto;padding:0 16px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:8px;top:-60px;background:var(--accent);color:var(--accent-text);padding:8px 12px;border-radius:6px;z-index:10}
+.skip:focus{top:8px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+header.top{background:var(--surface);border-bottom:1px solid var(--border)}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding-top:12px;padding-bottom:12px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand svg{flex:none}
+.brand h1{font-size:1.25rem}
+.ver{display:inline-block;margin-top:2px;font:.78rem var(--mono);color:var(--muted)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+main{display:block;padding-top:16px;padding-bottom:24px}
+.tf{background:var(--ok-bg);color:var(--ok);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin:0 0 14px;font-weight:500}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px}
+.card>h2{margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:16px;align-items:start}
+.grid2>.card{margin-bottom:0}
+@media (max-width:900px){.grid2{grid-template-columns:minmax(0,1fr)}.grid2>.card{margin-bottom:16px}}
+label,.lbl{display:block;font-weight:600;margin-bottom:4px}
+textarea,input[type=text],input[type=search],select{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+textarea{font-family:var(--mono);font-size:.85rem;min-height:110px;resize:vertical}
+::placeholder{color:var(--muted);opacity:1}
+.btn{font:inherit;font-weight:600;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;cursor:pointer;min-height:36px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
+.btn.sm{padding:3px 9px;min-height:30px;font-size:.85rem}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.drop{display:block;border:2px dashed var(--border);border-radius:var(--radius);padding:14px;text-align:center;cursor:pointer;font-weight:500;margin:0}
+.drop.over,.drop:focus-within{border-color:var(--accent);background:var(--accent-soft)}
+.drop input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.opts{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:12px}
+.chk{display:flex;gap:8px;align-items:center;font-weight:500;margin:0}
+.chk input{width:18px;height:18px;accent-color:var(--accent)}
+.srcs{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.srcs li{display:flex;gap:8px;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 10px}
+.srcs .nm{min-width:0;overflow-wrap:anywhere}
+#status{min-height:1.4em;margin:0 0 10px;font-weight:600}
+#status.err{color:var(--err);background:var(--err-bg);border-radius:8px;padding:8px 12px}
+#status.ok{color:var(--ok)}
+.scorebox{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.score{font-size:3rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.score small{font-size:1rem;font-weight:600;color:var(--muted)}
+.bar-track{height:10px;background:var(--surface2);border:1px solid var(--border);border-radius:99px;overflow:hidden;width:100%;max-width:260px}
+.bar-fill{height:100%;background:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin:14px 0 0}
+.stat{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.stat dt{font-size:.78rem;color:var(--muted);font-weight:600}
+.stat dd{margin:0;font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px}
+.filters label{font-size:.85rem}
+.rows{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.row{border:1px solid var(--border);border-left:5px solid var(--border);border-radius:8px;padding:10px 12px;background:var(--bg)}
+.row.s-error{border-left-color:var(--err)}.row.s-warn{border-left-color:var(--warn)}.row.s-info{border-left-color:var(--info)}.row.s-ok{border-left-color:var(--ok)}
+.url{display:block;font:.9rem var(--mono);overflow-wrap:anywhere;word-break:break-all}
+.meta{color:var(--muted);font-size:.82rem;margin:3px 0 6px;overflow-wrap:anywhere}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}
+.badge{display:inline-block;border-radius:99px;padding:1px 9px;font-size:.78rem;font-weight:600;border:1px solid transparent}
+.b-error{background:var(--err-bg);color:var(--err)}.b-warn{background:var(--warn-bg);color:var(--warn)}.b-info{background:var(--info-bg);color:var(--info)}.b-ok{background:var(--ok-bg);color:var(--ok)}.b-cls{background:var(--surface2);color:var(--text);border-color:var(--border)}
+.fix{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;border-top:1px dashed var(--border);padding-top:6px;margin-top:6px}
+.fix .fl{font-weight:600;font-size:.85rem}
+.fix code{overflow-wrap:anywhere;word-break:break-all;flex:1 1 220px}
+.fix .fa{display:flex;gap:6px}
+.links{display:flex;gap:12px;margin-top:6px;font-size:.85rem}
+.more{text-align:center;margin-top:12px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+th{color:var(--muted);font-weight:700;white-space:nowrap}
+td select{padding:4px 6px;min-width:110px}
+.logl{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.logl li{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;border:1px solid var(--border);border-radius:8px;padding:6px 10px;background:var(--bg)}
+.logl code{overflow-wrap:anywhere;word-break:break-all;flex:1 1 240px}
+.empty{color:var(--muted);padding:8px 0}
+.about p{max-width:80ch}
+footer{border-top:1px solid var(--border);background:var(--surface);padding:16px 0;color:var(--muted);font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}
+.print-only{display:none}
+@media (max-width:480px){
+  .score{font-size:2.4rem}
+  .card{padding:12px}
+  .btn{padding:6px 10px}
+}
+@media print{
+  :root{--bg:#fff;--surface:#fff;--text:#000;--muted:#333;--border:#999}
+  body{background:#fff;color:#000;font-size:11pt}
+  .app-ui,header.top,footer,#status,.skip{display:none!important}
+  .print-only{display:block!important}
+  #report h1{font-size:18pt;margin-bottom:6pt}
+  #report h2{font-size:13pt;margin:14pt 0 4pt}
+  #report table{font-size:9pt;page-break-inside:auto}
+  #report tr{page-break-inside:avoid}
+  #report th,#report td{border:1px solid #999;color:#000}
+  a{color:#000}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+<header class="top">
+  <div class="wrap bar">
+    <div class="brand">
+      <svg width="36" height="36" viewBox="0 0 32 32" role="img" aria-label="Trade-Free Link Guardian"><rect width="32" height="32" rx="7" fill="#0b5cad"/><path d="M16 5l9 3.5v7c0 5.5-3.8 9.6-9 11.5-5.2-1.9-9-6-9-11.5v-7z" fill="none" stroke="#fff" stroke-width="2"/><path d="M11.5 16.2l3.2 3.2 6-6.4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div><h1>Trade-Free Link Guardian</h1><span class="ver">v1.33.1-web</span></div>
+    </div>
+    <div class="tools">
+      <button type="button" class="btn" id="langBtn"></button>
+      <button type="button" class="btn" id="themeBtn"></button>
+    </div>
+  </div>
+</header>
+<main class="wrap" id="main" tabindex="-1">
+  <p class="tf" data-i18n="tradefree"></p>
+  <div id="status" role="status" aria-live="polite"></div>
+  <div class="app-ui">
+  <div class="grid2">
+    <section class="card" aria-labelledby="inH">
+      <h2 id="inH" data-i18n="in.h"></h2>
+      <label for="paste" data-i18n="in.paste"></label>
+      <textarea id="paste" spellcheck="false" data-i18n-ph="in.ph"></textarea>
+      <div class="btns">
+        <button type="button" class="btn primary" id="addBtn" data-i18n="in.add"></button>
+        <button type="button" class="btn" id="demoBtn" data-i18n="in.demo"></button>
+        <button type="button" class="btn" id="clearBtn" data-i18n="in.clear"></button>
+      </div>
+      <label class="drop" id="drop" for="files"><span data-i18n="in.drop"></span><input type="file" id="files" multiple accept=".html,.htm,.xhtml,.xml,.md,.markdown,.txt,.csv,text/*"></label>
+      <div class="opts">
+        <label class="chk" for="optImg"><input type="checkbox" id="optImg"><span data-i18n="in.img"></span></label>
+        <div><label for="site" data-i18n="in.site"></label><input type="text" id="site" autocomplete="off" spellcheck="false" data-i18n-ph="in.siteph"><span class="muted small" data-i18n="in.sitehint"></span></div>
+      </div>
+      <ul class="srcs" id="srcList" aria-label="Sources"></ul>
+    </section>
+    <section class="card" aria-labelledby="sumH">
+      <h2 id="sumH" data-i18n="sum.h"></h2>
+      <div id="sumBody"></div>
+    </section>
+  </div>
+
+  <section class="card" id="resCard" aria-labelledby="resH" hidden style="margin-top:16px">
+    <h2 id="resH" data-i18n="res.h"></h2>
+    <div class="filters">
+      <div><label for="fQ" data-i18n="f.q"></label><input type="search" id="fQ" autocomplete="off"></div>
+      <div><label for="fSev" data-i18n="f.sev"></label><select id="fSev"></select></div>
+      <div><label for="fCode" data-i18n="f.code"></label><select id="fCode"></select></div>
+      <div><label for="fCls" data-i18n="f.cls"></label><select id="fCls"></select></div>
+      <div><label for="fFix" data-i18n="f.fix"></label><select id="fFix"></select></div>
+    </div>
+    <div class="btns">
+      <label for="bulkType" class="sr-only" data-i18n="bulk.type"></label>
+      <select id="bulkType" style="width:auto;max-width:100%"></select>
+      <button type="button" class="btn primary" id="bulkBtn" data-i18n="bulk.go"></button>
+      <span class="muted small" id="resCount" role="status"></span>
+    </div>
+    <ul class="rows" id="rows"></ul>
+    <div class="more"><button type="button" class="btn" id="moreBtn" hidden></button></div>
+  </section>
+
+  <section class="card" id="domCard" aria-labelledby="domH" hidden>
+    <h2 id="domH" data-i18n="dom.h"></h2>
+    <p class="muted small" data-i18n="dom.hint"></p>
+    <div class="tw"><table><caption class="sr-only" data-i18n="dom.h"></caption><thead id="domHead"></thead><tbody id="domBody"></tbody></table></div>
+  </section>
+
+  <section class="card" id="logCard" aria-labelledby="logH" hidden>
+    <h2 id="logH" data-i18n="log.h"></h2>
+    <div class="btns">
+      <button type="button" class="btn" id="undoLast" data-i18n="log.last"></button>
+      <button type="button" class="btn" id="undoAll" data-i18n="log.all"></button>
+    </div>
+    <ol class="logl" id="logList"></ol>
+    <p class="empty" id="logEmpty" data-i18n="log.none"></p>
+  </section>
+
+  <section class="card" id="outCard" aria-labelledby="outH" hidden>
+    <h2 id="outH" data-i18n="out.h"></h2>
+    <p class="muted small" data-i18n="out.hint"></p>
+    <div id="outSelBox"><label for="outSel" data-i18n="out.sel"></label><select id="outSel"></select></div>
+    <p class="small" id="outInfo" role="status"></p>
+    <label for="outTa" class="sr-only" data-i18n="out.ta"></label>
+    <textarea id="outTa" readonly spellcheck="false" style="min-height:180px"></textarea>
+    <div class="btns">
+      <button type="button" class="btn primary" id="dlBtn" data-i18n="out.dl"></button>
+      <button type="button" class="btn" id="copyBtn" data-i18n="out.copy"></button>
+      <button type="button" class="btn" id="reanBtn" data-i18n="out.rean"></button>
+    </div>
+  </section>
+
+  <section class="card" id="expCard" aria-labelledby="expH" hidden>
+    <h2 id="expH" data-i18n="exp.h"></h2>
+    <p class="muted small" data-i18n="exp.hint"></p>
+    <div class="btns">
+      <button type="button" class="btn" id="csvBtn" data-i18n="exp.csv"></button>
+      <button type="button" class="btn" id="jsonBtn" data-i18n="exp.json"></button>
+      <button type="button" class="btn" id="printBtn" data-i18n="exp.print"></button>
+    </div>
+  </section>
+
+  <section class="card about" id="about" aria-labelledby="abH">
+    <h2 id="abH" data-i18n="ab.h"></h2>
+    <p data-i18n="ab.p1"></p>
+    <p data-i18n="ab.p2"></p>
+    <p data-i18n="ab.p3"></p>
+  </section>
+  </div>
+  <div id="report" class="print-only"></div>
+</main>
+<footer>
+  <div class="wrap">
+    <span><span data-i18n="ft.lic"></span> GPL-2.0-or-later</span>
+    <span><a href="https://github.com/chiuta/trade-free-link-guardian" rel="noopener noreferrer" target="_blank">github.com/chiuta/trade-free-link-guardian</a></span>
+    <span data-i18n="ft.tf"></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+'use strict';
+var VERSION = '1.33.1-web';
+var MAX_BYTES = 5 * 1024 * 1024;
+var MAX_LINKS = 50000;
+
+/* ---------- i18n ---------- */
+var I18N = {
+en: {
+ skip:'Skip to content',
+ tradefree:'Trade-free: no tracking, no analytics, no cookies, no accounts, no network requests. A strict Content-Security-Policy (connect-src \'none\') enforces it. Nothing leaves this page and nothing is stored, not even your language or theme choice.',
+ 'in.h':'1. Add content', 'in.paste':'Paste HTML, Markdown or plain text',
+ 'in.ph':'<a href="http://example.org/?utm_source=x">link</a>  [md](http://example.org)  https://example.org',
+ 'in.add':'Analyze pasted text','in.demo':'Load demo sample','in.clear':'Clear everything',
+ 'in.drop':'Drop files here or click to choose (.html, .xml WXR, sitemap.xml, .md, .txt, .csv)',
+ 'in.img':'Also extract image sources (img src, Markdown images)',
+ 'in.site':'Your site host (optional)','in.siteph':'e.g. www.mysite.org','in.sitehint':'Links to this host and relative links count as internal.',
+ 'src.none':'No sources yet.','src.remove':'Remove','src.links':'{n} links','src.removearia':'Remove source {name}',
+ 'sum.h':'2. Health summary','sum.empty':'Nothing analyzed yet. Paste text, drop files or load the demo sample.',
+ 'score':'Health score','score.after':'After accepted fixes','score.hint':'Weighted: errors 1.0, warnings 0.5, notes 0.1 per link.',
+ 'st.links':'Links','st.internal':'Internal','st.external':'External','st.mail':'mailto / tel','st.domains':'Domains','st.err':'Links with errors','st.warn':'Links with warnings','st.info':'Links with notes','st.pending':'Fixes pending','st.acc':'Fixes accepted',
+ 'res.h':'3. Links and suggested fixes','f.q':'Search','f.sev':'Severity','f.code':'Issue','f.cls':'Type','f.fix':'Fixes',
+ 'f.all':'All','f.clean':'No issues','f.fixonly':'With pending fixes','f.fixany':'All links',
+ 'sev.error':'Errors','sev.warn':'Warnings','sev.info':'Notes',
+ 'bulk.type':'Fix type to accept in bulk','bulk.all':'All fix types','bulk.go':'Accept all pending fixes (filtered list)','bulk.done':'{n} fixes accepted.','bulk.none':'No pending fixes in the filtered list.',
+ 'count':'Showing {a} of {b} matching links ({c} total).','more':'Show more','none.match':'No links match the filters.',
+ 'accept':'Accept','ignore':'Ignore','undo':'Undo','restore':'Restore','accepted':'Accepted','ignored':'Ignored','open':'Open link','wayback':'Wayback','newtab':'opens in a new tab',
+ 'cls.internal':'internal','cls.external':'external','cls.mailto':'mailto','cls.tel':'tel','cls.anchor':'anchor','cls.script':'script','cls.other':'other scheme','cls.none':'empty/placeholder',
+ 'fix.trim':'Trim whitespace','fix.scheme':'Add https://','fix.encode':'Encode spaces','fix.case':'Lowercase scheme/host','fix.https':'http to https (unverified offline)','fix.www':'Unify www','fix.tracking':'Strip tracking parameters','fix.slash':'Unify trailing slash',
+ 'iss.http':'Uses http, not https','iss.tracking':'Tracking parameters: {x}','iss.www-inconsistent':'Mixed www / non-www for this domain','iss.slash-inconsistent':'Inconsistent trailing slash for this domain','iss.mixed-case':'Upper-case letters in scheme or host','iss.missing-scheme':'Missing scheme (https://)','iss.placeholder':'Placeholder URL','iss.whitespace':'Leading or trailing whitespace','iss.space':'Spaces inside the URL','iss.empty':'Empty href','iss.javascript':'javascript: pseudo-link','iss.malformed':'Malformed URL: {x}','iss.mailto-bad':'Invalid mailto: address','iss.tel-bad':'Invalid tel: number','iss.duplicate':'Duplicate (first seen: {x})','iss.protocol-relative':'Protocol-relative URL (//)','iss.scheme-other':'Scheme not checkable: {x}',
+ 'mal.single-slash':'only one slash after the colon','mal.no-colon':'colon missing after scheme','mal.bad-separator':'wrong separator after scheme','mal.triple-slash':'too many slashes','mal.double-scheme':'scheme repeated','mal.scheme-typo':'misspelled scheme','mal.no-host':'no host','mal.space-in-host':'space in host','mal.bad-chars':'invalid characters in host','mal.bad-dots':'misplaced dots in host','mal.no-tld':'host has no dot / TLD','mal.bad-port':'invalid port','mal.structure':'unparseable structure',
+ 'dom.h':'Domains','dom.hint':'When a domain appears both with and without www (or with and without trailing slash), pick the form to unify to. Changing a choice resets accepted fixes of that kind for the domain.',
+ 'dom.host':'Domain','dom.n':'Links','dom.type':'Type','dom.www':'www / bare','dom.slash':'slash / no slash','dom.iss':'With issues','dom.http':'http','dom.pref':'Unify to','dom.consistent':'consistent','dom.rel':'(relative paths)',
+ 'pref.www':'www.','pref.bare':'no www','pref.slash':'with /','pref.noslash':'without /','pref.keep':'leave as is',
+ 'log.h':'Fix log','log.last':'Undo last action','log.all':'Undo everything','log.none':'No fixes applied yet.','log.acc':'accepted','log.ign':'ignored','log.undoaria':'Undo log entry {n}',
+ 'out.h':'4. Corrected document','out.hint':'Built from your original text with only the accepted fixes applied. Originals are never modified; downloads are new files.','out.sel':'Source','out.ta':'Corrected text preview','out.dl':'Download corrected file','out.copy':'Copy to clipboard','out.rean':'Use corrected output as new input',
+ 'out.info':'{n} links changed in {name}.','out.trunc':' Preview shortened; the download is complete.','out.copied':'Copied.','out.copyfail':'Copy failed, select the text manually.','out.reanok':'Corrected text loaded as the new input.',
+ 'exp.h':'5. Export','exp.hint':'CSV cells starting with = + - @ or tab get an apostrophe prefix (spreadsheet formula protection).','exp.csv':'Download CSV','exp.json':'Download JSON','exp.print':'Print conformity report',
+ 'ab.h':'About',
+ 'ab.p1':'This is the standalone sibling of the Trade-Free Link Guardian WordPress plugin (same philosophy, no WordPress). Give it HTML, Markdown, text, a WordPress WXR export, a sitemap or CSV; it lists every link, flags what can be judged offline (http, malformed or placeholder URLs, tracking parameters, www and trailing-slash inconsistencies, duplicates, mailto/tel) and proposes deterministic fixes that you accept or ignore one by one, with a log and undo.',
+ 'ab.p2':'What it does NOT do: it does not edit a live site (you download corrected copies), it does not crawl remote pages, and it does not check whether a link is alive. Live checks need a server-side request; browsers\' CORS rules make them unreliable, so this build makes zero requests. "Open link" and "Wayback" are plain links that open only when you click them.',
+ 'ab.p3':'The http to https suggestion cannot be verified offline: the destination may not support https. Review before you publish. Input is capped at 5 MB in total.',
+ 'ft.lic':'License:','ft.tf':'No tracking. No cookies. No accounts.',
+ 'err.size':'"{name}" is larger than 5 MB and was skipped.','err.total':'"{name}" would exceed the 5 MB total input limit and was skipped.','err.bin':'"{name}" looks like a binary file and was skipped.','err.read':'Could not read "{name}".','err.empty':'Nothing to analyze: the text box is empty.','err.limit':'Link limit reached: only the first {n} links per analysis are processed.',
+ 'ok.added':'Added {name}: {n} links found.','ok.demo':'Demo sample loaded.','ok.clear':'Cleared.',
+ 'theme.dark':'Dark theme','theme.light':'Light theme','lang.btn':'Română','lang.aria':'Schimbă limba în română',
+ 'theme.aria':'Switch color theme',
+ 'rep.h':'Link conformity report','rep.gen':'Generated','rep.tool':'Tool','rep.sources':'Sources','rep.sum':'Summary','rep.top':'Links with issues','rep.issues':'Issues by type','rep.domains':'Domains','rep.log':'Applied fixes','rep.note':'Offline analysis only: link availability was not tested.','rep.url':'URL','rep.where':'Where','rep.cnt':'Count','rep.sev':'Severity','rep.capped':'Only the first {n} are listed.','rep.after':'Score after accepted fixes',
+ 'csv.source':'source','csv.line':'line','csv.kind':'kind','csv.class':'class','csv.url':'url','csv.fixed':'fixed_url','csv.domain':'domain','csv.anchor':'anchor_text','csv.sev':'severity','csv.issues':'issues','csv.fixes':'accepted_fixes'
+},
+ro: {
+ skip:'Salt la conținut',
+ tradefree:'Trade-free: fără urmărire, fără analitice, fără cookie-uri, fără conturi, fără cereri de rețea. O politică Content-Security-Policy strictă (connect-src \'none\') garantează asta. Nimic nu părăsește această pagină și nimic nu este memorat, nici măcar limba sau tema.',
+ 'in.h':'1. Adaugă conținut','in.paste':'Lipește HTML, Markdown sau text simplu',
+ 'in.ph':'<a href="http://exemplu.ro/?utm_source=x">link</a>  [md](http://exemplu.ro)  https://exemplu.ro',
+ 'in.add':'Analizează textul lipit','in.demo':'Încarcă exemplul demo','in.clear':'Șterge tot',
+ 'in.drop':'Trage fișierele aici sau apasă pentru a alege (.html, .xml WXR, sitemap.xml, .md, .txt, .csv)',
+ 'in.img':'Extrage și sursele imaginilor (img src, imagini Markdown)',
+ 'in.site':'Gazda site-ului tău (opțional)','in.siteph':'ex. www.siteulmeu.ro','in.sitehint':'Linkurile către această gazdă și cele relative contează ca interne.',
+ 'src.none':'Nicio sursă încă.','src.remove':'Elimină','src.links':'{n} linkuri','src.removearia':'Elimină sursa {name}',
+ 'sum.h':'2. Sumar de sănătate','sum.empty':'Nimic analizat încă. Lipește text, trage fișiere sau încarcă exemplul demo.',
+ 'score':'Scor de sănătate','score.after':'După corecturile acceptate','score.hint':'Ponderat: erori 1,0, avertismente 0,5, observații 0,1 per link.',
+ 'st.links':'Linkuri','st.internal':'Interne','st.external':'Externe','st.mail':'mailto / tel','st.domains':'Domenii','st.err':'Linkuri cu erori','st.warn':'Linkuri cu avertismente','st.info':'Linkuri cu observații','st.pending':'Corecturi în așteptare','st.acc':'Corecturi acceptate',
+ 'res.h':'3. Linkuri și corecturi propuse','f.q':'Căutare','f.sev':'Severitate','f.code':'Problemă','f.cls':'Tip','f.fix':'Corecturi',
+ 'f.all':'Toate','f.clean':'Fără probleme','f.fixonly':'Cu corecturi în așteptare','f.fixany':'Toate linkurile',
+ 'sev.error':'Erori','sev.warn':'Avertismente','sev.info':'Observații',
+ 'bulk.type':'Tipul de corectură acceptat în masă','bulk.all':'Toate tipurile','bulk.go':'Acceptă toate corecturile în așteptare (lista filtrată)','bulk.done':'{n} corecturi acceptate.','bulk.none':'Nicio corectură în așteptare în lista filtrată.',
+ 'count':'Se afișează {a} din {b} linkuri potrivite ({c} în total).','more':'Arată mai multe','none.match':'Niciun link nu corespunde filtrelor.',
+ 'accept':'Acceptă','ignore':'Ignoră','undo':'Anulează','restore':'Restabilește','accepted':'Acceptat','ignored':'Ignorat','open':'Deschide linkul','wayback':'Wayback','newtab':'se deschide într-o filă nouă',
+ 'cls.internal':'intern','cls.external':'extern','cls.mailto':'mailto','cls.tel':'tel','cls.anchor':'ancoră','cls.script':'script','cls.other':'altă schemă','cls.none':'gol/umplutură',
+ 'fix.trim':'Elimină spațiile','fix.scheme':'Adaugă https://','fix.encode':'Codifică spațiile','fix.case':'Schemă/gazdă cu litere mici','fix.https':'http la https (neverificat offline)','fix.www':'Unifică www','fix.tracking':'Elimină parametrii de urmărire','fix.slash':'Unifică slash-ul final',
+ 'iss.http':'Folosește http, nu https','iss.tracking':'Parametri de urmărire: {x}','iss.www-inconsistent':'www și fără www amestecate pentru acest domeniu','iss.slash-inconsistent':'Slash final inconsecvent pentru acest domeniu','iss.mixed-case':'Majuscule în schemă sau gazdă','iss.missing-scheme':'Lipsește schema (https://)','iss.placeholder':'URL de umplutură (placeholder)','iss.whitespace':'Spații la început sau la sfârșit','iss.space':'Spații în interiorul URL-ului','iss.empty':'Href gol','iss.javascript':'Pseudo-link javascript:','iss.malformed':'URL malformat: {x}','iss.mailto-bad':'Adresă mailto: invalidă','iss.tel-bad':'Număr tel: invalid','iss.duplicate':'Duplicat (prima apariție: {x})','iss.protocol-relative':'URL relativ la protocol (//)','iss.scheme-other':'Schemă neverificabilă: {x}',
+ 'mal.single-slash':'o singură bară după două puncte','mal.no-colon':'lipsesc două puncte după schemă','mal.bad-separator':'separator greșit după schemă','mal.triple-slash':'prea multe bare','mal.double-scheme':'schemă repetată','mal.scheme-typo':'schemă scrisă greșit','mal.no-host':'fără gazdă','mal.space-in-host':'spațiu în gazdă','mal.bad-chars':'caractere invalide în gazdă','mal.bad-dots':'puncte plasate greșit în gazdă','mal.no-tld':'gazda nu are punct / TLD','mal.bad-port':'port invalid','mal.structure':'structură neanalizabilă',
+ 'dom.h':'Domenii','dom.hint':'Când un domeniu apare și cu, și fără www (sau cu și fără slash final), alege forma către care se unifică. Schimbarea unei alegeri anulează corecturile acceptate de acel tip pentru domeniu.',
+ 'dom.host':'Domeniu','dom.n':'Linkuri','dom.type':'Tip','dom.www':'www / fără','dom.slash':'cu slash / fără','dom.iss':'Cu probleme','dom.http':'http','dom.pref':'Unifică la','dom.consistent':'consecvent','dom.rel':'(căi relative)',
+ 'pref.www':'www.','pref.bare':'fără www','pref.slash':'cu /','pref.noslash':'fără /','pref.keep':'lasă neschimbat',
+ 'log.h':'Jurnal de corecturi','log.last':'Anulează ultima acțiune','log.all':'Anulează tot','log.none':'Nicio corectură aplicată încă.','log.acc':'acceptat','log.ign':'ignorat','log.undoaria':'Anulează intrarea {n} din jurnal',
+ 'out.h':'4. Document corectat','out.hint':'Construit din textul original, cu doar corecturile acceptate aplicate. Originalele nu sunt modificate niciodată; descărcările sunt fișiere noi.','out.sel':'Sursa','out.ta':'Previzualizarea textului corectat','out.dl':'Descarcă fișierul corectat','out.copy':'Copiază în clipboard','out.rean':'Folosește rezultatul corectat ca intrare nouă',
+ 'out.info':'{n} linkuri modificate în {name}.','out.trunc':' Previzualizarea este scurtată; descărcarea este completă.','out.copied':'Copiat.','out.copyfail':'Copierea a eșuat, selectează textul manual.','out.reanok':'Textul corectat a fost încărcat ca intrare nouă.',
+ 'exp.h':'5. Export','exp.hint':'Celulele CSV care încep cu = + - @ sau tab primesc un apostrof în față (protecție împotriva formulelor din foile de calcul).','exp.csv':'Descarcă CSV','exp.json':'Descarcă JSON','exp.print':'Tipărește raportul de conformitate',
+ 'ab.h':'Despre',
+ 'ab.p1':'Aceasta este versiunea autonomă, soră a plugin-ului WordPress Trade-Free Link Guardian (aceeași filozofie, fără WordPress). Îi dai HTML, Markdown, text, un export WordPress WXR, un sitemap sau CSV; listează fiecare link, semnalează ce se poate judeca offline (http, URL-uri malformate sau de umplutură, parametri de urmărire, inconsecvențe www și slash final, duplicate, mailto/tel) și propune corecturi deterministe pe care le accepți sau le ignori una câte una, cu jurnal și anulare.',
+ 'ab.p2':'Ce NU face: nu editează un site live (descarci copii corectate), nu parcurge pagini la distanță și nu verifică dacă un link mai funcționează. Verificările live cer o cerere de pe server; regulile CORS ale browserelor le fac nesigure, așa că această versiune nu face nicio cerere. „Deschide linkul” și „Wayback” sunt linkuri simple care se deschid doar la clic.',
+ 'ab.p3':'Sugestia http la https nu poate fi verificată offline: destinația poate să nu accepte https. Verifică înainte de publicare. Intrarea este limitată la 5 MB în total.',
+ 'ft.lic':'Licență:','ft.tf':'Fără urmărire. Fără cookie-uri. Fără conturi.',
+ 'err.size':'„{name}” depășește 5 MB și a fost omis.','err.total':'„{name}” ar depăși limita totală de 5 MB și a fost omis.','err.bin':'„{name}” pare fișier binar și a fost omis.','err.read':'Nu s-a putut citi „{name}”.','err.empty':'Nimic de analizat: caseta de text este goală.','err.limit':'Limita de linkuri atinsă: se procesează doar primele {n} linkuri per analiză.',
+ 'ok.added':'Adăugat {name}: {n} linkuri găsite.','ok.demo':'Exemplul demo a fost încărcat.','ok.clear':'Șters.',
+ 'theme.dark':'Temă întunecată','theme.light':'Temă luminoasă','lang.btn':'English','lang.aria':'Switch language to English',
+ 'theme.aria':'Schimbă tema de culori',
+ 'rep.h':'Raport de conformitate a linkurilor','rep.gen':'Generat','rep.tool':'Instrument','rep.sources':'Surse','rep.sum':'Sumar','rep.top':'Linkuri cu probleme','rep.issues':'Probleme pe tipuri','rep.domains':'Domenii','rep.log':'Corecturi aplicate','rep.note':'Doar analiză offline: disponibilitatea linkurilor nu a fost testată.','rep.url':'URL','rep.where':'Unde','rep.cnt':'Număr','rep.sev':'Severitate','rep.capped':'Sunt listate doar primele {n}.','rep.after':'Scor după corecturile acceptate',
+ 'csv.source':'sursa','csv.line':'linia','csv.kind':'felul','csv.class':'clasa','csv.url':'url','csv.fixed':'url_corectat','csv.domain':'domeniu','csv.anchor':'text_ancora','csv.sev':'severitate','csv.issues':'probleme','csv.fixes':'corecturi_acceptate'
+}};
+
+var SEV = {empty:'error',javascript:'error',malformed:'error','mailto-bad':'error','tel-bad':'error',
+  http:'warn',tracking:'warn','www-inconsistent':'warn','slash-inconsistent':'warn','mixed-case':'warn','missing-scheme':'warn',placeholder:'warn',whitespace:'warn',space:'warn',
+  duplicate:'info','protocol-relative':'info','scheme-other':'info'};
+var SEV_RANK = {error:3,warn:2,info:1};
+var ORDER = ['trim','scheme','encode','case','https','www','tracking','slash'];
+
+/* ---------- state ---------- */
+var S = {
+  lang: (navigator.language || 'en').toLowerCase().indexOf('ro') === 0 ? 'ro' : 'en',
+  theme: null, sources: [], seq: 0, pasteN: 0, opts: {images:false, site:''},
+  items: [], base: null, cur: null, acc: {}, ign: {}, log: [], logN: 0, batchN: 0,
+  wwwPref: {}, slashPref: {}, f: {q:'',sev:'all',code:'all',cls:'all',fix:'all',bulk:''}, shown: 200,
+  outSrc: null, fk: null, statusKey: null
+};
+
+function t(key, vars) {
+  var s = (I18N[S.lang] && I18N[S.lang][key]);
+  if (s === undefined) s = I18N.en[key];
+  if (s === undefined) s = key;
+  if (vars) for (var k in vars) s = s.split('{' + k + '}').join(String(vars[k]));
+  return s;
+}
+function $(id) { return document.getElementById(id); }
+function h(tag, props) {
+  var e = document.createElement(tag);
+  if (props) for (var k in props) {
+    var v = props[k];
+    if (v === null || v === undefined || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k === 'text') e.textContent = v;
+    else if (k.indexOf('on') === 0) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : String(v));
+  }
+  for (var i = 2; i < arguments.length; i++) {
+    var c = arguments[i];
+    if (c === null || c === undefined || c === false) continue;
+    if (Array.isArray(c)) { for (var j = 0; j < c.length; j++) if (c[j]) e.append(c[j].nodeType ? c[j] : document.createTextNode(String(c[j]))); }
+    else e.append(c.nodeType ? c : document.createTextNode(String(c)));
+  }
+  return e;
+}
+function clear(e) { e.replaceChildren(); }
+
+function say(key, vars, kind) {
+  var el = $('status');
+  el.className = kind || '';
+  el.textContent = key ? t(key, vars) : '';
+}
+
+/* ---------- text helpers ---------- */
+function decodeEnt(s) {
+  if (s.indexOf('&') < 0) return s;
+  try {
+    var doc = new DOMParser().parseFromString('<!doctype html><body>' + s, 'text/html');
+    return doc.body.textContent || '';
+  } catch (e) { return s; }
+}
+function cleanText(html) { return decodeEnt(html.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim().slice(0, 140); }
+function blankRe(text, re) { return text.replace(re, function (m) { return m.replace(/[^\n]/g, ' '); }); }
+function maskNoise(text) {
+  var s = blankRe(text, /<!--[\s\S]*?-->/g);
+  return blankRe(s, /<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi);
+}
+function maskTags(s) { return s.replace(/<[^>]*>/g, function (m) { return ' '.repeat(m.length); }); }
+function maskRanges(s, ranges) {
+  if (!ranges.length) return s;
+  ranges = ranges.slice().sort(function (a, b) { return a[0] - b[0]; });
+  var out = '', last = 0;
+  for (var i = 0; i < ranges.length; i++) {
+    var a = Math.max(ranges[i][0], last), b = ranges[i][1];
+    if (b <= a) continue;
+    out += s.slice(last, a) + ' '.repeat(b - a); last = b;
+  }
+  return out + s.slice(last);
+}
+function cdataOnly(s) {
+  var re = /<!\[CDATA\[([\s\S]*?)\]\]>/g, m, out = '', last = 0;
+  while ((m = re.exec(s))) {
+    var st = m.index + 9, en = st + m[1].length;
+    out += ' '.repeat(st - last) + maskTags(s.slice(st, en)); last = en;
+  }
+  return out + ' '.repeat(s.length - last);
+}
+
+function detectKind(name, text) {
+  var m = /\.([a-z0-9]+)$/i.exec(name), ext = m ? m[1].toLowerCase() : '';
+  var head = text.slice(0, 5000);
+  if (ext === 'csv') return 'csv';
+  if (ext === 'md' || ext === 'markdown') return 'md';
+  if (/<urlset[\s>]|<sitemapindex[\s>]/.test(head)) return 'sitemap';
+  if (ext === 'xml' || /<rss[\s>]|<wp:|<channel[\s>]/.test(head)) return 'wxr';
+  if (ext === 'html' || ext === 'htm' || ext === 'xhtml') return 'html';
+  if (ext === 'txt') return 'txt';
+  if (/<(a|img|p|div|html|body|h[1-6]|ul|li|span|table|nav)\b[^>]*>/i.test(head)) return 'html';
+  if (/\]\(|^\s*#{1,6}\s|\n\s*[-*]\s/.test(head)) return 'md';
+  return 'txt';
+}
+
+/* ---------- extraction ---------- */
+function extract(src, opts) {
+  var text = src.text, kind = src.kind, out = [];
+  var scan = maskNoise(text);
+  var nl = [];
+  for (var i = text.indexOf('\n'); i >= 0; i = text.indexOf('\n', i + 1)) nl.push(i);
+  function lineOf(pos) { var lo = 0, hi = nl.length; while (lo < hi) { var mid = (lo + hi) >> 1; if (nl[mid] < pos) lo = mid + 1; else hi = mid; } return lo + 1; }
+  var mask = [];
+  function push(k, start, end, anchor, esc) {
+    if (out.length >= MAX_LINKS) { src.capped = true; return; }
+    var raw = text.slice(start, end);
+    out.push({id: src.id + ':' + start, srcId: src.id, srcName: src.name, kind: k, start: start, end: end, raw: raw,
+      url: esc ? raw.replace(/&amp;/g, '&') : raw, esc: esc, anchor: anchor, line: lineOf(start)});
+    mask.push([start, end]);
+  }
+  var m;
+  if (kind !== 'sitemap') {
+    var tagRe = /<(a|area|img)\b([^>]*)>/gi;
+    while ((m = tagRe.exec(scan))) {
+      var tn = m[1].toLowerCase();
+      if (tn === 'img' && !opts.images) continue;
+      var attrs = m[2], base = m.index + 1 + m[1].length, want = tn === 'img' ? 'src' : 'href';
+      var ar = /(?<![\w:-])(href|src|alt)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+))/gid, am, hit = null, alt = '';
+      while ((am = ar.exec(attrs))) {
+        var nm = am[1].toLowerCase(), gi = am[2] !== undefined ? 2 : am[3] !== undefined ? 3 : 4;
+        if (nm === want && !hit) hit = [base + am.indices[gi][0], base + am.indices[gi][1]];
+        else if (nm === 'alt' && tn === 'img') alt = am[gi];
+      }
+      if (!hit) continue;
+      var anchor = '';
+      if (tn === 'img') anchor = decodeEnt(alt);
+      else {
+        var s0 = m.index + m[0].length, sub = scan.slice(s0, s0 + 2000), cm = /<\/a\s*>/i.exec(sub);
+        anchor = cleanText(cm ? sub.slice(0, cm.index) : sub.slice(0, 300));
+      }
+      push(tn === 'img' ? 'img' : 'a', hit[0], hit[1], anchor, true);
+    }
+  }
+  if (kind === 'md' || kind === 'txt') {
+    var mdRe = /!?\[((?:[^\[\]]|\[[^\]]*\])*)\]\(\s*(<[^>\n]*>|[^\s()]*(?:\([^\s()]*\)[^\s()]*)*)(?:\s+(?:"[^"\n]*"|'[^'\n]*'))?\s*\)/gd;
+    while ((m = mdRe.exec(scan))) {
+      var isImg = m[0].charAt(0) === '!';
+      if (isImg && !opts.images) { mask.push([m.index, m.index + m[0].length]); continue; }
+      var a = m.indices[2][0], b = m.indices[2][1];
+      if (scan.charAt(a) === '<' && scan.charAt(b - 1) === '>') { a++; b--; }
+      push(isImg ? 'img' : 'md', a, b, cleanText(m[1]), false);
+      mask.push([m.index, m.index + m[0].length]);
+    }
+    var refRe = /^[ ]{0,3}\[([^\]\n]+)\]:[ \t]*(<[^>\n]*>|\S+)/gmd;
+    while ((m = refRe.exec(scan))) {
+      var a2 = m.indices[2][0], b2 = m.indices[2][1];
+      if (scan.charAt(a2) === '<' && scan.charAt(b2 - 1) === '>') { a2++; b2--; }
+      push('ref', a2, b2, m[1], false);
+      mask.push([m.index, m.index + m[0].length]);
+    }
+  }
+  if (kind === 'sitemap') {
+    var locRe = /<loc>\s*([\s\S]*?)\s*<\/loc>/gd;
+    while ((m = locRe.exec(scan))) push('loc', m.indices[1][0], m.indices[1][1], '', true);
+  }
+  var plain = null;
+  if (kind === 'html') plain = maskTags(scan);
+  else if (kind === 'wxr') plain = cdataOnly(scan);
+  else if (kind !== 'sitemap') plain = scan;
+  if (plain !== null) {
+    plain = maskRanges(plain, mask);
+    var bareRe = kind === 'csv' ? /(?<![\w.\/@-])(?:https?:\/\/|www\.)[^\s<>"'`,\[\]{}|\\^]+/gi : /(?<![\w.\/@-])(?:https?:\/\/|www\.)[^\s<>"'`\[\]{}|\\^]+/gi;
+    while ((m = bareRe.exec(plain))) {
+      var u = m[0], end = u.length;
+      while (end > 0) {
+        var ch = u.charAt(end - 1);
+        if ('.,;:!?*_'.indexOf(ch) >= 0 || (ch === ')' && u.indexOf('(') < 0)) end--; else break;
+      }
+      u = u.slice(0, end);
+      if (u.replace(/^(?:https?:\/\/|www\.)/i, '').length < 3) continue;
+      var ctx = text.slice(Math.max(0, m.index - 40), m.index).replace(/\s+/g, ' ').trim();
+      push('bare', m.index, m.index + end, ctx, false);
+    }
+  }
+  out.sort(function (x, y) { return x.start - y.start || x.end - y.end; });
+  return out;
+}
+
+/* ---------- URL helpers ---------- */
+function splitUrl(u) {
+  var m = /^([a-zA-Z][a-zA-Z0-9+.\-]*):\/\/([^\/?#]*)([^?#]*)(\?[^#]*)?(#[\s\S]*)?$/.exec(u), p;
+  if (m) p = {scheme: m[1], pr: false, auth: m[2], path: m[3], query: m[4] || '', hash: m[5] || ''};
+  else {
+    m = /^\/\/([^\/?#]*)([^?#]*)(\?[^#]*)?(#[\s\S]*)?$/.exec(u);
+    if (m) p = {scheme: '', pr: true, auth: m[1], path: m[2], query: m[3] || '', hash: m[4] || ''};
+    else {
+      m = /^([^?#]*)(\?[^#]*)?(#[\s\S]*)?$/.exec(u);
+      return {rel: true, path: m[1], query: m[2] || '', hash: m[3] || ''};
+    }
+  }
+  var am = /^(?:([^@]*)@)?(\[[^\]]*\]|[^:]*)(?::([^:]*))?$/.exec(p.auth);
+  if (!am) { p.badAuth = true; p.user = null; p.host = p.auth; p.port = null; }
+  else { p.user = am[1] !== undefined ? am[1] : null; p.host = am[2]; p.port = am[3] !== undefined ? am[3] : null; }
+  return p;
+}
+function joinUrl(p) {
+  if (p.rel) return p.path + p.query + p.hash;
+  return (p.pr ? '//' : p.scheme + '://') + (p.user !== null ? p.user + '@' : '') + p.host + (p.port !== null ? ':' + p.port : '') + p.path + p.query + p.hash;
+}
+var TRACK_SET = {};
+('fbclid gclid dclid gbraid wbraid msclkid mc_cid mc_eid _hsenc _hsmi igshid yclid ttclid twclid li_fat_id mkt_tok vero_id _ga _gl srsltid oly_enc_id oly_anon_id s_cid cmpid ref_src ref_url gclsrc fb_action_ids fb_action_types fb_source fb_ref piwik_campaign piwik_kwd pk_campaign pk_kwd mtm_campaign mtm_kwd wickedid rb_clickid __s _openstat ck_subscriber_id soc_src soc_trk').split(' ').forEach(function (k) { TRACK_SET[k] = 1; });
+function isTrackParam(name) {
+  var n = name;
+  try { n = decodeURIComponent(name); } catch (e) {}
+  n = n.toLowerCase();
+  return n.indexOf('utm_') === 0 || n.indexOf('hsa_') === 0 || TRACK_SET[n] === 1;
+}
+function trackNames(query) {
+  if (!query || query.length < 2) return [];
+  var out = [], parts = query.slice(1).split('&');
+  for (var i = 0; i < parts.length; i++) { var nm = parts[i].split('=')[0]; if (nm && isTrackParam(nm)) out.push(nm); }
+  return out;
+}
+function stripTracking(query) {
+  if (!query || query.length < 2) return query;
+  var keep = query.slice(1).split('&').filter(function (x) { var nm = x.split('=')[0]; return !(nm && isTrackParam(nm)); });
+  return keep.length ? '?' + keep.join('&') : '';
+}
+function fileLike(path) { var seg = path.split('/').pop(); return /\.[A-Za-z0-9]{1,6}$/.test(seg); }
+function slashStyle(path) {
+  if (path === '' || path === '/' || fileLike(path)) return null;
+  return path.charAt(path.length - 1) === '/' ? 'slash' : 'noslash';
+}
+function normPath(path) { if (path === '') return '/'; return path.length > 1 && path.charAt(path.length - 1) === '/' ? path.slice(0, -1) : path; }
+function isLocalHost(h) { return /^(localhost|127\.|10\.|192\.168\.|\[)/i.test(h) || /^\d+\.\d+\.\d+\.\d+$/.test(h) || /\.(local|localhost|internal|lan)$/i.test(h); }
+function bareOf(host) { return host.toLowerCase().replace(/^www\./, ''); }
+function siteBareOf(v) {
+  v = (v || '').trim().toLowerCase().replace(/^[a-z][a-z0-9+.\-]*:\/\//, '').replace(/[\/?#].*$/, '').replace(/:\d+$/, '');
+  return v.replace(/^www\./, '');
+}
+
+function applyFix(type, u, pw, ps) {
+  var lead = /^\s*/.exec(u)[0], trail = /\s*$/.exec(u)[0], core = u.trim(), res = core, p;
+  if (type === 'trim') return core;
+  if (core === '') return u;
+  if (type === 'scheme') res = /^www\./i.test(core) ? 'https://' + core : core;
+  else if (type === 'encode') res = core.replace(/\s/g, function (c) { return c === ' ' ? '%20' : encodeURIComponent(c); });
+  else {
+    p = splitUrl(core);
+    if (type === 'case') { if (!p.rel) { p.scheme = p.scheme.toLowerCase(); p.host = p.host.toLowerCase(); res = joinUrl(p); } }
+    else if (type === 'https') { if (!p.rel && p.scheme.toLowerCase() === 'http') { p.scheme = 'https'; res = joinUrl(p); } }
+    else if (type === 'www') {
+      if (!p.rel && p.host) {
+        var hasW = /^www\./i.test(p.host);
+        if (pw === 'www' && !hasW) p.host = 'www.' + p.host;
+        else if (pw === 'bare' && hasW) p.host = p.host.replace(/^www\./i, '');
+        res = joinUrl(p);
+      }
+    }
+    else if (type === 'tracking') { p.query = stripTracking(p.query); res = joinUrl(p); }
+    else if (type === 'slash') {
+      var st = slashStyle(p.path);
+      if (st && ps === 'slash' && st === 'noslash') p.path += '/';
+      else if (st && ps === 'noslash' && st === 'slash') p.path = p.path.replace(/\/+$/, '') || '/';
+      res = joinUrl(p);
+    }
+  }
+  return lead + res + trail;
+}
+
+/* ---------- inspection ---------- */
+var PLACEHOLDERS = {};
+['#','#!','todo','tbd','xxx','xxxx','http://','https://','about:blank','...','your-link-here','insert-link','placeholder','changeme','link-here','#link','#url'].forEach(function (k) { PLACEHOLDERS[k] = 1; });
+var SCHEME_TYPOS = /^(htp|htps|ttp|hhtp|htttp|hxxps?|htpps|httpss|http;|https;)$/;
+
+function inspect(raw, ctx) {
+  var u = raw.trim();
+  var r = {raw: raw, u: u, cls: 'internal', host: '', bare: '', variant: '', scheme: '', issues: [], fixes: [], p: null, key: null, sg: null, ss: null, noscheme: false, local: false};
+  function add(code, x) { r.issues.push({code: code, sev: SEV[code], x: x}); }
+  if (raw !== u && u !== '') add('whitespace');
+  if (u === '') { r.cls = 'none'; add('empty'); return r; }
+  var lu = u.toLowerCase();
+  if (PLACEHOLDERS[lu] === 1) { r.cls = 'none'; add('placeholder'); return r; }
+  if (u.charAt(0) === '#') { r.cls = 'anchor'; return r; }
+  if (/^javascript:/i.test(u)) { r.cls = 'script'; add('javascript'); return r; }
+  if (/^mailto:/i.test(u)) {
+    r.cls = 'mailto';
+    var body = u.slice(7).split('?')[0], dec = body;
+    try { dec = decodeURIComponent(body); } catch (e) {}
+    var addrs = dec.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    var ok = addrs.length > 0 && addrs.every(function (a) { return /^[^\s@<>()\[\]\\,;:]+@[^\s@<>()\[\]\\,;:]+\.[^\s@<>()\[\]\\,;:]{2,}$/.test(a); });
+    if (!ok) add('mailto-bad');
+    r.key = 'mailto:' + addrs.join(',').toLowerCase();
+    return r;
+  }
+  if (/^tel:/i.test(u)) {
+    r.cls = 'tel';
+    var tb = u.slice(4).split(/[;,]/)[0];
+    try { tb = decodeURIComponent(tb); } catch (e2) {}
+    var digits = tb.replace(/[\s().\-\/]/g, '');
+    if (!/^\+?\d{5,15}$/.test(digits)) add('tel-bad');
+    r.key = 'tel:' + digits;
+    return r;
+  }
+  var p, host, mal = null;
+  if (/^www\./i.test(u)) {
+    r.noscheme = true; add('missing-scheme');
+    host = /^[^\/?#]*/.exec(u)[0].replace(/:\d*$/, '');
+    r.host = host.toLowerCase(); r.bare = bareOf(host); r.variant = 'www';
+    r.cls = ctx.siteBare && r.bare === ctx.siteBare ? 'internal' : 'external';
+    r.key = 'u:' + r.bare + normPath(u.slice(host.length).replace(/[?#].*$/, ''));
+    return r;
+  }
+  if (/^https?:\/(?!\/)/i.test(u)) mal = 'single-slash';
+  else if (/^https?\/\//i.test(u)) mal = 'no-colon';
+  else if (/^https?(;\/\/|:\\\\)/i.test(u)) mal = 'bad-separator';
+  else if (/^https?:\/\/\//i.test(u)) mal = 'triple-slash';
+  else if (/^https?:\/\/https?:\/\//i.test(u)) mal = 'double-scheme';
+  if (mal) { r.cls = 'external'; add('malformed', mal); return r; }
+  var sm = /^([a-z][a-z0-9+.\-]*):/i.exec(u), sch = sm ? sm[1].toLowerCase() : '';
+  if (sm && !/^(https?|ftp)$/.test(sch)) {
+    if (SCHEME_TYPOS.test(sch) && /^[a-z]+:\/\//i.test(u)) { r.cls = 'external'; add('malformed', 'scheme-typo'); return r; }
+    r.cls = 'other'; add('scheme-other', sch); return r;
+  }
+  if (/^;?(htp|htps|ttp)/i.test(u) && /^[a-z;]+:\/\//i.test(u)) { r.cls = 'external'; add('malformed', 'scheme-typo'); return r; }
+  p = splitUrl(u); r.p = p;
+  if (p.rel) {
+    r.cls = 'internal';
+    if (/\s/.test(u)) add('space');
+    if (u.charAt(0) === '/' ) { r.sg = ctx.siteBare || '(relative)'; r.ss = slashStyle(p.path); }
+    var tn = trackNames(p.query); if (tn.length) add('tracking', tn.join(', '));
+    r.key = ctx.siteBare ? 'u:' + ctx.siteBare + normPath(u.charAt(0) === '/' ? p.path : '/' + p.path) + stripTracking(p.query) + p.hash : 'rel:' + p.path + stripTracking(p.query) + p.hash;
+    return r;
+  }
+  var hh = p.host;
+  if (p.badAuth || hh === '') mal = 'no-host';
+  else if (/\s/.test(p.user !== null ? p.user : '') || /\s/.test(hh)) mal = 'space-in-host';
+  else if (!/^[^\s\/\\@<>"'`^{}|]+$/.test(hh)) mal = 'bad-chars';
+  else if (/^\.|\.$|\.\./.test(hh)) mal = 'bad-dots';
+  else if (hh.indexOf('.') < 0 && !/^localhost$/i.test(hh) && hh.charAt(0) !== '[') mal = 'no-tld';
+  else if (p.port !== null && p.port !== '' && !/^\d{1,5}$/.test(p.port)) mal = 'bad-port';
+  r.scheme = p.scheme.toLowerCase(); r.host = hh.toLowerCase(); r.bare = bareOf(hh);
+  r.local = isLocalHost(r.host);
+  r.cls = ctx.siteBare && r.bare === ctx.siteBare ? 'internal' : 'external';
+  if (mal) { add('malformed', mal); r.bare = ''; return r; }
+  if (/\s/.test(p.path + p.query + p.hash)) add('space');
+  if (p.scheme !== r.scheme || hh !== r.host) add('mixed-case');
+  if (r.scheme === 'http' && !r.local) add('http');
+  if (p.pr) add('protocol-relative');
+  var tr = trackNames(p.query); if (tr.length) add('tracking', tr.join(', '));
+  if (/(^|\.)(example\.(com|org|net)|invalid|example)$/.test(r.host) || /^(your-?domain|domain|yourwebsite|yoursite)\.(com|org|net)$/.test(r.host)) add('placeholder');
+  if (!r.local) { r.variant = /^www\./.test(r.host) ? 'www' : 'bare'; r.sg = r.bare; r.ss = slashStyle(p.path); }
+  else r.bare = r.host;
+  r.key = (ctx.siteBare && r.bare === ctx.siteBare ? 'u:' + r.bare : 'u:' + r.bare + (p.port ? ':' + p.port : '')) + normPath(p.path) + stripTracking(p.query) + p.hash;
+  return r;
+}
+
+function analyze(items, ctx) {
+  var res = new Map(), doms = new Map(), groups = new Map(), arr = [], i, r;
+  for (i = 0; i < items.length; i++) {
+    r = inspect(items[i].url, ctx); r.id = items[i].id; r.it = items[i]; arr.push(r); res.set(r.id, r);
+    if (r.bare) {
+      var d = doms.get(r.bare);
+      if (!d) { d = {key: r.bare, count: 0, www: 0, bareN: 0, http: 0, https: 0, issueN: 0, internal: false, local: r.local}; doms.set(r.bare, d); }
+      d.count++;
+      if (r.variant === 'www') d.www++; else if (r.variant === 'bare') d.bareN++;
+      if (r.scheme === 'http') d.http++; else if (r.scheme === 'https') d.https++;
+      if (r.cls === 'internal') d.internal = true;
+    }
+    if (r.sg !== null) {
+      var g = groups.get(r.sg);
+      if (!g) { g = {key: r.sg, slash: 0, noslash: 0}; groups.set(r.sg, g); }
+      if (r.ss === 'slash') g.slash++; else if (r.ss === 'noslash') g.noslash++;
+    }
+  }
+  doms.forEach(function (d) {
+    d.incons = d.www > 0 && d.bareN > 0;
+    d.def = d.www > d.bareN ? 'www' : 'bare';
+    d.pref = ctx.wwwPref[d.key] || d.def;
+  });
+  groups.forEach(function (g) {
+    g.incons = g.slash > 0 && g.noslash > 0;
+    g.def = g.slash >= g.noslash ? 'slash' : 'noslash';
+    g.pref = ctx.slashPref[g.key] || g.def;
+  });
+  var seen = new Map();
+  for (i = 0; i < arr.length; i++) {
+    r = arr[i];
+    var dm = r.bare ? doms.get(r.bare) : null, gp = r.sg !== null ? groups.get(r.sg) : null, f = {};
+    if (!r.noscheme && dm && dm.incons && r.variant) {
+      var tgt = dm.pref === 'keep' ? dm.def : dm.pref;
+      if (r.variant !== tgt) { r.issues.push({code: 'www-inconsistent', sev: 'warn'}); if (dm.pref !== 'keep') f.www = 1; }
+    }
+    if (gp && gp.incons && r.ss) {
+      var tg2 = gp.pref === 'keep' ? gp.def : gp.pref;
+      if (r.ss !== tg2) { r.issues.push({code: 'slash-inconsistent', sev: 'warn'}); if (gp.pref !== 'keep') f.slash = 1; }
+    }
+    if (r.key) {
+      var first = seen.get(r.key);
+      if (first) r.issues.push({code: 'duplicate', sev: 'info', x: first});
+      else seen.set(r.key, r.it.srcName + ':' + r.it.line);
+    }
+    var codes = {}; r.issues.forEach(function (is) { codes[is.code] = 1; });
+    var malformed = !!codes.malformed;
+    if (codes.whitespace) f.trim = 1;
+    if (codes['missing-scheme']) f.scheme = 1;
+    if (!r.noscheme && !malformed) {
+      if (codes.space) f.encode = 1;
+      if (codes['mixed-case']) f.case = 1;
+      if (codes.http) f.https = 1;
+      if (codes.tracking) f.tracking = 1;
+    } else { delete f.www; delete f.slash; }
+    var pw = dm ? dm.pref : 'bare', ps = gp ? gp.pref : 'slash';
+    r.pw = pw; r.ps = ps;
+    ORDER.forEach(function (ty) {
+      if (!f[ty]) return;
+      var to = applyFix(ty, r.raw, pw, ps);
+      if (to !== r.raw) r.fixes.push({type: ty, to: to});
+    });
+    r.maxSev = '';
+    r.issues.forEach(function (is) { if (!r.maxSev || SEV_RANK[is.sev] > SEV_RANK[r.maxSev]) r.maxSev = is.sev; });
+    if (dm && r.issues.length) dm.issueN++;
+  }
+  return {arr: arr, res: res, doms: doms, groups: groups, sum: summarize(arr, doms)};
+}
+function summarize(arr, doms) {
+  var s = {n: arr.length, cls: {}, sev: {error: 0, warn: 0, info: 0}, codes: {}, pen: 0, domains: doms.size};
+  arr.forEach(function (r) {
+    s.cls[r.cls] = (s.cls[r.cls] || 0) + 1;
+    if (r.maxSev) { s.sev[r.maxSev]++; s.pen += r.maxSev === 'error' ? 1 : r.maxSev === 'warn' ? 0.5 : 0.1; }
+    r.issues.forEach(function (is) { s.codes[is.code] = (s.codes[is.code] || 0) + 1; });
+  });
+  s.score = s.n ? Math.max(0, Math.round(100 * (1 - s.pen / s.n))) : 100;
+  return s;
+}
+
+/* ---------- pipeline ---------- */
+function ctxNow() { return {siteBare: siteBareOf(S.opts.site), wwwPref: S.wwwPref, slashPref: S.slashPref}; }
+function rebuild() {
+  var all = [], capped = false;
+  S.sources.forEach(function (src) { src.capped = false; var l = extract(src, S.opts); src.links = l.length; if (src.capped) capped = true; all = all.concat(l); });
+  if (all.length > MAX_LINKS) { all.length = MAX_LINKS; capped = true; }
+  S.items = all;
+  S.base = analyze(all, ctxNow());
+  pruneState();
+  recomputeCur();
+  S.shown = 200;
+  if (capped) say('err.limit', {n: MAX_LINKS}, 'err');
+}
+function pruneState() {
+  var res = S.base.res;
+  [S.acc, S.ign].forEach(function (m) {
+    Object.keys(m).forEach(function (id) {
+      var r = res.get(id);
+      if (!r) { delete m[id]; return; }
+      Object.keys(m[id]).forEach(function (ty) { if (!r.fixes.some(function (f) { return f.type === ty; })) delete m[id][ty]; });
+      if (!Object.keys(m[id]).length) delete m[id];
+    });
+  });
+  S.log = S.log.filter(function (e) { var m = e.action === 'accept' ? S.acc : S.ign; return m[e.id] && m[e.id][e.type]; });
+}
+function fixedUrl(r) {
+  var a = S.acc[r.id], u = r.raw;
+  if (!a) return u;
+  ORDER.forEach(function (ty) { if (a[ty]) u = applyFix(ty, u, r.pw, r.ps); });
+  return u;
+}
+function recomputeCur() {
+  var items = S.base.arr.map(function (r) {
+    var f = fixedUrl(r);
+    return {id: r.id, url: f === r.raw ? r.it.url : (r.it.esc ? f : f), srcName: r.it.srcName, line: r.it.line};
+  });
+  S.cur = analyze(items, ctxNow());
+}
+function accCount() { var n = 0; Object.keys(S.acc).forEach(function (k) { n += Object.keys(S.acc[k]).length; }); return n; }
+function pendingCount() {
+  var n = 0;
+  S.base.arr.forEach(function (r) { r.fixes.forEach(function (f) { if (!(S.acc[r.id] && S.acc[r.id][f.type]) && !(S.ign[r.id] && S.ign[r.id][f.type])) n++; }); });
+  return n;
+}
+
+/* ---------- actions on fixes ---------- */
+function logPush(action, r, type, batch, before, after) {
+  S.log.push({n: ++S.logN, batch: batch, action: action, id: r.id, type: type, before: before, after: after, time: new Date().toLocaleTimeString([], {hour12: false})});
+}
+function doAccept(r, type, batch) {
+  var before = fixedUrl(r);
+  (S.acc[r.id] = S.acc[r.id] || {})[type] = 1;
+  logPush('accept', r, type, batch, before, fixedUrl(r));
+}
+function doIgnore(r, type, batch) {
+  (S.ign[r.id] = S.ign[r.id] || {})[type] = 1;
+  logPush('ignore', r, type, batch, fixedUrl(r), fixedUrl(r));
+}
+function removeState(id, type) {
+  [S.acc, S.ign].forEach(function (m) { if (m[id]) { delete m[id][type]; if (!Object.keys(m[id]).length) delete m[id]; } });
+  S.log = S.log.filter(function (e) { return !(e.id === id && e.type === type); });
+}
+function undoEntry(e) {
+  var m = e.action === 'accept' ? S.acc : S.ign;
+  if (m[e.id]) { delete m[e.id][e.type]; if (!Object.keys(m[e.id]).length) delete m[e.id]; }
+  S.log = S.log.filter(function (x) { return x !== e; });
+}
+function afterChange() { recomputeCur(); renderAll(); }
+
+/* ---------- sources ---------- */
+function utf8Len(s) { return new TextEncoder().encode(s).length; }
+function totalBytes() { return S.sources.reduce(function (n, s) { return n + s.bytes; }, 0); }
+function uniqueName(name) {
+  var n = name, k = 2;
+  while (S.sources.some(function (s) { return s.name === n; })) { n = name.replace(/(\.[^.]*)?$/, function (e) { return ' (' + k + ')' + (e || ''); }); k++; }
+  return n;
+}
+function addSource(name, text, bytes, kindHint) {
+  var src = {id: 's' + (++S.seq), name: uniqueName(name), text: text, bytes: bytes, kind: kindHint || detectKind(name, text), links: 0};
+  S.sources.push(src);
+  return src;
+}
+async function addFiles(list) {
+  var files = Array.prototype.slice.call(list), added = 0, last = null;
+  for (var i = 0; i < files.length; i++) {
+    var f = files[i];
+    if (f.size > MAX_BYTES) { say('err.size', {name: f.name}, 'err'); continue; }
+    if (totalBytes() + f.size > MAX_BYTES) { say('err.total', {name: f.name}, 'err'); continue; }
+    var text;
+    try { text = await f.text(); } catch (e) { say('err.read', {name: f.name}, 'err'); continue; }
+    if (text.slice(0, 2000).indexOf('\u0000') >= 0) { say('err.bin', {name: f.name}, 'err'); continue; }
+    if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+    last = addSource(f.name, text, f.size); added++;
+  }
+  if (added) { rebuild(); renderAll(); if (last) say('ok.added', {name: last.name + (added > 1 ? ' +' + (added - 1) : ''), n: S.items.length}, 'ok'); }
+}
+function addPasted() {
+  var text = $('paste').value;
+  if (!text.trim()) { say('err.empty', null, 'err'); return; }
+  var bytes = utf8Len(text);
+  if (bytes > MAX_BYTES) { say('err.size', {name: 'pasted'}, 'err'); return; }
+  if (totalBytes() + bytes > MAX_BYTES) { say('err.total', {name: 'pasted'}, 'err'); return; }
+  var kind = detectKind('', text), ext = {html: 'html', md: 'md', txt: 'txt', csv: 'csv', wxr: 'xml', sitemap: 'xml'}[kind];
+  var src = addSource('pasted-' + (++S.pasteN) + '.' + ext, text, bytes, kind);
+  rebuild(); renderAll(); say('ok.added', {name: src.name, n: S.items.length}, 'ok');
+}
+var DEMO_HTML = [
+'<!doctype html>',
+'<html lang="en"><head><meta charset="utf-8"><title>Atelier Nord</title></head>',
+'<body>',
+'<h1>Atelier Nord: demo page</h1>',
+'<nav><a href="/">Home</a> <a href="/about/">About</a> <a href="/contact">Contact</a> <a href="/blog">Blog</a> <a href="/blog/">Blog archive</a></nav>',
+'<p>Read <a href="http://www.atelier-nord.test/guide/?utm_source=newsletter&amp;utm_medium=email&amp;ref=home">our guide</a> and <a href="https://atelier-nord.test/guide/">the same guide</a>.</p>',
+'<p><a href="HTTP://Partener-Media.TEST/Press/">Press kit</a> / <a href="https://partener-media.test/press">Press (no slash)</a> / <a href="https://partener-media.test/team/">Team</a></p>',
+'<p><a href="http://tracker-friendly.test/offer?fbclid=IwAR0abc&amp;gclid=Cj0K&amp;id=42">Special offer</a> <a href="https://blog.atelier-nord.test/post-1?utm_campaign=x#comments">First post</a></p>',
+'<p><a href="#">Placeholder</a> <a href="">Empty</a> <a href="javascript:void(0)">Script</a> <a href="https://">Nothing</a> <a href="http:/broken.test/page">Broken</a> <a href="https://atelier-nord.test/my page.html">With space</a> <a href="www.atelier-nord.test/team">No scheme</a></p>',
+'<p><a href="mailto:hello@atelier-nord.test">Mail us</a> <a href="mailto:hello-at-atelier">Bad mail</a> <a href="tel:+40 721 000 000">Call</a> <a href="tel:12">Bad phone</a> <a href="#contact">Anchor</a> <a href="sms:+40721000000">SMS</a> <a href=" https://docs.atelier-nord.test/start/ ">Padded</a></p>',
+'<p>Formula-injection check, shown safely in CSV: <a href="https://docs.atelier-nord.test/api">=HYPERLINK("https://phish.test","Click")</a> <a href="https://docs.atelier-nord.test/api2">+1 charts</a> <a href="https://docs.atelier-nord.test/api3">@team</a> <a href="https://docs.atelier-nord.test/api3">-notes</a></p>',
+'<p><a href="https://placeholder-check.example.com/page">Example host</a> <a href="//cdn.atelier-nord.test/lib.js">Protocol-relative</a> <a href="ftp://files.partener-media.test/pub/">FTP</a></p>',
+'<img src="http://cdn.atelier-nord.test/logo.png" alt="Logo">',
+'</body></html>'
+].join('\n');
+var DEMO_MD = [
+'# Notes',
+'',
+'See [the docs](http://docs.atelier-nord.test/start/?utm_source=md) and [Atelier](https://www.atelier-nord.test/).',
+'Reference style: [ref]. Bare: https://tracker-friendly.test/offer?id=42&utm_term=a and www.partener-media.test/press/.',
+'',
+'[ref]: https://Docs.Atelier-Nord.test/Start/'
+].join('\n');
+function loadDemo() {
+  S.sources = []; S.acc = {}; S.ign = {}; S.log = []; S.wwwPref = {}; S.slashPref = {};
+  S.opts.site = 'atelier-nord.test'; $('site').value = S.opts.site;
+  addSource('demo-page.html', DEMO_HTML, utf8Len(DEMO_HTML), 'html');
+  addSource('demo-notes.md', DEMO_MD, utf8Len(DEMO_MD), 'md');
+  rebuild(); renderAll(); say('ok.demo', null, 'ok');
+}
+function clearAll() {
+  S.sources = []; S.acc = {}; S.ign = {}; S.log = []; S.wwwPref = {}; S.slashPref = {}; S.opts.site = ''; $('site').value = ''; $('paste').value = '';
+  S.f = {q:'',sev:'all',code:'all',cls:'all',fix:'all',bulk:''}; S.outSrc = null;
+  rebuild(); renderAll(); say('ok.clear', null, 'ok');
+}
+
+/* ---------- rendering ---------- */
+function applyStatic() {
+  document.documentElement.lang = S.lang;
+  document.title = 'Trade-Free Link Guardian';
+  document.querySelectorAll('[data-i18n]').forEach(function (e) { e.textContent = t(e.getAttribute('data-i18n')); });
+  document.querySelectorAll('[data-i18n-ph]').forEach(function (e) { e.setAttribute('placeholder', t(e.getAttribute('data-i18n-ph'))); });
+  var lb = $('langBtn'); lb.textContent = t('lang.btn'); lb.setAttribute('aria-label', t('lang.aria')); lb.setAttribute('lang', S.lang === 'ro' ? 'en' : 'ro');
+  var eff = effTheme(), tb = $('themeBtn');
+  tb.textContent = eff === 'dark' ? t('theme.light') : t('theme.dark');
+  tb.setAttribute('aria-label', t('theme.aria') + ': ' + tb.textContent);
+  $('srcList').setAttribute('aria-label', t('in.h'));
+}
+function effTheme() { return S.theme || (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+
+function issueText(is) {
+  var x = is.x;
+  if (is.code === 'malformed') x = t('mal.' + is.x);
+  return t('iss.' + is.code, {x: x === undefined ? '' : x});
+}
+function badge(cls, text) { return h('span', {class: 'badge ' + cls, text: text}); }
+
+function renderSources() {
+  var ul = $('srcList'); clear(ul);
+  if (!S.sources.length) { ul.append(h('li', null, h('span', {class: 'muted', text: t('src.none')}))); return; }
+  S.sources.forEach(function (s) {
+    ul.append(h('li', null,
+      h('span', {class: 'nm'}, h('strong', {text: s.name}), ' ', h('span', {class: 'muted small', text: s.kind + ' / ' + Math.max(1, Math.round(s.bytes / 1024)) + ' KB / ' + t('src.links', {n: s.links})})),
+      h('button', {type: 'button', class: 'btn sm', text: t('src.remove'), 'aria-label': t('src.removearia', {name: s.name}), onclick: function () {
+        S.sources = S.sources.filter(function (x) { return x !== s; }); rebuild(); renderAll();
+      }})));
+  });
+}
+
+function renderSummary() {
+  var b = $('sumBody'); clear(b);
+  var sm = S.base.sum;
+  if (!sm.n) { b.append(h('p', {class: 'empty', text: t('sum.empty')})); return; }
+  var cur = S.cur.sum, acc = accCount();
+  var box = h('div', {class: 'scorebox'},
+    h('div', null, h('div', {class: 'lbl', text: t('score')}), h('div', {class: 'score', id: 'scoreVal'}, String(sm.score), h('small', {text: ' / 100'}))),
+    h('div', {style: 'flex:1 1 200px'},
+      h('div', {class: 'bar-track', role: 'img', 'aria-label': t('score') + ' ' + sm.score + '/100'}, h('div', {class: 'bar-fill', style: 'width:' + sm.score + '%'})),
+      acc ? h('p', {class: 'small', style: 'margin-top:8px'}, h('strong', {text: t('score.after') + ': '}), h('span', {id: 'scoreAfter', text: cur.score + ' / 100'})) : null,
+      h('p', {class: 'muted small', text: t('score.hint')})));
+  var c = sm.cls, mt = (c.mailto || 0) + (c.tel || 0);
+  var stats = [['st.links', sm.n], ['st.internal', c.internal || 0], ['st.external', c.external || 0], ['st.mail', mt], ['st.domains', sm.domains],
+    ['st.err', sm.sev.error], ['st.warn', sm.sev.warn], ['st.info', sm.sev.info], ['st.pending', pendingCount()], ['st.acc', acc]];
+  var dl = h('dl', {class: 'stats'});
+  stats.forEach(function (x) { dl.append(h('div', {class: 'stat'}, h('dt', {text: t(x[0])}), h('dd', {text: String(x[1])}))); });
+  b.append(box, dl);
+}
+
+function renderFilterOptions() {
+  function fill(sel, opts, val) {
+    clear(sel); opts.forEach(function (o) { sel.append(h('option', {value: o[0], text: o[1]})); });
+    sel.value = opts.some(function (o) { return o[0] === val; }) ? val : opts[0][0];
+  }
+  fill($('fSev'), [['all', t('f.all')], ['error', t('sev.error')], ['warn', t('sev.warn')], ['info', t('sev.info')], ['clean', t('f.clean')]], S.f.sev);
+  var codes = Object.keys(S.base.sum.codes).sort();
+  fill($('fCode'), [['all', t('f.all')]].concat(codes.map(function (c) { return [c, issueText({code: c, x: '…'}).replace(/\s*…$/, '')]; })), S.f.code);
+  var clsList = Object.keys(S.base.sum.cls).sort();
+  fill($('fCls'), [['all', t('f.all')]].concat(clsList.map(function (c) { return [c, t('cls.' + c)]; })), S.f.cls);
+  fill($('fFix'), [['all', t('f.fixany')], ['pending', t('f.fixonly')]], S.f.fix);
+  var types = {}; S.base.arr.forEach(function (r) { r.fixes.forEach(function (f) { types[f.type] = 1; }); });
+  fill($('bulkType'), [['', t('bulk.all')]].concat(ORDER.filter(function (x) { return types[x]; }).map(function (x) { return [x, t('fix.' + x)]; })), S.f.bulk);
+  S.f.sev = $('fSev').value; S.f.code = $('fCode').value; S.f.cls = $('fCls').value; S.f.fix = $('fFix').value; S.f.bulk = $('bulkType').value;
+}
+function filtered() {
+  var q = S.f.q.trim().toLowerCase();
+  return S.base.arr.filter(function (r) {
+    if (S.f.sev === 'clean' ? r.issues.length : (S.f.sev !== 'all' && r.maxSev !== S.f.sev)) return false;
+    if (S.f.code !== 'all' && !r.issues.some(function (i) { return i.code === S.f.code; })) return false;
+    if (S.f.cls !== 'all' && r.cls !== S.f.cls) return false;
+    if (S.f.fix === 'pending' && !pendingFixes(r).length) return false;
+    if (q && (r.it.url + ' ' + r.it.anchor + ' ' + r.it.srcName).toLowerCase().indexOf(q) < 0) return false;
+    return true;
+  });
+}
+function pendingFixes(r) {
+  return r.fixes.filter(function (f) { return !(S.acc[r.id] && S.acc[r.id][f.type]) && !(S.ign[r.id] && S.ign[r.id][f.type]); });
+}
+function webHref(r) {
+  var u = r.u;
+  if (r.noscheme) u = 'https://' + u; else if (u.indexOf('//') === 0) u = 'https:' + u;
+  if (!/^https?:\/\//i.test(u) || r.issues.some(function (i) { return i.code === 'malformed'; })) return null;
+  try { var o = new URL(u); return (o.protocol === 'http:' || o.protocol === 'https:') ? o.href : null; } catch (e) { return null; }
+}
+
+function renderRow(r) {
+  var it = r.it, sev = r.maxSev || 'ok';
+  var li = h('li', {class: 'row s-' + sev});
+  li.append(h('code', {class: 'url', text: it.url === '' ? '(empty)' : it.url}));
+  li.append(h('div', {class: 'meta', text: it.srcName + ':' + it.line + ' / ' + ({a: '<a>', img: '<img>', md: 'Markdown', ref: 'Markdown ref', bare: 'URL', loc: '<loc>'})[it.kind] + (it.anchor ? ' / "' + it.anchor + '"' : '')}));
+  var bd = h('div', {class: 'badges'}, badge('b-cls', t('cls.' + r.cls)));
+  if (!r.issues.length) bd.append(badge('b-ok', 'OK'));
+  r.issues.forEach(function (is) { bd.append(badge('b-' + is.sev, issueText(is))); });
+  li.append(bd);
+  r.fixes.forEach(function (f) {
+    var a = S.acc[r.id] && S.acc[r.id][f.type], g = S.ign[r.id] && S.ign[r.id][f.type];
+    var lab = t('fix.' + f.type), ctxLabel = lab + ': ' + (it.url.length > 50 ? it.url.slice(0, 50) + '…' : it.url);
+    var fa = h('div', {class: 'fa'});
+    if (a) fa.append(h('button', {type: 'button', class: 'btn sm', text: t('undo'), 'aria-label': t('undo') + ' / ' + ctxLabel, 'data-fk': 'f:' + r.id + ':' + f.type, onclick: function (ev) { S.fk = ev.currentTarget.dataset.fk; removeState(r.id, f.type); afterChange(); }}));
+    else if (g) fa.append(h('button', {type: 'button', class: 'btn sm', text: t('restore'), 'aria-label': t('restore') + ' / ' + ctxLabel, 'data-fk': 'f:' + r.id + ':' + f.type, onclick: function (ev) { S.fk = ev.currentTarget.dataset.fk; removeState(r.id, f.type); afterChange(); }}));
+    else {
+      fa.append(h('button', {type: 'button', class: 'btn sm primary acc', text: t('accept'), 'aria-label': t('accept') + ' / ' + ctxLabel, 'data-fk': 'f:' + r.id + ':' + f.type, onclick: function (ev) { S.fk = ev.currentTarget.dataset.fk; doAccept(r, f.type, ++S.batchN); afterChange(); }}));
+      fa.append(h('button', {type: 'button', class: 'btn sm ign', text: t('ignore'), 'aria-label': t('ignore') + ' / ' + ctxLabel, 'data-fk': 'g:' + r.id + ':' + f.type, onclick: function (ev) { S.fk = ev.currentTarget.dataset.fk; doIgnore(r, f.type, ++S.batchN); afterChange(); }}));
+    }
+    li.append(h('div', {class: 'fix'}, h('span', {class: 'fl', text: lab}), a ? badge('b-ok', t('accepted')) : g ? badge('b-cls', t('ignored')) : null,
+      h('code', {text: f.to}), fa));
+  });
+  var href = webHref(r);
+  if (href) {
+    li.append(h('div', {class: 'links'},
+      h('a', {href: href, target: '_blank', rel: 'noopener noreferrer nofollow', text: t('open'), 'aria-label': t('open') + ': ' + href + ' (' + t('newtab') + ')'}),
+      h('a', {href: 'https://web.archive.org/web/*/' + href, target: '_blank', rel: 'noopener noreferrer nofollow', text: t('wayback'), 'aria-label': t('wayback') + ': ' + href + ' (' + t('newtab') + ')'})));
+  }
+  return li;
+}
+function renderRows() {
+  var list = filtered(), ul = $('rows'); clear(ul);
+  var show = list.slice(0, S.shown);
+  show.forEach(function (r) { ul.append(renderRow(r)); });
+  if (!list.length) ul.append(h('li', {class: 'empty', text: t('none.match')}));
+  $('resCount').textContent = t('count', {a: show.length, b: list.length, c: S.base.arr.length});
+  var mb = $('moreBtn');
+  mb.hidden = list.length <= S.shown; mb.textContent = t('more') + ' (' + (list.length - S.shown) + ')';
+}
+
+function renderDomains() {
+  var head = $('domHead'), body = $('domBody'); clear(head); clear(body);
+  head.append(h('tr', null, ['dom.host', 'dom.n', 'dom.type', 'dom.www', 'dom.slash', 'dom.http', 'dom.iss', 'dom.pref'].map(function (k) { return h('th', {scope: 'col', text: t(k)}); })));
+  var list = Array.from(S.base.doms.values()).sort(function (a, b) { return b.count - a.count || (a.key < b.key ? -1 : 1); });
+  function sel(label, opts, cur, onchange) {
+    var s = h('select', {'aria-label': label});
+    opts.forEach(function (o) { s.append(h('option', {value: o[0], text: o[1]})); });
+    s.value = cur; s.addEventListener('change', onchange); return s;
+  }
+  list.forEach(function (d) {
+    var g = S.base.groups.get(d.key), pc = [];
+    if (d.incons) pc.push(sel(t('dom.pref') + ' ' + d.key + ' www', [['www', t('pref.www')], ['bare', t('pref.bare')], ['keep', t('pref.keep')]], d.pref, function (ev) {
+      S.wwwPref[d.key] = ev.target.value;
+      Object.keys(S.acc).forEach(function (id) { var r = S.base.res.get(id); if (r && r.bare === d.key && S.acc[id] && S.acc[id].www) removeState(id, 'www'); });
+      Object.keys(S.ign).forEach(function (id) { var r = S.base.res.get(id); if (r && r.bare === d.key && S.ign[id] && S.ign[id].www) removeState(id, 'www'); });
+      rebuild(); renderAll();
+    }));
+    if (g && g.incons) pc.push(sel(t('dom.pref') + ' ' + d.key + ' /', [['slash', t('pref.slash')], ['noslash', t('pref.noslash')], ['keep', t('pref.keep')]], g.pref, function (ev) {
+      S.slashPref[d.key] = ev.target.value;
+      [S.acc, S.ign].forEach(function (m) { Object.keys(m).forEach(function (id) { var r = S.base.res.get(id); if (r && r.sg === d.key && m[id] && m[id].slash) removeState(id, 'slash'); }); });
+      rebuild(); renderAll();
+    }));
+    if (!pc.length) pc.push(h('span', {class: 'muted', text: t('dom.consistent')}));
+    body.append(h('tr', null, h('td', null, h('code', {text: d.key})), h('td', {text: String(d.count)}), h('td', {text: d.internal ? t('cls.internal') : t('cls.external')}),
+      h('td', {text: d.www + ' / ' + d.bareN}), h('td', {text: g ? g.slash + ' / ' + g.noslash : '-'}), h('td', {text: d.http + ' / ' + d.https}), h('td', {text: String(d.issueN)}), h('td', null, pc)));
+  });
+  var rg = S.base.groups.get('(relative)');
+  if (rg) {
+    var pcs = rg.incons ? sel('/', [['slash', t('pref.slash')], ['noslash', t('pref.noslash')], ['keep', t('pref.keep')]], rg.pref, function (ev) {
+      S.slashPref['(relative)'] = ev.target.value;
+      [S.acc, S.ign].forEach(function (m) { Object.keys(m).forEach(function (id) { var r = S.base.res.get(id); if (r && r.sg === '(relative)' && m[id] && m[id].slash) removeState(id, 'slash'); }); });
+      rebuild(); renderAll();
+    }) : h('span', {class: 'muted', text: t('dom.consistent')});
+    body.append(h('tr', null, h('td', {text: t('dom.rel')}), h('td', {text: String(rg.slash + rg.noslash)}), h('td', {text: t('cls.internal')}), h('td', {text: '-'}), h('td', {text: rg.slash + ' / ' + rg.noslash}), h('td', {text: '-'}), h('td', {text: '-'}), h('td', null, pcs)));
+  }
+}
+
+function renderLog() {
+  var ol = $('logList'); clear(ol);
+  $('logEmpty').hidden = S.log.length > 0;
+  $('undoLast').disabled = $('undoAll').disabled = !S.log.length;
+  S.log.forEach(function (e) {
+    ol.append(h('li', null,
+      h('span', {class: 'muted small', text: '#' + e.n + ' ' + e.time}),
+      badge(e.action === 'accept' ? 'b-ok' : 'b-cls', e.action === 'accept' ? t('log.acc') : t('log.ign')),
+      h('span', {class: 'small', text: t('fix.' + e.type)}),
+      h('code', {text: e.action === 'accept' ? e.before + '  ->  ' + e.after : e.before}),
+      h('button', {type: 'button', class: 'btn sm', text: t('undo'), 'aria-label': t('log.undoaria', {n: e.n}), 'data-fk': 'l:' + e.n, onclick: function (ev) { S.fk = ev.currentTarget.dataset.fk; undoEntry(e); afterChange(); }})));
+  });
+}
+
+function changedLinks(src) { return S.base.arr.filter(function (r) { return r.it.srcId === src.id && fixedUrl(r) !== r.raw; }); }
+function buildFixedText(src) {
+  var ch = changedLinks(src).sort(function (a, b) { return b.it.start - a.it.start; }), text = src.text;
+  ch.forEach(function (r) {
+    var f = fixedUrl(r);
+    if (r.it.esc) f = f.replace(/&/g, '&amp;');
+    text = text.slice(0, r.it.start) + f + text.slice(r.it.end);
+  });
+  return {text: text, n: ch.length};
+}
+function renderOutput() {
+  var sel = $('outSel'); clear(sel);
+  S.sources.forEach(function (s) { sel.append(h('option', {value: s.id, text: s.name})); });
+  if (!S.sources.some(function (s) { return s.id === S.outSrc; })) S.outSrc = S.sources.length ? S.sources[0].id : null;
+  sel.value = S.outSrc || '';
+  $('outSelBox').hidden = S.sources.length < 2;
+  var src = S.sources.filter(function (s) { return s.id === S.outSrc; })[0];
+  if (!src) return;
+  var res = buildFixedText(src), LIM = 300000;
+  $('outTa').value = res.text.length > LIM ? res.text.slice(0, LIM) : res.text;
+  $('outInfo').textContent = t('out.info', {n: res.n, name: src.name}) + (res.text.length > LIM ? t('out.trunc') : '');
+}
+
+function renderAll() {
+  applyStatic();
+  var has = S.base && S.base.arr.length > 0;
+  renderSources();
+  if (!S.base) return;
+  renderSummary();
+  ['resCard', 'domCard', 'logCard', 'outCard', 'expCard'].forEach(function (id) { $(id).hidden = !has; });
+  if (has) { renderFilterOptions(); renderRows(); renderDomains(); renderLog(); renderOutput(); }
+  restoreFocus();
+}
+function restoreFocus() {
+  if (!S.fk) return;
+  var key = S.fk, els = document.querySelectorAll('[data-fk]'), found = null, alt = null;
+  for (var i = 0; i < els.length; i++) {
+    if (els[i].dataset.fk === key) { found = els[i]; break; }
+    if (key.charAt(0) === 'g' && els[i].dataset.fk === 'f' + key.slice(1)) alt = els[i];
+  }
+  S.fk = null;
+  (found || alt) && (found || alt).focus();
+}
+
+/* ---------- exports ---------- */
+function download(name, mime, content) {
+  var blob = new Blob([content], {type: mime + ';charset=utf-8'}), url = URL.createObjectURL(blob);
+  var a = h('a', {href: url, download: name});
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+}
+function csvCell(v) {
+  var s = v === null || v === undefined ? '' : String(v);
+  if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+  if (/[",\r\n]/.test(s)) s = '"' + s.replace(/"/g, '""') + '"';
+  return s;
+}
+function accTypes(r) { return S.acc[r.id] ? ORDER.filter(function (x) { return S.acc[r.id][x]; }) : []; }
+function rowIssues(r) { return r.issues.map(function (is) { return issueText(is); }); }
+function buildCsv() {
+  var head = ['source', 'line', 'kind', 'class', 'url', 'fixed_url', 'domain', 'anchor_text', 'severity', 'issues', 'accepted_fixes'];
+  var lines = [head.map(csvCell).join(',')];
+  S.base.arr.forEach(function (r) {
+    lines.push([r.it.srcName, r.it.line, r.it.kind, r.cls, r.it.url, fixedUrl(r) === r.raw ? '' : fixedUrl(r), r.bare, r.it.anchor, r.maxSev || 'ok',
+      r.issues.map(function (i) { return i.code; }).join(' '), accTypes(r).join(' ')].map(csvCell).join(','));
+  });
+  return '﻿' + lines.join('\r\n') + '\r\n';
+}
+function buildJson() {
+  var sm = S.base.sum;
+  return JSON.stringify({
+    tool: 'Trade-Free Link Guardian', version: VERSION, generated: new Date().toISOString(),
+    note: 'Offline analysis only; link availability was not tested.',
+    sources: S.sources.map(function (s) { return {name: s.name, kind: s.kind, bytes: s.bytes, links: s.links}; }),
+    summary: {links: sm.n, score: sm.score, score_after_accepted_fixes: S.cur.sum.score, by_class: sm.cls, links_by_max_severity: sm.sev, issues: sm.codes, domains: sm.domains},
+    domains: Array.from(S.base.doms.values()).map(function (d) { return {domain: d.key, links: d.count, www: d.www, bare: d.bareN, http: d.http, https: d.https, with_issues: d.issueN, internal: d.internal}; }),
+    links: S.base.arr.map(function (r) {
+      return {source: r.it.srcName, line: r.it.line, kind: r.it.kind, class: r.cls, url: r.it.url, fixed_url: fixedUrl(r) === r.raw ? null : fixedUrl(r), domain: r.bare || null, anchor_text: r.it.anchor,
+        severity: r.maxSev || 'ok', issues: r.issues.map(function (i) { return {code: i.code, severity: i.sev, detail: i.x === undefined ? null : i.x}; }),
+        suggested_fixes: r.fixes.map(function (f) { return {type: f.type, to: f.to}; }), accepted_fixes: accTypes(r)};
+    }),
+    fix_log: S.log.map(function (e) { return {n: e.n, action: e.action, fix: e.type, before: e.before, after: e.after}; })
+  }, null, 2);
+}
+function stamp() { var d = new Date(); return d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2); }
+
+function buildReport() {
+  var rp = $('report'); clear(rp);
+  if (!S.base || !S.base.arr.length) return;
+  var sm = S.base.sum;
+  function table(heads, rows) {
+    return h('table', null, h('thead', null, h('tr', null, heads.map(function (x) { return h('th', {scope: 'col', text: x}); }))),
+      h('tbody', null, rows.map(function (r) { return h('tr', null, r.map(function (c) { return h('td', {text: String(c)}); })); })));
+  }
+  rp.append(h('h1', {text: t('rep.h')}),
+    h('p', {text: t('rep.gen') + ': ' + new Date().toISOString().slice(0, 19).replace('T', ' ') + ' UTC / ' + t('rep.tool') + ': Trade-Free Link Guardian ' + VERSION + ' (GPL-2.0-or-later)'}),
+    h('p', {text: t('rep.note')}),
+    h('h2', {text: t('rep.sources')}),
+    table([t('in.h'), 'type', t('st.links')], S.sources.map(function (s) { return [s.name, s.kind, s.links]; })),
+    h('h2', {text: t('rep.sum')}),
+    table(['', ''], [[t('score'), sm.score + ' / 100'], [t('rep.after'), S.cur.sum.score + ' / 100'], [t('st.links'), sm.n], [t('st.internal'), sm.cls.internal || 0], [t('st.external'), sm.cls.external || 0], [t('st.mail'), (sm.cls.mailto || 0) + (sm.cls.tel || 0)],
+      [t('st.domains'), sm.domains], [t('st.err'), sm.sev.error], [t('st.warn'), sm.sev.warn], [t('st.info'), sm.sev.info], [t('st.acc'), accCount()]]),
+    h('h2', {text: t('rep.issues')}),
+    table([t('f.code'), t('rep.sev'), t('rep.cnt')], Object.keys(sm.codes).sort().map(function (c) { return [issueText({code: c, x: '…'}).replace(/\s*…$/, ''), t('sev.' + SEV[c]), sm.codes[c]]; })));
+  var doms = Array.from(S.base.doms.values()).sort(function (a, b) { return b.count - a.count; }).slice(0, 40);
+  rp.append(h('h2', {text: t('rep.domains')}),
+    table([t('dom.host'), t('dom.n'), t('dom.www'), t('dom.http'), t('dom.iss')], doms.map(function (d) { return [d.key, d.count, d.www + ' / ' + d.bareN, d.http + ' / ' + d.https, d.issueN]; })));
+  var bad = S.base.arr.filter(function (r) { return r.issues.length; }), CAP = 300;
+  rp.append(h('h2', {text: t('rep.top') + ' (' + bad.length + ')'}),
+    bad.length > CAP ? h('p', {text: t('rep.capped', {n: CAP})}) : null,
+    table([t('rep.url'), t('rep.where'), t('f.code')], bad.slice(0, CAP).map(function (r) { return [r.it.url || '(empty)', r.it.srcName + ':' + r.it.line, rowIssues(r).join('; ')]; })));
+  if (S.log.length) rp.append(h('h2', {text: t('rep.log')}), table(['#', '', t('rep.url')], S.log.map(function (e) { return [e.n, t('fix.' + e.type), e.action === 'accept' ? e.before + ' -> ' + e.after : t('log.ign') + ': ' + e.before]; })));
+}
+
+/* ---------- events ---------- */
+function bind() {
+  $('addBtn').addEventListener('click', addPasted);
+  $('demoBtn').addEventListener('click', loadDemo);
+  $('clearBtn').addEventListener('click', clearAll);
+  $('files').addEventListener('change', function (e) { addFiles(e.target.files).then(function () { e.target.value = ''; }); });
+  var drop = $('drop');
+  window.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('over'); });
+  window.addEventListener('dragleave', function (e) { if (!e.relatedTarget) drop.classList.remove('over'); });
+  window.addEventListener('drop', function (e) { e.preventDefault(); drop.classList.remove('over'); if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) addFiles(e.dataTransfer.files); });
+  $('optImg').addEventListener('change', function (e) { S.opts.images = e.target.checked; rebuild(); renderAll(); });
+  var siteT = null;
+  $('site').addEventListener('input', function (e) { S.opts.site = e.target.value; clearTimeout(siteT); siteT = setTimeout(function () { rebuild(); renderAll(); }, 250); });
+  $('langBtn').addEventListener('click', function () { S.lang = S.lang === 'ro' ? 'en' : 'ro'; renderAll(); });
+  $('themeBtn').addEventListener('click', function () { S.theme = effTheme() === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', S.theme); applyStatic(); });
+  if (window.matchMedia) {
+    var mq = matchMedia('(prefers-color-scheme: dark)');
+    (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(function () { if (!S.theme) applyStatic(); });
+  }
+  [['fQ', 'q', 'input'], ['fSev', 'sev', 'change'], ['fCode', 'code', 'change'], ['fCls', 'cls', 'change'], ['fFix', 'fix', 'change']].forEach(function (x) {
+    $(x[0]).addEventListener(x[2], function (e) { S.f[x[1]] = e.target.value; S.shown = 200; renderRows(); });
+  });
+  $('bulkType').addEventListener('change', function (e) { S.f.bulk = e.target.value; });
+  $('bulkBtn').addEventListener('click', function () {
+    var batch = ++S.batchN, n = 0, type = S.f.bulk;
+    filtered().forEach(function (r) { pendingFixes(r).forEach(function (f) { if (!type || f.type === type) { doAccept(r, f.type, batch); n++; } }); });
+    S.fk = 'bulk';
+    afterChange(); $('bulkBtn').focus();
+    say(n ? 'bulk.done' : 'bulk.none', {n: n}, n ? 'ok' : '');
+  });
+  $('moreBtn').addEventListener('click', function () { S.shown += 200; renderRows(); });
+  $('undoLast').addEventListener('click', function () {
+    if (!S.log.length) return;
+    var b = S.log[S.log.length - 1].batch;
+    S.log.filter(function (e) { return e.batch === b; }).reverse().forEach(undoEntry);
+    afterChange();
+  });
+  $('undoAll').addEventListener('click', function () { S.acc = {}; S.ign = {}; S.log = []; afterChange(); });
+  $('outSel').addEventListener('change', function (e) { S.outSrc = e.target.value; renderOutput(); });
+  $('dlBtn').addEventListener('click', function () {
+    var src = S.sources.filter(function (s) { return s.id === S.outSrc; })[0]; if (!src) return;
+    var res = buildFixedText(src), mime = {html: 'text/html', md: 'text/markdown', csv: 'text/csv', txt: 'text/plain', wxr: 'application/xml', sitemap: 'application/xml'}[src.kind] || 'text/plain';
+    var name = /\.[^.\/]+$/.test(src.name) ? src.name.replace(/(\.[^.\/]+)$/, '.fixed$1') : src.name + '.fixed.txt';
+    download(name, mime, res.text);
+  });
+  $('copyBtn').addEventListener('click', function () {
+    var src = S.sources.filter(function (s) { return s.id === S.outSrc; })[0]; if (!src) return;
+    var txt = buildFixedText(src).text;
+    var done = function () { say('out.copied', null, 'ok'); }, fail = function () { $('outTa').select(); say('out.copyfail', null, 'err'); };
+    try { navigator.clipboard.writeText(txt).then(done, fail); } catch (e) { fail(); }
+  });
+  $('reanBtn').addEventListener('click', function () {
+    S.sources.forEach(function (s) { var r = buildFixedText(s); s.text = r.text; s.bytes = utf8Len(r.text); });
+    S.acc = {}; S.ign = {}; S.log = [];
+    rebuild(); renderAll(); say('out.reanok', null, 'ok');
+  });
+  $('csvBtn').addEventListener('click', function () { download('tflg-links-' + stamp() + '.csv', 'text/csv', buildCsv()); });
+  $('jsonBtn').addEventListener('click', function () { download('tflg-links-' + stamp() + '.json', 'application/json', buildJson()); });
+  $('printBtn').addEventListener('click', function () { buildReport(); window.print(); });
+  window.addEventListener('beforeprint', buildReport);
+}
+
+bind();
+rebuild();
+renderAll();
+})();
+</script>
+</body>
+</html>

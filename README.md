@@ -1,6 +1,12 @@
 # Trade-Free Link Guardian
 
-> **Plugin WordPress** — nu are interfață autonomă, deci nu există un demo live. Captura de ecran a panoului de administrare se adaugă după testul într-un WordPress real.
+> **Două variante:** pluginul WordPress (fișierul `trade-free-link-guardian.php`) și o **aplicație web single-file** (`index.html`) care rulează în browser, offline, fără WordPress: **[Live](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
+
+![Trade-Free Link Guardian — aplicația web](screenshot.png)
+
+## Aplicația web (`index.html`)
+
+Lipești sau încarci HTML, Markdown, text, export WXR sau sitemap și primești: linkurile extrase și clasificate, probleme detectate offline (http, parametri de urmărire, www/non-www, dubluri, adrese malformate), corecturi deterministe cu anulare, document corectat, export CSV (cu protecție împotriva formulelor) și JSON, plus raport imprimabil. Română și engleză. Nu face nicio cerere de rețea, nu are urmărire, cookie-uri sau conturi. Nu verifică dacă linkurile externe răspund (browserul nu permite fiabil acest lucru) — pentru asta folosește pluginul.
 
 ![Trade-Free Link Guardian — banner](.wordpress-org/banner-1544x500.png)
 
