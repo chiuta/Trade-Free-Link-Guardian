@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UdPz1L7f4tNURWDWUYjM5z4QFr23BHsraBYd9c2yxyI='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-/jumOicROKDWIlS5FLjFCbDdjpof9WE8p6xID92Aiuc='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="Offline, single-file link checker and fixer: finds http links, tracking parameters, malformed URLs and inconsistencies in HTML, Markdown, WXR and sitemap files. No tracking, no network.">
@@ -126,6 +126,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-betw
   .card{padding:12px}
   .btn{padding:6px 10px}
 }
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 @media print{
   :root{--bg:#fff;--surface:#fff;--text:#000;--muted:#333;--border:#999}
   body{background:#fff;color:#000;font-size:11pt}
@@ -146,7 +147,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-betw
   <div class="wrap bar">
     <div class="brand">
       <svg width="36" height="36" viewBox="0 0 32 32" role="img" aria-label="Trade-Free Link Guardian"><rect width="32" height="32" rx="7" fill="#0b5cad"/><path d="M16 5l9 3.5v7c0 5.5-3.8 9.6-9 11.5-5.2-1.9-9-6-9-11.5v-7z" fill="none" stroke="#fff" stroke-width="2"/><path d="M11.5 16.2l3.2 3.2 6-6.4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <div><h1>Trade-Free Link Guardian</h1><span class="ver">v1.33.2-web</span></div>
+      <div><h1>Trade-Free Link Guardian</h1><span class="ver">v1.33.3-web</span></div>
     </div>
     <div class="tools">
       <button type="button" class="btn" id="langBtn"></button>
@@ -168,6 +169,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-betw
         <button type="button" class="btn" id="demoBtn" data-i18n="in.demo"></button>
         <button type="button" class="btn" id="clearBtn" data-i18n="in.clear"></button>
       </div>
+      <p class="muted small" data-i18n="in.keys"></p>
       <label class="drop" id="drop" for="files"><span data-i18n="in.drop"></span><input type="file" id="files" multiple accept=".html,.htm,.xhtml,.xml,.md,.markdown,.txt,.csv,text/*"></label>
       <div class="opts">
         <label class="chk" for="optImg"><input type="checkbox" id="optImg"><span data-i18n="in.img"></span></label>
@@ -260,7 +262,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-betw
 <script>
 (function () {
 'use strict';
-var VERSION = '1.33.1-web';
+var VERSION = '1.33.3-web';
 var MAX_BYTES = 5 * 1024 * 1024;
 var MAX_LINKS = 50000;
 
@@ -271,7 +273,7 @@ en: {
  tradefree:'Trade-free: no tracking, no analytics, no cookies, no accounts, no network requests. A strict Content-Security-Policy (connect-src \'none\') enforces it. Nothing leaves this page and nothing is stored, not even your language or theme choice.',
  'in.h':'1. Add content', 'in.paste':'Paste HTML, Markdown or plain text',
  'in.ph':'<a href="http://example.org/?utm_source=x">link</a>  [md](http://example.org)  https://example.org',
- 'in.add':'Analyze pasted text','in.demo':'Load demo sample','in.clear':'Clear everything',
+ 'in.keys':'Shortcuts: Ctrl+Enter in the text box analyzes it; "/" jumps to the results filter.', 'in.add':'Analyze pasted text','in.demo':'Load demo sample','in.clear':'Clear everything',
  'in.drop':'Drop files here or click to choose (.html, .xml WXR, sitemap.xml, .md, .txt, .csv)',
  'in.img':'Also extract image sources (img src, Markdown images)',
  'in.site':'Your site host (optional)','in.siteph':'e.g. www.mysite.org','in.sitehint':'Links to this host and relative links count as internal.',
@@ -313,7 +315,7 @@ ro: {
  tradefree:'Trade-free: fără urmărire, fără analitice, fără cookie-uri, fără conturi, fără cereri de rețea. O politică Content-Security-Policy strictă (connect-src \'none\') garantează asta. Nimic nu părăsește această pagină și nimic nu este memorat, nici măcar limba sau tema.',
  'in.h':'1. Adaugă conținut','in.paste':'Lipește HTML, Markdown sau text simplu',
  'in.ph':'<a href="http://exemplu.ro/?utm_source=x">link</a>  [md](http://exemplu.ro)  https://exemplu.ro',
- 'in.add':'Analizează textul lipit','in.demo':'Încarcă exemplul demo','in.clear':'Șterge tot',
+ 'in.keys':'Scurtături: Ctrl+Enter în caseta de text o analizează; „/” sare la filtrul de rezultate.', 'in.add':'Analizează textul lipit','in.demo':'Încarcă exemplul demo','in.clear':'Șterge tot',
  'in.drop':'Trage fișierele aici sau apasă pentru a alege (.html, .xml WXR, sitemap.xml, .md, .txt, .csv)',
  'in.img':'Extrage și sursele imaginilor (img src, imagini Markdown)',
  'in.site':'Gazda site-ului tău (opțional)','in.siteph':'ex. www.siteulmeu.ro','in.sitehint':'Linkurile către această gazdă și cele relative contează ca interne.',
@@ -1235,6 +1237,13 @@ function buildReport() {
 /* ---------- events ---------- */
 function bind() {
   $('addBtn').addEventListener('click', addPasted);
+  $('paste').addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); addPasted(); } });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+    var a = document.activeElement, tg = a && a.tagName;
+    if (tg === 'INPUT' || tg === 'TEXTAREA' || tg === 'SELECT' || (a && a.isContentEditable)) return;
+    var q = $('fQ'); if (q && q.offsetParent !== null) { e.preventDefault(); q.focus(); q.select(); }
+  });
   $('demoBtn').addEventListener('click', loadDemo);
   $('clearBtn').addEventListener('click', clearAll);
   $('files').addEventListener('change', function (e) { addFiles(e.target.files).then(function () { e.target.value = ''; }); });

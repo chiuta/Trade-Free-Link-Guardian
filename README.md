@@ -1,6 +1,6 @@
 # Trade-Free Link Guardian
 
-Ultima actualizare: 11 octombrie 2026 · versiune web 1.33.2
+Ultima actualizare: 11 octombrie 2026 · versiune web 1.33.3
 
 > **Două variante:** pluginul WordPress (fișierul `trade-free-link-guardian.php`) și o **aplicație web single-file** (`index.html`) care rulează în browser, offline, fără WordPress: **[Live](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
 
@@ -8,7 +8,7 @@ Ultima actualizare: 11 octombrie 2026 · versiune web 1.33.2
 
 ## Aplicația web (`index.html`)
 
-Lipești sau încarci HTML, Markdown, text, export WXR sau sitemap și primești: linkurile extrase și clasificate, probleme detectate offline (http, parametri de urmărire, www/non-www, dubluri, adrese malformate), corecturi deterministe cu anulare, document corectat, export CSV (cu protecție împotriva formulelor) și JSON, plus raport imprimabil. Română și engleză. Nu face nicio cerere de rețea, nu are urmărire, cookie-uri sau conturi. Nu verifică dacă linkurile externe răspund (browserul nu permite fiabil acest lucru) — pentru asta folosește pluginul.
+Lipești sau încarci HTML, Markdown, text, export WXR sau sitemap și primești: linkurile extrase și clasificate, probleme detectate offline (http, parametri de urmărire, www/non-www, dubluri, adrese malformate), corecturi deterministe cu anulare, document corectat, export CSV (cu protecție împotriva formulelor) și JSON, plus raport imprimabil. Română și engleză; scurtături de tastatură. Nu face nicio cerere de rețea, nu are urmărire, cookie-uri sau conturi. Nu verifică dacă linkurile externe răspund (browserul nu permite fiabil acest lucru) — pentru asta folosește pluginul.
 
 ![Trade-Free Link Guardian — banner](.wordpress-org/banner-1544x500.png)
 
@@ -64,6 +64,10 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 Nu există build. Pentru dezvoltare: `wp-content/plugins/trade-free-link-guardian/` + o instanță WordPress locală. Vezi `CONTRIBUTING.md`. Folderul `.wordpress-org/` conține iconițele și bannerele pentru directorul WordPress.org.
 
 ## Istoric / Changelog
+
+### web 1.33.3 — 11 octombrie 2026
+- Aplicația web: scurtături de tastatură (Ctrl+Enter în caseta de text analizează textul lipit; „/” mută focusul pe filtrul de rezultate), cu indiciu în interfață (română și engleză); respectă `prefers-reduced-motion`.
+- Corectat: versiunea afișată în antet, cea din exporturi (`version` în JSON) și cea din README coincid acum (1.33.3-web); pluginul rămâne 1.33.1, neatins.
 
 ### web 1.33.2 — 11 octombrie 2026
 - Aplicația web: corectură nouă „Repară schema malformată” (http// → http://, http:/, http;//, htps://, http:///, schemă dublă); linkul „http//bad” este acum reparat la schemă, deși rămâne marcat fără TLD.
