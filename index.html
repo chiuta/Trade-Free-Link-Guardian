@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-/jumOicROKDWIlS5FLjFCbDdjpof9WE8p6xID92Aiuc='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-MmBh81YovTbKi14AG9iv6d006kgll6JL50CLbRp6dX8='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="Offline, single-file link checker and fixer: finds http links, tracking parameters, malformed URLs and inconsistencies in HTML, Markdown, WXR and sitemap files. No tracking, no network.">
@@ -147,7 +147,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-betw
   <div class="wrap bar">
     <div class="brand">
       <svg width="36" height="36" viewBox="0 0 32 32" role="img" aria-label="Trade-Free Link Guardian"><rect width="32" height="32" rx="7" fill="#0b5cad"/><path d="M16 5l9 3.5v7c0 5.5-3.8 9.6-9 11.5-5.2-1.9-9-6-9-11.5v-7z" fill="none" stroke="#fff" stroke-width="2"/><path d="M11.5 16.2l3.2 3.2 6-6.4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <div><h1>Trade-Free Link Guardian</h1><span class="ver">v1.33.3-web</span></div>
+      <div><h1>Trade-Free Link Guardian</h1><span class="ver">v1.33.4-web</span></div>
     </div>
     <div class="tools">
       <button type="button" class="btn" id="langBtn"></button>
@@ -262,7 +262,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-betw
 <script>
 (function () {
 'use strict';
-var VERSION = '1.33.3-web';
+var VERSION = '1.33.4-web';
 var MAX_BYTES = 5 * 1024 * 1024;
 var MAX_LINKS = 50000;
 
@@ -290,7 +290,7 @@ en: {
  'cls.internal':'internal','cls.external':'external','cls.mailto':'mailto','cls.tel':'tel','cls.anchor':'anchor','cls.script':'script','cls.other':'other scheme','cls.none':'empty/placeholder',
  'fix.trim':'Trim whitespace','fix.repair':'Repair malformed scheme (e.g. http// to http://)','fix.scheme':'Add https://','fix.encode':'Encode spaces','fix.case':'Lowercase scheme/host','fix.https':'http to https (unverified offline)','fix.www':'Unify www','fix.tracking':'Strip tracking parameters','fix.slash':'Unify trailing slash',
  'iss.http':'Uses http, not https','iss.tracking':'Tracking parameters: {x}','iss.www-inconsistent':'Mixed www / non-www for this domain','iss.slash-inconsistent':'Inconsistent trailing slash for this domain','iss.mixed-case':'Upper-case letters in scheme or host','iss.missing-scheme':'Missing scheme (https://)','iss.placeholder':'Placeholder URL','iss.whitespace':'Leading or trailing whitespace','iss.space':'Spaces inside the URL','iss.empty':'Empty href','iss.javascript':'javascript: pseudo-link','iss.malformed':'Malformed URL: {x}','iss.mailto-bad':'Invalid mailto: address','iss.tel-bad':'Invalid tel: number','iss.duplicate':'Duplicate (first seen: {x})','iss.protocol-relative':'Protocol-relative URL (//)','iss.scheme-other':'Scheme not checkable: {x}',
- 'mal.single-slash':'only one slash after the colon','mal.no-colon':'colon missing after scheme','mal.bad-separator':'wrong separator after scheme','mal.triple-slash':'too many slashes','mal.double-scheme':'scheme repeated','mal.scheme-typo':'misspelled scheme','mal.no-host':'no host','mal.space-in-host':'space in host','mal.bad-chars':'invalid characters in host','mal.bad-dots':'misplaced dots in host','mal.no-tld':'host has no dot / TLD','mal.bad-port':'invalid port','mal.structure':'unparseable structure',
+ 'mal.single-slash':'only one slash after the colon','mal.no-slashes':'no slashes after the colon','mal.no-colon':'colon missing after scheme','mal.bad-separator':'wrong separator after scheme','mal.triple-slash':'too many slashes','mal.double-scheme':'scheme repeated','mal.scheme-typo':'misspelled scheme','mal.no-host':'no host','mal.space-in-host':'space in host','mal.bad-chars':'invalid characters in host','mal.bad-dots':'misplaced dots in host','mal.no-tld':'host has no dot / TLD','mal.bad-port':'invalid port','mal.structure':'unparseable structure',
  'dom.h':'Domains','dom.hint':'When a domain appears both with and without www (or with and without trailing slash), pick the form to unify to. Changing a choice resets accepted fixes of that kind for the domain.',
  'dom.host':'Domain','dom.n':'Links','dom.type':'Type','dom.www':'www / bare','dom.slash':'slash / no slash','dom.iss':'With issues','dom.http':'http','dom.pref':'Unify to','dom.consistent':'consistent','dom.rel':'(relative paths)',
  'pref.www':'www.','pref.bare':'no www','pref.slash':'with /','pref.noslash':'without /','pref.keep':'leave as is',
@@ -332,7 +332,7 @@ ro: {
  'cls.internal':'intern','cls.external':'extern','cls.mailto':'mailto','cls.tel':'tel','cls.anchor':'ancoră','cls.script':'script','cls.other':'altă schemă','cls.none':'gol/umplutură',
  'fix.trim':'Elimină spațiile','fix.repair':'Repară schema malformată (ex. http// la http://)','fix.scheme':'Adaugă https://','fix.encode':'Codifică spațiile','fix.case':'Schemă/gazdă cu litere mici','fix.https':'http la https (neverificat offline)','fix.www':'Unifică www','fix.tracking':'Elimină parametrii de urmărire','fix.slash':'Unifică slash-ul final',
  'iss.http':'Folosește http, nu https','iss.tracking':'Parametri de urmărire: {x}','iss.www-inconsistent':'www și fără www amestecate pentru acest domeniu','iss.slash-inconsistent':'Slash final inconsecvent pentru acest domeniu','iss.mixed-case':'Majuscule în schemă sau gazdă','iss.missing-scheme':'Lipsește schema (https://)','iss.placeholder':'URL de umplutură (placeholder)','iss.whitespace':'Spații la început sau la sfârșit','iss.space':'Spații în interiorul URL-ului','iss.empty':'Href gol','iss.javascript':'Pseudo-link javascript:','iss.malformed':'URL malformat: {x}','iss.mailto-bad':'Adresă mailto: invalidă','iss.tel-bad':'Număr tel: invalid','iss.duplicate':'Duplicat (prima apariție: {x})','iss.protocol-relative':'URL relativ la protocol (//)','iss.scheme-other':'Schemă neverificabilă: {x}',
- 'mal.single-slash':'o singură bară după două puncte','mal.no-colon':'lipsesc două puncte după schemă','mal.bad-separator':'separator greșit după schemă','mal.triple-slash':'prea multe bare','mal.double-scheme':'schemă repetată','mal.scheme-typo':'schemă scrisă greșit','mal.no-host':'fără gazdă','mal.space-in-host':'spațiu în gazdă','mal.bad-chars':'caractere invalide în gazdă','mal.bad-dots':'puncte plasate greșit în gazdă','mal.no-tld':'gazda nu are punct / TLD','mal.bad-port':'port invalid','mal.structure':'structură neanalizabilă',
+ 'mal.single-slash':'o singură bară după două puncte','mal.no-slashes':'lipsesc barele după două puncte','mal.no-colon':'lipsesc două puncte după schemă','mal.bad-separator':'separator greșit după schemă','mal.triple-slash':'prea multe bare','mal.double-scheme':'schemă repetată','mal.scheme-typo':'schemă scrisă greșit','mal.no-host':'fără gazdă','mal.space-in-host':'spațiu în gazdă','mal.bad-chars':'caractere invalide în gazdă','mal.bad-dots':'puncte plasate greșit în gazdă','mal.no-tld':'gazda nu are punct / TLD','mal.bad-port':'port invalid','mal.structure':'structură neanalizabilă',
  'dom.h':'Domenii','dom.hint':'Când un domeniu apare și cu, și fără www (sau cu și fără slash final), alege forma către care se unifică. Schimbarea unei alegeri anulează corecturile acceptate de acel tip pentru domeniu.',
  'dom.host':'Domeniu','dom.n':'Linkuri','dom.type':'Tip','dom.www':'www / fără','dom.slash':'cu slash / fără','dom.iss':'Cu probleme','dom.http':'http','dom.pref':'Unifică la','dom.consistent':'consecvent','dom.rel':'(căi relative)',
  'pref.www':'www.','pref.bare':'fără www','pref.slash':'cu /','pref.noslash':'fără /','pref.keep':'lasă neschimbat',
@@ -590,6 +590,7 @@ function siteBareOf(v) {
 function repairScheme(c) {
   var m;
   if ((m = /^(?:https?):\/\/(https?):\/\/(.+)$/i.exec(c))) return m[1].toLowerCase() + '://' + m[2];
+  if ((m = /^(https?):(?![\/\\])([a-z0-9\-]+\.[a-z].*)$/i.exec(c))) return m[1].toLowerCase() + '://' + m[2];
   if ((m = /^(https?):\/(?!\/)(.+)$/i.exec(c))) return m[1].toLowerCase() + '://' + m[2];
   if ((m = /^(https?)\/\/(.+)$/i.exec(c))) return m[1].toLowerCase() + '://' + m[2];
   if ((m = /^(https?)(?:;\/\/|:\\\\)(.+)$/i.exec(c))) return m[1].toLowerCase() + '://' + m[2];
@@ -675,6 +676,7 @@ function inspect(raw, ctx) {
     return r;
   }
   if (/^https?:\/(?!\/)/i.test(u)) mal = 'single-slash';
+  else if (/^https?:(?![\/\\])[a-z0-9\-]+\.[a-z]/i.test(u)) mal = 'no-slashes';
   else if (/^https?\/\//i.test(u)) mal = 'no-colon';
   else if (/^https?(;\/\/|:\\\\)/i.test(u)) mal = 'bad-separator';
   else if (/^https?:\/\/\//i.test(u)) mal = 'triple-slash';
@@ -682,7 +684,7 @@ function inspect(raw, ctx) {
   if (mal) { r.cls = 'external'; add('malformed', mal); return r; }
   var sm = /^([a-z][a-z0-9+.\-]*):/i.exec(u), sch = sm ? sm[1].toLowerCase() : '';
   if (sm && !/^(https?|ftp)$/.test(sch)) {
-    if (SCHEME_TYPOS.test(sch) && /^[a-z]+:\/\//i.test(u)) { r.cls = 'external'; add('malformed', 'scheme-typo'); return r; }
+    if (SCHEME_TYPOS.test(sch) && /^[a-z]+:\/{0,3}[^\s\/]/i.test(u)) { r.cls = 'external'; add('malformed', 'scheme-typo'); return r; }
     r.cls = 'other'; add('scheme-other', sch); return r;
   }
   if (/^;?(htp|htps|ttp)/i.test(u) && /^[a-z;]+:\/\//i.test(u)) { r.cls = 'external'; add('malformed', 'scheme-typo'); return r; }
@@ -701,7 +703,7 @@ function inspect(raw, ctx) {
   else if (!/^[^\s\/\\@<>"'`^{}|]+$/.test(hh)) mal = 'bad-chars';
   else if (/^\.|\.$|\.\./.test(hh)) mal = 'bad-dots';
   else if (hh.indexOf('.') < 0 && !/^localhost$/i.test(hh) && hh.charAt(0) !== '[') mal = 'no-tld';
-  else if (p.port !== null && p.port !== '' && !/^\d{1,5}$/.test(p.port)) mal = 'bad-port';
+  else if (p.port !== null && p.port !== '' && (!/^\d{1,5}$/.test(p.port) || +p.port > 65535)) mal = 'bad-port';
   r.scheme = p.scheme.toLowerCase(); r.host = hh.toLowerCase(); r.bare = bareOf(hh);
   r.local = isLocalHost(r.host);
   r.cls = ctx.siteBare && r.bare === ctx.siteBare ? 'internal' : 'external';
@@ -773,7 +775,7 @@ function analyze(items, ctx) {
       if (codes.http) f.https = 1;
       if (codes.tracking) f.tracking = 1;
     } else { delete f.www; delete f.slash; }
-    if (malformed) { var mi = r.issues.filter(function (x) { return x.code === 'malformed'; })[0]; if (mi && /^(single-slash|no-colon|bad-separator|triple-slash|double-scheme|scheme-typo)$/.test(mi.x)) f.repair = 1; }
+    if (malformed) { var mi = r.issues.filter(function (x) { return x.code === 'malformed'; })[0]; if (mi && /^(single-slash|no-slashes|no-colon|bad-separator|triple-slash|double-scheme|scheme-typo)$/.test(mi.x)) f.repair = 1; }
     var pw = dm ? dm.pref : 'bare', ps = gp ? gp.pref : 'slash';
     r.pw = pw; r.ps = ps;
     ORDER.forEach(function (ty) {
