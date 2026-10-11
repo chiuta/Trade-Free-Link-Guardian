@@ -1,5 +1,10 @@
 # Trade-Free Link Guardian
 
+> **Plugin WordPress** — nu are interfață autonomă, deci nu există un demo live. Captura de ecran a panoului de administrare se adaugă după testul într-un WordPress real.
+
+![Trade-Free Link Guardian — banner](.wordpress-org/banner-1544x500.png)
+
+
 Plugin WordPress care găsește linkurile moarte din articole, pagini, meniuri și widgeturi și repară ce se poate repara determinist — rulează pe serverul tău, fără cont SaaS și fără telemetrie.
 
 **Versiune:** 1.33.1 · **Licență:** GPL-2.0-sau-ulterioară · **Cerințe:** WordPress 6.5+, PHP 7.4+
