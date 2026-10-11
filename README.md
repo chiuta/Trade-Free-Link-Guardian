@@ -1,5 +1,7 @@
 # Trade-Free Link Guardian
 
+Ultima actualizare: 11 octombrie 2026 · versiune web 1.33.2
+
 > **Două variante:** pluginul WordPress (fișierul `trade-free-link-guardian.php`) și o **aplicație web single-file** (`index.html`) care rulează în browser, offline, fără WordPress: **[Live](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
 
 ![Trade-Free Link Guardian — aplicația web](screenshot.png)
@@ -60,6 +62,12 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 ## Rulare locală
 
 Nu există build. Pentru dezvoltare: `wp-content/plugins/trade-free-link-guardian/` + o instanță WordPress locală. Vezi `CONTRIBUTING.md`. Folderul `.wordpress-org/` conține iconițele și bannerele pentru directorul WordPress.org.
+
+## Istoric / Changelog
+
+### web 1.33.2 — 11 octombrie 2026
+- Aplicația web: corectură nouă „Repară schema malformată” (http// → http://, http:/, http;//, htps://, http:///, schemă dublă); linkul „http//bad” este acum reparat la schemă, deși rămâne marcat fără TLD.
+- Hash-ul CSP al scriptului recalculat; versiunea aplicației web 1.33.2 (pluginul rămâne 1.33.1, neatins).
 
 ## Licență
 
