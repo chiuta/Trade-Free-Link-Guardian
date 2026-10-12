@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="application-version" content="1.33.5">
+<meta name="last-updated" content="2026-10-12">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-MmBh81YovTbKi14AG9iv6d006kgll6JL50CLbRp6dX8='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-FA9GH+TSQcrx1FAXg0eHD5HvfFQC8q1Q9m7oFA3pe10='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="Offline, single-file link checker and fixer: finds http links, tracking parameters, malformed URLs and inconsistencies in HTML, Markdown, WXR and sitemap files. No tracking, no network.">
@@ -147,7 +149,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-betw
   <div class="wrap bar">
     <div class="brand">
       <svg width="36" height="36" viewBox="0 0 32 32" role="img" aria-label="Trade-Free Link Guardian"><rect width="32" height="32" rx="7" fill="#0b5cad"/><path d="M16 5l9 3.5v7c0 5.5-3.8 9.6-9 11.5-5.2-1.9-9-6-9-11.5v-7z" fill="none" stroke="#fff" stroke-width="2"/><path d="M11.5 16.2l3.2 3.2 6-6.4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <div><h1>Trade-Free Link Guardian</h1><span class="ver">v1.33.4-web</span></div>
+      <div><h1>Trade-Free Link Guardian</h1><span class="ver">v1.33.5</span></div>
     </div>
     <div class="tools">
       <button type="button" class="btn" id="langBtn"></button>
@@ -256,13 +258,14 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-betw
     <span><span data-i18n="ft.lic"></span> GPL-2.0-or-later</span>
     <span><a href="https://github.com/chiuta/trade-free-link-guardian" rel="noopener noreferrer" target="_blank">github.com/chiuta/trade-free-link-guardian</a></span>
     <span data-i18n="ft.tf"></span>
+    <span><span data-i18n="ft.ver"></span> <span id="app-version">v1.33.5 · 2026-10-12</span></span>
   </div>
 </footer>
 
 <script>
 (function () {
 'use strict';
-var VERSION = '1.33.4-web';
+var VERSION = '1.33.5';
 var MAX_BYTES = 5 * 1024 * 1024;
 var MAX_LINKS = 50000;
 
@@ -302,7 +305,7 @@ en: {
  'ab.p1':'This is the standalone sibling of the Trade-Free Link Guardian WordPress plugin (same philosophy, no WordPress). Give it HTML, Markdown, text, a WordPress WXR export, a sitemap or CSV; it lists every link, flags what can be judged offline (http, malformed or placeholder URLs, tracking parameters, www and trailing-slash inconsistencies, duplicates, mailto/tel) and proposes deterministic fixes that you accept or ignore one by one, with a log and undo.',
  'ab.p2':'What it does NOT do: it does not edit a live site (you download corrected copies), it does not crawl remote pages, and it does not check whether a link is alive. Live checks need a server-side request; browsers\' CORS rules make them unreliable, so this build makes zero requests. "Open link" and "Wayback" are plain links that open only when you click them.',
  'ab.p3':'The http to https suggestion cannot be verified offline: the destination may not support https. Review before you publish. Input is capped at 5 MB in total.',
- 'ft.lic':'License:','ft.tf':'No tracking. No cookies. No accounts.',
+ 'ft.ver':'Version','ft.lic':'License:','ft.tf':'No tracking. No cookies. No accounts.',
  'err.size':'"{name}" is larger than 5 MB and was skipped.','err.total':'"{name}" would exceed the 5 MB total input limit and was skipped.','err.bin':'"{name}" looks like a binary file and was skipped.','err.read':'Could not read "{name}".','err.empty':'Nothing to analyze: the text box is empty.','err.limit':'Link limit reached: only the first {n} links per analysis are processed.',
  'ok.added':'Added {name}: {n} links found.','ok.demo':'Demo sample loaded.','ok.clear':'Cleared.',
  'theme.dark':'Dark theme','theme.light':'Light theme','lang.btn':'Română','lang.aria':'Schimbă limba în română',
@@ -344,7 +347,7 @@ ro: {
  'ab.p1':'Aceasta este versiunea autonomă, soră a plugin-ului WordPress Trade-Free Link Guardian (aceeași filozofie, fără WordPress). Îi dai HTML, Markdown, text, un export WordPress WXR, un sitemap sau CSV; listează fiecare link, semnalează ce se poate judeca offline (http, URL-uri malformate sau de umplutură, parametri de urmărire, inconsecvențe www și slash final, duplicate, mailto/tel) și propune corecturi deterministe pe care le accepți sau le ignori una câte una, cu jurnal și anulare.',
  'ab.p2':'Ce NU face: nu editează un site live (descarci copii corectate), nu parcurge pagini la distanță și nu verifică dacă un link mai funcționează. Verificările live cer o cerere de pe server; regulile CORS ale browserelor le fac nesigure, așa că această versiune nu face nicio cerere. „Deschide linkul” și „Wayback” sunt linkuri simple care se deschid doar la clic.',
  'ab.p3':'Sugestia http la https nu poate fi verificată offline: destinația poate să nu accepte https. Verifică înainte de publicare. Intrarea este limitată la 5 MB în total.',
- 'ft.lic':'Licență:','ft.tf':'Fără urmărire. Fără cookie-uri. Fără conturi.',
+ 'ft.ver':'Versiune','ft.lic':'Licență:','ft.tf':'Fără urmărire. Fără cookie-uri. Fără conturi.',
  'err.size':'„{name}” depășește 5 MB și a fost omis.','err.total':'„{name}” ar depăși limita totală de 5 MB și a fost omis.','err.bin':'„{name}” pare fișier binar și a fost omis.','err.read':'Nu s-a putut citi „{name}”.','err.empty':'Nimic de analizat: caseta de text este goală.','err.limit':'Limita de linkuri atinsă: se procesează doar primele {n} linkuri per analiză.',
  'ok.added':'Adăugat {name}: {n} linkuri găsite.','ok.demo':'Exemplul demo a fost încărcat.','ok.clear':'Șters.',
  'theme.dark':'Temă întunecată','theme.light':'Temă luminoasă','lang.btn':'English','lang.aria':'Switch language to English',
