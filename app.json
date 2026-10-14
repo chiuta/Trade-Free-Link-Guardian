@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "slug": "trade-free-link-guardian",
+  "name": "Trade-Free Link Guardian",
+  "version": "1.34.0",
+  "updated": "2026-10-14",
+  "description": "Offline, single-file link checker and fixer: finds http links, tracking parameters, malformed URLs and inconsistencies in HTML, Markdown, WXR and sitemap files. No tracking, no network.",
+  "egress": [
+    {
+      "host": "cdn.atelier-nord.test",
+      "via": [
+        "img"
+      ]
+    }
+  ],
+  "permissions": [
+    "clipboard"
+  ],
+  "storageKeys": [],
+  "sizeBytes": 178072,
+  "sha256": "42faa0332a086c530160f528fe2c2649ffb47856870304e76cf11408dc377a50",
+  "csp": {
+    "present": true,
+    "directives": {
+      "default-src": "'none'",
+      "script-src": "sha256×2",
+      "style-src": "'unsafe-inline'",
+      "img-src": "data:",
+      "connect-src": "'none'",
+      "base-uri": "'none'",
+      "form-action": "'none'"
+    },
+    "scriptInline": "hash",
+    "connect": "'none'"
+  },
+  "features": {
+    "export": true,
+    "import": true,
+    "i18n": [
+      "ro",
+      "en"
+    ],
+    "pwa": {
+      "manifest": false,
+      "serviceWorker": false
+    },
+    "modules": [
+      "core",
+      "label",
+      "bundle"
+    ]
+  },
+  "kit": {
+    "version": "1.0.0",
+    "modules": [
+      "core",
+      "label",
+      "bundle"
+    ]
+  },
+  "selfSerializing": false
+}

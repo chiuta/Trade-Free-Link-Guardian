@@ -1,6 +1,6 @@
 # Trade-Free Link Guardian
 
-**Versiune:** 1.33.5 (aplicația web; pluginul WordPress rămâne 1.33.1) · **Ultima actualizare:** 12 octombrie 2026
+**Versiune:** 1.34.0 (aplicația web; pluginul WordPress rămâne 1.33.1) · **Ultima actualizare:** 14 octombrie 2026
 
 > **Două variante:** pluginul WordPress (fișierul `trade-free-link-guardian.php`) și o **aplicație web single-file** (`index.html`) care rulează în browser, offline, fără WordPress: **[Live](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
 
@@ -64,6 +64,9 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 Nu există build. Pentru dezvoltare: `wp-content/plugins/trade-free-link-guardian/` + o instanță WordPress locală. Vezi `CONTRIBUTING.md`. Folderul `.wordpress-org/` conține iconițele și bannerele pentru directorul WordPress.org.
 
 ## Istoric / Changelog
+
+### 1.34.0 — 2026-10-14
+- Copie de rezervă și etichetare date (fff-kit).
 
 ### web 1.33.5 — 12 octombrie 2026
 - Versiunea și data ultimei actualizări sunt afișate în aplicație (subsol); pluginul rămâne 1.33.1, neatins.
