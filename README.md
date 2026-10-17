@@ -15,7 +15,7 @@ Lipești sau încarci HTML, Markdown, text, export WXR sau sitemap și primești
 
 Plugin WordPress care găsește linkurile moarte din articole, pagini, meniuri și widgeturi și repară ce se poate repara determinist — rulează pe serverul tău, fără cont SaaS și fără telemetrie.
 
-**Versiune:** 1.33.1 · **Licență:** GPL-2.0-sau-ulterioară · **Cerințe:** WordPress 6.5+, PHP 7.4+
+**Versiune:** 1.33.1 · **Licență:** MIT · **Cerințe:** WordPress 6.5+, PHP 7.4+
 
 ## Ce este
 
@@ -85,7 +85,7 @@ Nu există build. Pentru dezvoltare: `wp-content/plugins/trade-free-link-guardia
 
 ## Licență
 
-GPL v2 sau ulterioară (vezi `LICENSE`).
+MIT (vezi `LICENSE`).
 
 ## Autor
 

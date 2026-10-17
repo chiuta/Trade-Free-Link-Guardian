@@ -1059,7 +1059,7 @@
 <meta name="application-version" content="1.34.0">
 <meta name="last-updated" content="2026-10-14">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-4ozUfnwdKNgqQl0VbCNEYUsj053zlfwL3VsyssNHBwc=' 'sha256-MtqQfDlivmWmnefxyHtPriamY4R+4keLd0f8WBxfhAQ='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-4ozUfnwdKNgqQl0VbCNEYUsj053zlfwL3VsyssNHBwc=' 'sha256-3UI0NjSvB5yAx3+3qnO73M0wRG+MtoajxGGqNS098V0='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="Offline, single-file link checker and fixer: finds http links, tracking parameters, malformed URLs and inconsistencies in HTML, Markdown, WXR and sitemap files. No tracking, no network.">
@@ -1309,7 +1309,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-betw
 </main>
 <footer>
   <div class="wrap">
-    <span><span data-i18n="ft.lic"></span> GPL-2.0-or-later</span>
+    <span><span data-i18n="ft.lic"></span> MIT</span>
     <span><a href="https://github.com/chiuta/trade-free-link-guardian" rel="noopener noreferrer" target="_blank">github.com/chiuta/trade-free-link-guardian</a></span>
     <span data-i18n="ft.tf"></span>
     <span><span data-i18n="ft.ver"></span> <span id="app-version">v1.34.0 · 2026-10-14</span></span>
@@ -2274,7 +2274,7 @@ function buildReport() {
       h('tbody', null, rows.map(function (r) { return h('tr', null, r.map(function (c) { return h('td', {text: String(c)}); })); })));
   }
   rp.append(h('h1', {text: t('rep.h')}),
-    h('p', {text: t('rep.gen') + ': ' + new Date().toISOString().slice(0, 19).replace('T', ' ') + ' UTC / ' + t('rep.tool') + ': Trade-Free Link Guardian ' + VERSION + ' (GPL-2.0-or-later)'}),
+    h('p', {text: t('rep.gen') + ': ' + new Date().toISOString().slice(0, 19).replace('T', ' ') + ' UTC / ' + t('rep.tool') + ': Trade-Free Link Guardian ' + VERSION + ' (MIT)'}),
     h('p', {text: t('rep.note')}),
     h('h2', {text: t('rep.sources')}),
     table([t('in.h'), 'type', t('st.links')], S.sources.map(function (s) { return [s.name, s.kind, s.links]; })),
