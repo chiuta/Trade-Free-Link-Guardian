@@ -1,93 +1,92 @@
 # Trade-Free Link Guardian
 
-**Versiune:** 1.34.0 (aplicația web; pluginul WordPress rămâne 1.33.1) · **Ultima actualizare:** 14 octombrie 2026
+**English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-> **Două variante:** pluginul WordPress (fișierul `trade-free-link-guardian.php`) și o **aplicație web single-file** (`index.html`) care rulează în browser, offline, fără WordPress: **[Live](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
+**Version:** 1.34.0 · **Last updated:** 2026-10-14
 
-![Trade-Free Link Guardian — aplicația web](screenshot.png)
+> **Two variants:** the WordPress plugin (the `trade-free-link-guardian.php` file) and a **single-file web app** (`index.html`) that runs in the browser, offline, without WordPress: **[Live](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
 
-## Aplicația web (`index.html`)
+![Trade-Free Link Guardian — the web app](screenshot.png)
 
-Lipești sau încarci HTML, Markdown, text, export WXR sau sitemap și primești: linkurile extrase și clasificate, probleme detectate offline (http, parametri de urmărire, www/non-www, dubluri, adrese malformate), corecturi deterministe cu anulare, document corectat, export CSV (cu protecție împotriva formulelor) și JSON, plus raport imprimabil. Română și engleză; scurtături de tastatură. Nu face nicio cerere de rețea, nu are urmărire, cookie-uri sau conturi. Nu verifică dacă linkurile externe răspund (browserul nu permite fiabil acest lucru) — pentru asta folosește pluginul.
+## The web app (`index.html`)
+
+You paste or upload HTML, Markdown, text, a WXR export or a sitemap and you get: the extracted and classified links, problems detected offline (http, tracking parameters, www/non-www, duplicates, malformed addresses), deterministic fixes with undo, the corrected document, CSV export (with formula-injection protection) and JSON, plus a printable report. Romanian and English; keyboard shortcuts. It makes no network requests and has no tracking, cookies or accounts. It does not check whether external links respond (the browser does not reliably allow this) — for that, use the plugin.
 
 ![Trade-Free Link Guardian — banner](.wordpress-org/banner-1544x500.png)
 
+A WordPress plugin that finds dead links in posts, pages, menus and widgets and repairs deterministically whatever can be repaired — it runs on your server, with no SaaS account and no telemetry.
 
-Plugin WordPress care găsește linkurile moarte din articole, pagini, meniuri și widgeturi și repară ce se poate repara determinist — rulează pe serverul tău, fără cont SaaS și fără telemetrie.
+## What it is
 
-**Versiune:** 1.33.1 · **Licență:** MIT · **Cerințe:** WordPress 6.5+, PHP 7.4+
+A local link checker. Internal links are checked structurally (database and file system), external ones through an HTTP request sent directly by your server to the link's destination. The plugin is a single PHP file (`trade-free-link-guardian.php`), with no build step and no bundled dependencies — the "without borders" / trade-free philosophy.
 
-## Ce este
+## Features (checked in code)
 
-Un verificator local de linkuri. Linkurile interne se verifică structural (baza de date și sistemul de fișiere), cele externe printr-o cerere HTTP trimisă direct de serverul tău către destinația linkului. Plugin-ul este un singur fișier PHP (`trade-free-link-guardian.php`), fără pas de build și fără dependențe împachetate — filozofia „fără frontiere" / trade-free.
+- Scanning: posts, pages and chosen public content types, classic and block menus, widgets, optionally images; extraction both from HTML and from block attributes.
+- Checking: HEAD with fallback to GET `Range: bytes=0-0`; redirects followed step by step (max. 5), distinguishing permanent (301/308) from temporary; concurrent checks (default 20); a unique URL is checked only once per scan.
+- Automatic fixes (each can be toggled in Settings): `http`→`https`, `www.` switching, permanent redirect followed to the final destination, renamed slug (`_wp_old_slug`), other deterministic patterns.
+- Manual fixes: URL replacement, link removal (the text/image is kept), restore from trash, note, ignore.
+- Fix log with undo (exception: link removal is not undone automatically); a "proposals report" that changes nothing.
+- 404 monitor and local 301/302/410 redirect rules (exact path match).
+- WP-Cron scheduling (off/daily/weekly) with a notification e-mail; a warning in the editor for links already known to be dead.
+- CSV export (with formula-injection protection), printable compliance report, multisite.
+- Optional, disabled by default: content "drift" detection, Wayback Machine lookup, links to archive.today and Memento.
 
-## Funcții (verificate în cod)
+## User guide
 
-- Scanare: articole, pagini și tipuri de conținut publice alese, meniuri clasice și de bloc, widgeturi, opțional imagini; extragere atât din HTML, cât și din atributele blocurilor.
-- Verificare: HEAD cu revenire la GET `Range: bytes=0-0`; redirecturi urmate pas cu pas (max. 5), distingând permanent (301/308) de temporar; verificări concurente (implicit 20); un URL unic se verifică o singură dată pe scanare.
-- Corecturi automate (fiecare comutabilă în Setări): `http`→`https`, comutare `www.`, redirect permanent urmat până la destinația finală, slug redenumit (`_wp_old_slug`), alte tipare deterministe.
-- Corecturi manuale: înlocuire URL, scoaterea linkului (se păstrează textul/imaginea), restaurare din coș, notă, ignorare.
-- Jurnal de corecturi cu anulare (excepție: scoaterea linkului nu se anulează automat); „raport de propuneri" care nu modifică nimic.
-- Monitor 404 și reguli locale de redirecționare 301/302/410 (potrivire exactă a căii).
-- Programare WP-Cron (oprit/zilnic/săptămânal) cu e-mail de notificare; avertisment în editor pentru linkuri deja cunoscute ca moarte.
-- Export CSV (cu protecție împotriva formulelor), raport de conformitate imprimabil, multisite.
-- Opțional, implicit dezactivate: detectarea „drift"-ului de conținut, căutare în Wayback Machine, linkuri către archive.today și Memento.
+1. Copy the folder into `wp-content/plugins/` (or install the archive from **Plugins → Add New → Upload**) and activate it.
+2. **Link Guardian → Settings**: choose the content types and which automatic fixes are allowed.
+3. **Link Guardian → Dashboard → Scan now**.
+4. In **Links**, filter by "Broken"; on each row: Re-check, Auto-fix, Edit URL, Remove link, Ignore.
+5. Before bulk fixes, use the proposals report; afterwards you can undo from **Fix log**.
+6. Back up the database before the first bulk fixes.
 
-## Manual de utilizare
+## Privacy and network
 
-1. Copiază folderul în `wp-content/plugins/` (sau instalează arhiva din **Plugin-uri → Adaugă → Încarcă**) și activează-l.
-2. **Link Guardian → Setări**: alege tipurile de conținut și ce corecturi automate sunt permise.
-3. **Link Guardian → Tablou de bord → Scanează acum**.
-4. În **Linkuri**, filtrează după „Stricate"; pe fiecare rând: Re-verifică, Corectează automat, Editează URL, Scoate linkul, Ignoră.
-5. Înainte de corecturi în masă, folosește raportul de propuneri; după aceea poți anula din **Jurnal corecturi**.
-6. Fă o copie de siguranță a bazei de date înainte de primele corecturi în masă.
+- The only outgoing HTTP requests: (1) checking the links in your own content (including the optional drift, which downloads at most 1 MiB of the page); (2) optionally, `archive.org/wayback/available?url=...` when you click "Find archived version", only if the setting is on. The archive.today / Memento / Buy Me a Coffee links are simple links opened by your browser on click.
+- There are no self-updates, analytics, licences or "phone-home" calls.
+- **User-Agent:** by default the plugin sends a Chrome browser User-Agent (editable setting), not one that identifies it; destinations do not learn your site's name from the header. You can set an honest one, of the form `TradeFreeLinkGuardian/x.y (+site)`, in Settings.
+- The **404 monitor** runs on the requests of visitors who reach a 404 and, by default, stores the requested path, the Referer header (if present) and a bot/human indicator; it does not store IP addresses. It is deleted after 60 days and can be turned off in Settings. If you have visitors in the EU, mention it in your privacy policy.
+- Uninstalling (deleting from Plugins) removes the tables, options and transients it created.
 
-## Confidențialitate și rețea
+## Limits and warnings
 
-- Singurele cereri HTTP ieșite: (1) verificarea linkurilor din propriul tău conținut (inclusiv drift-ul opțional, care descarcă cel mult 1 MiB din pagină); (2) opțional, `archive.org/wayback/available?url=...` la clic pe „Găsește versiune arhivată", doar dacă setarea este activă. Linkurile archive.today / Memento / Buy Me a Coffee sunt simple linkuri deschise de browserul tău la clic.
-- Nu există actualizări proprii, analitice, licențe sau apeluri „phone-home".
-- **User-Agent:** implicit plugin-ul trimite un User-Agent de browser Chrome (setare editabilă), nu unul care îl identifică; destinațiile nu află numele site-ului tău din antet. Poți seta unul onest, de forma `TradeFreeLinkGuardian/x.y (+site)`, în Setări.
-- **Monitorul 404** rulează pe cererile vizitatorilor care ajung la 404 și, implicit, stochează calea cerută, antetul Referer (dacă există) și un indicator bot/om; nu stochează IP. Se șterge după 60 de zile și se poate opri din Setări. Dacă ai vizitatori în UE, menționează-l în politica de confidențialitate.
-- Dezinstalarea (ștergerea din Plugin-uri) elimină tabelele, opțiunile și tranzientele create.
+- The plugin **modifies real content** (`post_content`, widgets, menus). Make backups. Link removal is not undone automatically; for a classic menu item, removal **deletes the item permanently**.
+- The "permanent redirect" fix rewrites the link to wherever a third-party site's redirect leads; if that site has been taken over by someone else, your link follows the new destination. Disable the option if you do not want this risk.
+- A 403 often means bot blocking, not a dead link.
+- Versions before 1.33.1 could delete backslashes from the content of posts modified through fixes; for affected posts use WordPress Revisions.
+- Tested only through code analysis and `php -l`; it was not run on a WordPress installation as part of this audit.
+- The interface texts are in English (no translation files included).
 
-## Limite și avertismente
+## Running locally
 
-- Plugin-ul **modifică conținut real** (`post_content`, widgeturi, meniuri). Fă copii de siguranță. Scoaterea linkului nu se anulează automat; pentru un element de meniu clasic, scoaterea **șterge definitiv** elementul.
-- Corecția „redirect permanent" rescrie linkul către unde duce redirectul unui site terț; dacă acel site a fost preluat de altcineva, linkul tău urmează destinația nouă. Dezactivează opțiunea dacă nu vrei acest risc.
-- Un 403 înseamnă adesea blocarea botilor, nu un link mort.
-- Versiunile anterioare lui 1.33.1 puteau șterge backslash-urile din conținutul articolelor modificate prin corecturi; pentru articole afectate folosește Revizuirile WordPress.
-- Testat doar prin analiză de cod și `php -l`; nu a fost rulat într-o instalare WordPress în cadrul acestui audit.
-- Textele interfeței sunt în engleză (fără fișiere de traducere incluse).
+There is no build. For development: `wp-content/plugins/trade-free-link-guardian/` + a local WordPress instance. See `CONTRIBUTING.md`. The `.wordpress-org/` folder contains the icons and banners for the WordPress.org directory.
 
-## Rulare locală
-
-Nu există build. Pentru dezvoltare: `wp-content/plugins/trade-free-link-guardian/` + o instanță WordPress locală. Vezi `CONTRIBUTING.md`. Folderul `.wordpress-org/` conține iconițele și bannerele pentru directorul WordPress.org.
-
-## Istoric / Changelog
+## History / Changelog
 
 ### 1.34.0 — 2026-10-14
-- Copie de rezervă și etichetare date (fff-kit).
+- Backup and data labelling (fff-kit).
 
-### web 1.33.5 — 12 octombrie 2026
-- Versiunea și data ultimei actualizări sunt afișate în aplicație (subsol); pluginul rămâne 1.33.1, neatins.
+### web 1.33.5 — 12 October 2026
+- The version and the date of the last update are shown in the app (footer); the plugin stays at 1.33.1, untouched.
 
-### web 1.33.4 — 11 octombrie 2026
-- Aplicația web: scheme greșite precum `htp:/bad` (cu o singură bară) sunt acum marcate ca URL malformat; noi verificări: `http:example.com` (fără bare, cu reparare la `http://example.com`) și port în afara intervalului 0–65535.
-- Hash-ul CSP al scriptului recalculat; pluginul rămâne 1.33.1, neatins.
+### web 1.33.4 — 11 October 2026
+- Web app: wrong schemes such as `htp:/bad` (with a single slash) are now flagged as a malformed URL; new checks: `http:example.com` (without slashes, with repair to `http://example.com`) and a port outside the 0–65535 range.
+- The script's CSP hash was recalculated; the plugin stays at 1.33.1, untouched.
 
-### web 1.33.3 — 11 octombrie 2026
-- Aplicația web: scurtături de tastatură (Ctrl+Enter în caseta de text analizează textul lipit; „/” mută focusul pe filtrul de rezultate), cu indiciu în interfață (română și engleză); respectă `prefers-reduced-motion`.
-- Corectat: versiunea afișată în antet, cea din exporturi (`version` în JSON) și cea din README coincid acum (1.33.3-web); pluginul rămâne 1.33.1, neatins.
+### web 1.33.3 — 11 October 2026
+- Web app: keyboard shortcuts (Ctrl+Enter in the text box analyses the pasted text; "/" moves focus to the results filter), with a hint in the interface (Romanian and English); respects `prefers-reduced-motion`.
+- Fixed: the version shown in the header, the one in the exports (`version` in JSON) and the one in the README now match (1.33.3-web); the plugin stays at 1.33.1, untouched.
 
-### web 1.33.2 — 11 octombrie 2026
-- Aplicația web: corectură nouă „Repară schema malformată” (http// → http://, http:/, http;//, htps://, http:///, schemă dublă); linkul „http//bad” este acum reparat la schemă, deși rămâne marcat fără TLD.
-- Hash-ul CSP al scriptului recalculat; versiunea aplicației web 1.33.2 (pluginul rămâne 1.33.1, neatins).
+### web 1.33.2 — 11 October 2026
+- Web app: new fix "Repair malformed scheme" (http// → http://, http:/, http;//, htps://, http:///, double scheme); the link "http//bad" is now repaired to the scheme, although it remains flagged as lacking a TLD.
+- The script's CSP hash was recalculated; web app version 1.33.2 (the plugin stays at 1.33.1, untouched).
 
-## Licență
+## License
 
-MIT (vezi `LICENSE`).
+MIT (see `LICENSE`).
 
-## Autor
+## Author
 
 Alexio — Alexandru-Ionuț Chiuță · contact: alexio@trom.tf · https://trom.tf/
 
