@@ -62,7 +62,7 @@ Ein lokaler Link-Prüfer. Interne Links werden strukturell geprüft (Datenbank u
 
 ## Lokal ausführen
 
-Es gibt keinen Build. Für die Entwicklung: `wp-content/plugins/trade-free-link-guardian/` + eine lokale WordPress-Instanz. Siehe `CONTRIBUTING.md`. Der Ordner `.wordpress-org/` enthält die Icons und Banner für das WordPress.org-Verzeichnis.
+Es gibt keinen Build. Für die Entwicklung: `wp-content/plugins/trade-free-link-guardian/` + eine lokale WordPress-Instanz. Siehe [`CONTRIBUTING.de.md`](CONTRIBUTING.de.md). Der Ordner `.wordpress-org/` enthält die Icons und Banner für das WordPress.org-Verzeichnis.
 
 ## Verlauf / Changelog
 

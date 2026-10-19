@@ -62,7 +62,7 @@ Helyi hivatkozás-ellenőrző. A belső hivatkozásokat szerkezetileg ellenőrzi
 
 ## Helyi futtatás
 
-Nincs build. Fejlesztéshez: `wp-content/plugins/trade-free-link-guardian/` + egy helyi WordPress-példány. Lásd a `CONTRIBUTING.md` fájlt. A `.wordpress-org/` mappa a WordPress.org könyvtár ikonjait és bannereit tartalmazza.
+Nincs build. Fejlesztéshez: `wp-content/plugins/trade-free-link-guardian/` + egy helyi WordPress-példány. Lásd a [`CONTRIBUTING.hu.md`](CONTRIBUTING.hu.md) fájlt. A `.wordpress-org/` mappa a WordPress.org könyvtár ikonjait és bannereit tartalmazza.
 
 ## Előzmények / Changelog
 

@@ -62,7 +62,7 @@ Un verificador de enlaces local. Los enlaces internos se comprueban estructuralm
 
 ## Ejecución local
 
-No hay compilación. Para desarrollo: `wp-content/plugins/trade-free-link-guardian/` + una instancia local de WordPress. Véase `CONTRIBUTING.md`. La carpeta `.wordpress-org/` contiene los iconos y banners para el directorio de WordPress.org.
+No hay compilación. Para desarrollo: `wp-content/plugins/trade-free-link-guardian/` + una instancia local de WordPress. Véase [`CONTRIBUTING.es.md`](CONTRIBUTING.es.md). La carpeta `.wordpress-org/` contiene los iconos y banners para el directorio de WordPress.org.
 
 ## Historial / Changelog
 

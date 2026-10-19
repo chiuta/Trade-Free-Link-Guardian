@@ -62,7 +62,7 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 
 ## Rulare locală
 
-Nu există build. Pentru dezvoltare: `wp-content/plugins/trade-free-link-guardian/` + o instanță WordPress locală. Vezi `CONTRIBUTING.md`. Folderul `.wordpress-org/` conține iconițele și bannerele pentru directorul WordPress.org.
+Nu există build. Pentru dezvoltare: `wp-content/plugins/trade-free-link-guardian/` + o instanță WordPress locală. Vezi [`CONTRIBUTING.md`](CONTRIBUTING.md). Folderul `.wordpress-org/` conține iconițele și bannerele pentru directorul WordPress.org.
 
 ## Istoric / Changelog
 

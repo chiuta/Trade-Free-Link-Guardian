@@ -62,7 +62,7 @@ Um verificador de ligações local. As ligações internas são verificadas estr
 
 ## Execução local
 
-Não há compilação. Para desenvolvimento: `wp-content/plugins/trade-free-link-guardian/` + uma instância local de WordPress. Veja `CONTRIBUTING.md`. A pasta `.wordpress-org/` contém os ícones e faixas para o diretório do WordPress.org.
+Não há compilação. Para desenvolvimento: `wp-content/plugins/trade-free-link-guardian/` + uma instância local de WordPress. Veja [`CONTRIBUTING.pt.md`](CONTRIBUTING.pt.md). A pasta `.wordpress-org/` contém os ícones e faixas para o diretório do WordPress.org.
 
 ## Histórico / Changelog
 

@@ -62,7 +62,7 @@ Un verificatore di link locale. I link interni vengono verificati strutturalment
 
 ## Esecuzione locale
 
-Non c'è build. Per lo sviluppo: `wp-content/plugins/trade-free-link-guardian/` + un'istanza WordPress locale. Vedi `CONTRIBUTING.md`. La cartella `.wordpress-org/` contiene le icone e i banner per la directory di WordPress.org.
+Non c'è build. Per lo sviluppo: `wp-content/plugins/trade-free-link-guardian/` + un'istanza WordPress locale. Vedi [`CONTRIBUTING.it.md`](CONTRIBUTING.it.md). La cartella `.wordpress-org/` contiene le icone e i banner per la directory di WordPress.org.
 
 ## Cronologia / Changelog
 

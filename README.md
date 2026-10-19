@@ -62,7 +62,7 @@ A local link checker. Internal links are checked structurally (database and file
 
 ## Running locally
 
-There is no build. For development: `wp-content/plugins/trade-free-link-guardian/` + a local WordPress instance. See `CONTRIBUTING.md`. The `.wordpress-org/` folder contains the icons and banners for the WordPress.org directory.
+There is no build. For development: `wp-content/plugins/trade-free-link-guardian/` + a local WordPress instance. See [`CONTRIBUTING.en.md`](CONTRIBUTING.en.md). The `.wordpress-org/` folder contains the icons and banners for the WordPress.org directory.
 
 ## History / Changelog
 

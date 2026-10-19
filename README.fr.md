@@ -62,7 +62,7 @@ Un vérificateur de liens local. Les liens internes sont vérifiés structurelle
 
 ## Exécution locale
 
-Il n'y a pas de build. Pour le développement : `wp-content/plugins/trade-free-link-guardian/` + une instance WordPress locale. Voir `CONTRIBUTING.md`. Le dossier `.wordpress-org/` contient les icônes et bannières pour le répertoire WordPress.org.
+Il n'y a pas de build. Pour le développement : `wp-content/plugins/trade-free-link-guardian/` + une instance WordPress locale. Voir [`CONTRIBUTING.fr.md`](CONTRIBUTING.fr.md). Le dossier `.wordpress-org/` contient les icônes et bannières pour le répertoire WordPress.org.
 
 ## Historique / Changelog
 
