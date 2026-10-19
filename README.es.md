@@ -92,6 +92,6 @@ MIT (véase `LICENSE`).
 
 Alexio — Alexandru-Ionuț Chiuță · contacto: alexio@trom.tf · https://trom.tf/
 
-## Resumen en inglés
+## Resumen
 
 Un verificador de enlaces rotos para WordPress autoalojado y corrector determinista de enlaces (un solo archivo PHP, WordPress 6.5+, PHP 7.4+). Toda solicitud saliente va a un enlace de tu propio contenido; la única llamada opcional a terceros es una consulta a la Wayback Machine que activas a mano. Sin telemetría, sin SaaS. La versión 1.33.1 corrige un fallo SSRF en el verificador concurrente y un error de eliminación de barras invertidas al reescribir el contenido. Edita el contenido real de las entradas: conserva copias de seguridad.

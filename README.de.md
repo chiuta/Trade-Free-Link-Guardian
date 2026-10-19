@@ -92,6 +92,5 @@ MIT (siehe `LICENSE`).
 
 Alexio — Alexandru-Ionuț Chiuță · Kontakt: alexio@trom.tf · https://trom.tf/
 
-## Zusammenfassung auf Englisch
-
+## Zusammenfassung
 Ein selbst gehosteter WordPress-Prüfer für defekte Links und deterministischer Link-Korrektor (eine einzige PHP-Datei, WordPress 6.5+, PHP 7.4+). Jede ausgehende Anfrage geht an einen Link in deinen eigenen Inhalten; der einzige optionale Aufruf bei Dritten ist eine Wayback-Machine-Abfrage, die du von Hand auslöst. Keine Telemetrie, kein SaaS. Version 1.33.1 behebt eine SSRF-Lücke im gleichzeitigen Prüfer und einen Fehler, der beim Umschreiben von Inhalten Backslashes entfernte. Es bearbeitet echte Beitragsinhalte: Erstelle Sicherungen.

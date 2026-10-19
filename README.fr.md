@@ -92,6 +92,5 @@ MIT (voir `LICENSE`).
 
 Alexio — Alexandru-Ionuț Chiuță · contact : alexio@trom.tf · https://trom.tf/
 
-## Résumé en anglais
-
+## Résumé
 Un vérificateur de liens cassés WordPress auto-hébergé et correcteur déterministe de liens (un seul fichier PHP, WordPress 6.5+, PHP 7.4+). Chaque requête sortante vise un lien de votre propre contenu ; le seul appel tiers optionnel est une recherche dans la Wayback Machine que vous déclenchez à la main. Pas de télémétrie, pas de SaaS. La version 1.33.1 corrige une faille SSRF dans le vérificateur concurrent et un bogue de suppression de barres obliques inverses lors de la réécriture du contenu. Il modifie le contenu réel des articles : conservez des sauvegardes.

@@ -92,6 +92,5 @@ MIT (veja `LICENSE`).
 
 Alexio — Alexandru-Ionuț Chiuță · contacto: alexio@trom.tf · https://trom.tf/
 
-## Resumo em inglês
-
+## Resumo
 Um verificador de ligações quebradas para WordPress autoalojado e corretor determinístico de ligações (um único ficheiro PHP, WordPress 6.5+, PHP 7.4+). Todo o pedido de saída vai para uma ligação do seu próprio conteúdo; a única chamada opcional a terceiros é uma consulta à Wayback Machine que aciona manualmente. Sem telemetria, sem SaaS. A versão 1.33.1 corrige uma falha SSRF no verificador concorrente e um erro de remoção de barras invertidas ao reescrever o conteúdo. Edita o conteúdo real dos artigos: mantenha cópias de segurança.

@@ -92,6 +92,5 @@ MIT (vedi `LICENSE`).
 
 Alexio — Alexandru-Ionuț Chiuță · contatto: alexio@trom.tf · https://trom.tf/
 
-## Riepilogo in inglese
-
+## Riepilogo
 Un verificatore di link interrotti per WordPress auto-ospitato e correttore deterministico di link (un unico file PHP, WordPress 6.5+, PHP 7.4+). Ogni richiesta in uscita va a un link presente nel tuo contenuto; l'unica chiamata a terzi facoltativa è una ricerca nella Wayback Machine che avvii a mano. Nessuna telemetria, nessun SaaS. La versione 1.33.1 corregge una falla SSRF nel verificatore concorrente e un bug di rimozione dei backslash nella riscrittura del contenuto. Modifica il contenuto reale degli articoli: conserva le copie di sicurezza.

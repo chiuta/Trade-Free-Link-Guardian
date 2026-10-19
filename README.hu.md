@@ -92,6 +92,5 @@ MIT (lásd `LICENSE`).
 
 Alexio — Alexandru-Ionuț Chiuță · kapcsolat: alexio@trom.tf · https://trom.tf/
 
-## Összefoglaló angolul
-
+## Összefoglaló
 Önállóan üzemeltetett WordPress hibás hivatkozás-ellenőrző és determinisztikus hivatkozásjavító (egyetlen PHP-fájl, WordPress 6.5+, PHP 7.4+). Minden kimenő kérés a saját tartalmadban lévő hivatkozásra irányul; az egyetlen opcionális külső hívás egy Wayback Machine-lekérdezés, amelyet kézzel indítasz. Nincs telemetria, nincs SaaS. Az 1.33.1-es verzió javít egy SSRF-rést a párhuzamos ellenőrzőben és egy visszaper-törlési hibát a tartalom átírásakor. Valódi bejegyzéstartalmat szerkeszt: tarts biztonsági mentést.
