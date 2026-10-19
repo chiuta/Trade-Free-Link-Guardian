@@ -92,6 +92,6 @@ MIT (vezi `LICENSE`).
 
 Alexio — Alexandru-Ionuț Chiuță · contact: alexio@trom.tf · https://trom.tf/
 
-## English summary
+## Rezumat
 
-A self-hosted WordPress broken-link checker and deterministic link fixer (single PHP file, WordPress 6.5+, PHP 7.4+). Every outbound request goes to a link in your own content; the only optional third-party call is a Wayback Machine lookup you trigger by hand. No telemetry, no SaaS. Version 1.33.1 fixes an SSRF gap in the concurrent checker and a backslash-stripping bug in content rewriting. It edits real post content: keep backups.
+Un verificator de linkuri rupte pentru WordPress, autogăzduit, și un reparator determinist de linkuri (un singur fișier PHP, WordPress 6.5+, PHP 7.4+). Fiecare cerere în afară merge către un link din propriul tău conținut; singurul apel opțional către un terț este o căutare Wayback Machine declanșată manual. Fără telemetrie, fără SaaS. Versiunea 1.33.1 repară o breșă SSRF în verificatorul concurent și o eroare de eliminare a barelor oblice inverse la rescrierea conținutului. Modifică conținutul real al articolelor: păstrează copii de siguranță.
