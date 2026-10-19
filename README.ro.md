@@ -2,7 +2,9 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 1.34.0 · **Ultima actualizare:** 2026-10-14
+**Versiune:** 1.35.0 · **Ultima actualizare:** 2026-10-19
+
+Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
 > **Două variante:** pluginul WordPress (fișierul `trade-free-link-guardian.php`) și o **aplicație web single-file** (`index.html`) care rulează în browser, offline, fără WordPress: **[Live](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
 
@@ -56,7 +58,7 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 - Un 403 înseamnă adesea blocarea botilor, nu un link mort.
 - Versiunile anterioare lui 1.33.1 puteau șterge backslash-urile din conținutul articolelor modificate prin corecturi; pentru articole afectate folosește Revizuirile WordPress.
 - Testat doar prin analiză de cod și `php -l`; nu a fost rulat într-o instalare WordPress în cadrul acestui audit.
-- Textele interfeței sunt în engleză (fără fișiere de traducere incluse).
+- Interfața are 8 limbi (RO, EN, FR, IT, ES, PT, DE, HU), alese dintr-un selector (implicit urmează limba browserului, altfel engleza; alegerea nu este memorată, în spiritul trade-free).
 
 ## Rulare locală
 

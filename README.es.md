@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · **Español** · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versión:** 1.34.0 · **Última actualización:** 2026-10-14
+**Versión:** 1.35.0 · **Última actualización:** 2026-10-19
+
+Idiomas de la interfaz: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
 > **Dos variantes:** el plugin de WordPress (el archivo `trade-free-link-guardian.php`) y una **aplicación web de un solo archivo** (`index.html`) que se ejecuta en el navegador, sin conexión, sin WordPress: **[En línea](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
 
@@ -56,7 +58,7 @@ Un verificador de enlaces local. Los enlaces internos se comprueban estructuralm
 - Un 403 suele significar bloqueo de bots, no un enlace muerto.
 - Las versiones anteriores a la 1.33.1 podían eliminar las barras invertidas del contenido de las entradas modificadas mediante correcciones; para las entradas afectadas usa las Revisiones de WordPress.
 - Probado únicamente mediante análisis de código y `php -l`; no se ejecutó en una instalación de WordPress en esta auditoría.
-- Los textos de la interfaz están en inglés (sin archivos de traducción incluidos).
+- La interfaz tiene 8 idiomas (RO, EN, FR, IT, ES, PT, DE, HU), que se eligen en un selector (por defecto sigue el idioma del navegador, si no el inglés; la elección no se guarda, en línea con el principio trade-free).
 
 ## Ejecución local
 

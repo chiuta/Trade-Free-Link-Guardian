@@ -2,7 +2,9 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 1.34.0 · **Utolsó frissítés:** 2026-10-14
+**Verzió:** 1.35.0 · **Utolsó frissítés:** 2026-10-19
+
+A felület nyelvei: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
 > **Két változat:** a WordPress-bővítmény (a `trade-free-link-guardian.php` fájl) és egy **egyfájlos webalkalmazás** (`index.html`), amely a böngészőben fut, offline, WordPress nélkül: **[Élő](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
 
@@ -56,7 +58,7 @@ Helyi hivatkozás-ellenőrző. A belső hivatkozásokat szerkezetileg ellenőrzi
 - A 403 gyakran botok blokkolását jelenti, nem halott hivatkozást.
 - Az 1.33.1 előtti verziók törölhették a visszaperjeleket a javításokkal módosított bejegyzések tartalmából; az érintett bejegyzéseknél használd a WordPress-revíziókat.
 - Csak kódelemzéssel és `php -l` paranccsal tesztelve; ennek az auditnak a keretében nem futtatták WordPress-telepítésen.
-- A felület szövegei angolul vannak (fordítási fájlok nincsenek mellékelve).
+- A felület 8 nyelvű (RO, EN, FR, IT, ES, PT, DE, HU), egy választóból állítható (alapértelmezés szerint a böngésző nyelvét követi, egyébként angol; a választás nem tárolódik, a trade-free elvnek megfelelően).
 
 ## Helyi futtatás
 
