@@ -8,7 +8,7 @@ Limbile interfeței: **Română, English, Français, Italiano, Español, Portugu
 
 > **Două variante:** pluginul WordPress (fișierul `trade-free-link-guardian.php`) și o **aplicație web single-file** (`index.html`) care rulează în browser, offline, fără WordPress: **[Live](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
 
-![Trade-Free Link Guardian — aplicația web](screenshot.png)
+![Trade-Free Link Guardian — aplicația web](screenshot.ro.png)
 
 ## Aplicația web (`index.html`)
 

@@ -8,7 +8,7 @@ Lingue dell'interfaccia: **Română, English, Français, Italiano, Español, Por
 
 > **Due varianti:** il plugin WordPress (il file `trade-free-link-guardian.php`) e un'**app web in un unico file** (`index.html`) che gira nel browser, offline, senza WordPress: **[Online](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
 
-![Trade-Free Link Guardian — l'app web](screenshot.png)
+![Trade-Free Link Guardian — l'app web](screenshot.it.png)
 
 ## L'app web (`index.html`)
 

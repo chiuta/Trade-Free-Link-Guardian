@@ -8,7 +8,7 @@ A felület nyelvei: **Română, English, Français, Italiano, Español, Portugu�
 
 > **Két változat:** a WordPress-bővítmény (a `trade-free-link-guardian.php` fájl) és egy **egyfájlos webalkalmazás** (`index.html`), amely a böngészőben fut, offline, WordPress nélkül: **[Élő](https://chiuta.github.io/Trade-Free-Link-Guardian/)**.
 
-![Trade-Free Link Guardian — a webalkalmazás](screenshot.png)
+![Trade-Free Link Guardian — a webalkalmazás](screenshot.hu.png)
 
 ## A webalkalmazás (`index.html`)
 
