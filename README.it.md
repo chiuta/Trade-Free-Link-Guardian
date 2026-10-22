@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · **Italiano** · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versione:** 1.35.0 · **Ultimo aggiornamento:** 2026-10-19
+**Versione:** 1.36.0 · **Ultimo aggiornamento:** 2026-10-22
 
 Lingue dell'interfaccia: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -65,6 +65,10 @@ Un verificatore di link locale. I link interni vengono verificati strutturalment
 Non c'è build. Per lo sviluppo: `wp-content/plugins/trade-free-link-guardian/` + un'istanza WordPress locale. Vedi [`CONTRIBUTING.it.md`](CONTRIBUTING.it.md). La cartella `.wordpress-org/` contiene le icone e i banner per la directory di WordPress.org.
 
 ## Cronologia / Changelog
+
+### 1.36.0 — 2026-10-22
+- Lo strumento web funziona ora davvero offline: vero service worker (cache-first con riconvalida in background), manifest PWA e icone; installabile quando servito via https. Il file continua a funzionare da solo da file://.
+- Etichetta di trasparenza corretta: l'esempio demo non compare più come falso host esterno (egress vuoto); serviceWorker è dichiarato e sono elencate le 8 lingue dell'interfaccia.
 
 ### 1.34.0 — 2026-10-14
 - Copia di riserva ed etichettatura dei dati (fff-kit).

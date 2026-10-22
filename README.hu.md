@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 1.35.0 · **Utolsó frissítés:** 2026-10-19
+**Verzió:** 1.36.0 · **Utolsó frissítés:** 2026-10-22
 
 A felület nyelvei: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -65,6 +65,10 @@ Helyi hivatkozás-ellenőrző. A belső hivatkozásokat szerkezetileg ellenőrzi
 Nincs build. Fejlesztéshez: `wp-content/plugins/trade-free-link-guardian/` + egy helyi WordPress-példány. Lásd a [`CONTRIBUTING.hu.md`](CONTRIBUTING.hu.md) fájlt. A `.wordpress-org/` mappa a WordPress.org könyvtár ikonjait és bannereit tartalmazza.
 
 ## Előzmények / Changelog
+
+### 1.36.0 — 2026-10-22
+- A webes eszköz mostantól valóban offline is működik: valódi service worker (cache-first, háttérben történő újraellenőrzéssel), PWA-jegyzék és ikonok; https-en kiszolgálva telepíthető. A fájl továbbra is önállóan működik file://-ról.
+- Javított átláthatósági címke: a demó példa már nem jelenik meg hamis külső gazdagépként (üres egress); a serviceWorker deklarált, a felület 8 nyelve fel van sorolva.
 
 ### 1.34.0 — 2026-10-14
 - Biztonsági mentés és adatcímkézés (fff-kit).
