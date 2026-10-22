@@ -2,8 +2,8 @@
   "schema": 1,
   "slug": "trade-free-link-guardian",
   "name": "Trade-Free Link Guardian",
-  "version": "1.36.2",
-  "updated": "2026-10-22",
+  "version": "1.36.3",
+  "updated": "2026-10-23",
   "description": "Offline, single-file link checker and fixer: finds http links, tracking parameters, malformed URLs and inconsistencies in HTML, Markdown, WXR and sitemap files. No tracking, no network.",
   "egress": [],
   "permissions": [
@@ -11,8 +11,8 @@
     "serviceWorker"
   ],
   "storageKeys": [],
-  "sizeBytes": 263975,
-  "sha256": "3afabf38db0f52415b50abc7fa27d8c74e5d825fd22ed9670cf749e32dd7b29c",
+  "sizeBytes": 293512,
+  "sha256": "143399a88353b7a1dfc3b89f420f1d6f6ffd031914571cec252db4dcf7be6b2f",
   "csp": {
     "present": true,
     "directives": {
@@ -48,14 +48,18 @@
     },
     "modules": [
       "core",
+      "store",
+      "dialog",
       "label",
       "bundle"
     ]
   },
   "kit": {
-    "version": "1.1.4",
+    "version": "1.2.0",
     "modules": [
       "core",
+      "store",
+      "dialog",
       "label",
       "bundle"
     ]
