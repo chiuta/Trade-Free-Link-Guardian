@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 1.36.0 · **Ultima actualizare:** 2026-10-22
+**Versiune:** 1.36.1 · **Ultima actualizare:** 2026-10-22
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -65,6 +65,9 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 Nu există build. Pentru dezvoltare: `wp-content/plugins/trade-free-link-guardian/` + o instanță WordPress locală. Vezi [`CONTRIBUTING.md`](CONTRIBUTING.md). Folderul `.wordpress-org/` conține iconițele și bannerele pentru directorul WordPress.org.
 
 ## Istoric / Changelog
+
+### 1.36.1 — 2026-10-22
+- fff-kit 1.1.2: PBKDF2 600 000 de iterații, protecție anti-clickjacking.
 
 ### 1.36.0 — 2026-10-22
 - Instrumentul web funcționează acum cu adevărat offline: service worker real (cache-first cu revalidare în fundal), manifest PWA și icoane; poate fi instalat când este servit prin https. Fișierul rămâne funcțional și singur, din file://.

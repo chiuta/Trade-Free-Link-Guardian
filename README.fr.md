@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · **Français** · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version :** 1.36.0 · **Dernière mise à jour :** 2026-10-22
+**Version :** 1.36.1 · **Dernière mise à jour :** 2026-10-22
 
 Langues de l'interface : **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -65,6 +65,9 @@ Un vérificateur de liens local. Les liens internes sont vérifiés structurelle
 Il n'y a pas de build. Pour le développement : `wp-content/plugins/trade-free-link-guardian/` + une instance WordPress locale. Voir [`CONTRIBUTING.fr.md`](CONTRIBUTING.fr.md). Le dossier `.wordpress-org/` contient les icônes et bannières pour le répertoire WordPress.org.
 
 ## Historique / Changelog
+
+### 1.36.1 — 2026-10-22
+- fff-kit 1.1.2 : PBKDF2 à 600 000 itérations, protection anti-clickjacking.
 
 ### 1.36.0 — 2026-10-22
 - L'outil web fonctionne désormais vraiment hors ligne : vrai service worker (cache d'abord, revalidation en arrière-plan), manifeste PWA et icônes ; installable lorsqu'il est servi en https. Le fichier reste utilisable seul depuis file://.

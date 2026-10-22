@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · **Português** · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versão:** 1.36.0 · **Última atualização:** 2026-10-22
+**Versão:** 1.36.1 · **Última atualização:** 2026-10-22
 
 Idiomas da interface: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -65,6 +65,9 @@ Um verificador de ligações local. As ligações internas são verificadas estr
 Não há compilação. Para desenvolvimento: `wp-content/plugins/trade-free-link-guardian/` + uma instância local de WordPress. Veja [`CONTRIBUTING.pt.md`](CONTRIBUTING.pt.md). A pasta `.wordpress-org/` contém os ícones e faixas para o diretório do WordPress.org.
 
 ## Histórico / Changelog
+
+### 1.36.1 — 2026-10-22
+- fff-kit 1.1.2: PBKDF2 com 600.000 iterações, proteção anti-clickjacking.
 
 ### 1.36.0 — 2026-10-22
 - A ferramenta web funciona agora mesmo offline: service worker real (cache-first com revalidação em segundo plano), manifesto PWA e ícones; pode ser instalada quando servida por https. O ficheiro continua a funcionar sozinho a partir de file://.
