@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 1.36.1 · **Utolsó frissítés:** 2026-10-22
+**Verzió:** 1.36.2 · **Utolsó frissítés:** 2026-10-22
 
 A felület nyelvei: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -65,6 +65,9 @@ Helyi hivatkozás-ellenőrző. A belső hivatkozásokat szerkezetileg ellenőrzi
 Nincs build. Fejlesztéshez: `wp-content/plugins/trade-free-link-guardian/` + egy helyi WordPress-példány. Lásd a [`CONTRIBUTING.hu.md`](CONTRIBUTING.hu.md) fájlt. A `.wordpress-org/` mappa a WordPress.org könyvtár ikonjait és bannereit tartalmazza.
 
 ## Előzmények / Changelog
+
+### 1.36.2 — 2026-10-22
+- fff-kit 1.1.4: érintési célpontok és minimális szövegméret
 
 ### 1.36.1 — 2026-10-22
 - fff-kit 1.1.2: PBKDF2 600 000 iterációval, clickjacking elleni védelem.

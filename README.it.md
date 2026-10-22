@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · **Italiano** · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versione:** 1.36.1 · **Ultimo aggiornamento:** 2026-10-22
+**Versione:** 1.36.2 · **Ultimo aggiornamento:** 2026-10-22
 
 Lingue dell'interfaccia: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -65,6 +65,9 @@ Un verificatore di link locale. I link interni vengono verificati strutturalment
 Non c'è build. Per lo sviluppo: `wp-content/plugins/trade-free-link-guardian/` + un'istanza WordPress locale. Vedi [`CONTRIBUTING.it.md`](CONTRIBUTING.it.md). La cartella `.wordpress-org/` contiene le icone e i banner per la directory di WordPress.org.
 
 ## Cronologia / Changelog
+
+### 1.36.2 — 2026-10-22
+- fff-kit 1.1.4: bersagli touch e testo minimo
 
 ### 1.36.1 — 2026-10-22
 - fff-kit 1.1.2: PBKDF2 a 600.000 iterazioni, protezione anti-clickjacking.
