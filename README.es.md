@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · **Español** · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versión:** 1.36.3 · **Última actualización:** 2026-10-23
+**Versión:** 1.36.4 · **Última actualización:** 2026-10-23
 
 Idiomas de la interfaz: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -65,6 +65,9 @@ Un verificador de enlaces local. Los enlaces internos se comprueban estructuralm
 No hay compilación. Para desarrollo: `wp-content/plugins/trade-free-link-guardian/` + una instancia local de WordPress. Véase [`CONTRIBUTING.es.md`](CONTRIBUTING.es.md). La carpeta `.wordpress-org/` contiene los iconos y banners para el directorio de WordPress.org.
 
 ## Historial / Changelog
+
+### 1.36.4 — 2026-10-23
+- Detección de hosts locales: `localhostile.com` o `10.ejemplo.es` ya no se tratan como locales (y ya no evitan el aviso «http, no https»); `localhost`, las direcciones IP y `*.local/.internal/.lan` siguen siendo locales.
 
 ### 1.36.2 — 2026-10-22
 - fff-kit 1.1.4: objetivos táctiles y texto mínimo

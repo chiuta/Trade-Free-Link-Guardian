@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 1.36.3 · **Ultima actualizare:** 2026-10-23
+**Versiune:** 1.36.4 · **Ultima actualizare:** 2026-10-23
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -65,6 +65,9 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 Nu există build. Pentru dezvoltare: `wp-content/plugins/trade-free-link-guardian/` + o instanță WordPress locală. Vezi [`CONTRIBUTING.md`](CONTRIBUTING.md). Folderul `.wordpress-org/` conține iconițele și bannerele pentru directorul WordPress.org.
 
 ## Istoric / Changelog
+
+### 1.36.4 — 2026-10-23
+- Detectarea gazdelor locale: `localhostile.com` sau `10.exemplu.ro` nu mai sunt tratate drept locale (și nu mai scapă de avertismentul „http, nu https”); `localhost`, adresele IP și `*.local/.internal/.lan` rămân locale.
 
 ### 1.36.2 — 2026-10-22
 - fff-kit 1.1.4: ținte tactile și text minim

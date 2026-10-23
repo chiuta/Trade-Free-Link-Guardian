@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · **Deutsch** · [Magyar](README.hu.md)
 
-**Version:** 1.36.3 · **Zuletzt aktualisiert:** 2026-10-23
+**Version:** 1.36.4 · **Zuletzt aktualisiert:** 2026-10-23
 
 Oberflächensprachen: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -65,6 +65,9 @@ Ein lokaler Link-Prüfer. Interne Links werden strukturell geprüft (Datenbank u
 Es gibt keinen Build. Für die Entwicklung: `wp-content/plugins/trade-free-link-guardian/` + eine lokale WordPress-Instanz. Siehe [`CONTRIBUTING.de.md`](CONTRIBUTING.de.md). Der Ordner `.wordpress-org/` enthält die Icons und Banner für das WordPress.org-Verzeichnis.
 
 ## Verlauf / Changelog
+
+### 1.36.4 — 2026-10-23
+- Erkennung lokaler Hosts: `localhostile.com` oder `10.beispiel.de` gelten nicht mehr als lokal (und entgehen der Warnung „http, nicht https“ nicht mehr); `localhost`, IP-Adressen und `*.local/.internal/.lan` bleiben lokal.
 
 ### 1.36.2 — 2026-10-22
 - fff-kit 1.1.4: Touch-Ziele und Mindestschriftgröße
