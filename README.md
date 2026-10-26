@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 1.36.5 · **Last updated:** 2026-10-26
+**Version:** 2.0.0 · **Last updated:** 2026-10-26
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -33,6 +33,8 @@ A local link checker. Internal links are checked structurally (database and file
 - WP-Cron scheduling (off/daily/weekly) with a notification e-mail; a warning in the editor for links already known to be dead.
 - CSV export (with formula-injection protection), printable compliance report, multisite.
 - Optional, disabled by default: content "drift" detection, Wayback Machine lookup, links to archive.today and Memento.
+- **Simulation and reversible journal (2.0.0, web app):** “Simulate” shows, document by document, exactly what a batch of fixes would change before you apply it; afterwards “Show differences” lists the change line by line, you can undo all fixes of one document or each entry, and the journal exports as JSON. “Re-analyze” now asks for confirmation (it clears the undo history).
+- **Scope:** the changes concern the web app (downloaded files, not a live site); the WordPress plugin was not modified or tested on a real WordPress, so a reversible journal on database posts, the per-category report, redirect chains and soft-404 detection remain plugin work.
 
 ## User guide
 

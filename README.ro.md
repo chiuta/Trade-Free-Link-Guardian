@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 1.36.5 · **Ultima actualizare:** 2026-10-26
+**Versiune:** 2.0.0 · **Ultima actualizare:** 2026-10-26
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -33,6 +33,8 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 - Programare WP-Cron (oprit/zilnic/săptămânal) cu e-mail de notificare; avertisment în editor pentru linkuri deja cunoscute ca moarte.
 - Export CSV (cu protecție împotriva formulelor), raport de conformitate imprimabil, multisite.
 - Opțional, implicit dezactivate: detectarea „drift"-ului de conținut, căutare în Wayback Machine, linkuri către archive.today și Memento.
+- **Simulare și jurnal reversibil (2.0.0, aplicația web):** „Simulează” arată, document cu document, exact ce ar schimba un lot de corecturi, înainte să-l aplici; după aplicare, „Arată diferențele” listează linie cu linie ce s-a schimbat, poți anula toate corecturile unui singur document sau fiecare intrare, iar jurnalul se exportă în JSON. „Reanalizează” cere acum confirmare (șterge istoricul de anulare).
+- **Limite:** modificările țin de aplicația web (fișiere descărcate, nu un site live); pluginul WordPress nu a fost modificat și nu s-a testat într-un WordPress real, deci jurnalul reversibil pe articole din baza de date, raportul pe categorii, lanțurile de redirecționări și soft-404 rămân pentru plugin.
 
 ## Manual de utilizare
 
