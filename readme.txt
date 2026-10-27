@@ -110,6 +110,24 @@ By default it doesn't — that's an opt-in setting, since "link checker" usually
 
 Yes. Each site on a network has its own separate set of tracked links, its own settings, and its own scan schedule — activating this plugin network-wide sets that up correctly for every existing site, and for any new site created afterward. Activating it on individual sites one at a time (rather than network-wide) works the same as on an ordinary single-site install.
 
+= Which WordPress and PHP versions are supported? =
+
+Declared: WordPress 6.5 or newer and PHP 7.4 or newer (the `Requires at least` and `Requires PHP` headers, which WordPress itself enforces on install/update). The header also says `Tested up to: 7.1`; that is the maintainer's declaration, not the result of a certified test matrix: so far the plugin has been checked by code analysis and `php -l` (PHP 8.3), and a quick search for common PHP 8-only constructs (`match`, nullsafe `?->`, enums, `readonly`, attributes) found none, but it has not yet been run end to end on every WordPress/PHP combination in that range. Treat compatibility as declared, not certified, and keep a backup before the first bulk fix. Multisite is supported (see below). If you find a combination that fails, please open a support thread with your WordPress and PHP versions.
+
+= How does the scheduled scan work (WP-Cron)? =
+
+In **Link Guardian → Settings → Schedule & notifications** choose Off, Daily or Weekly (the default is Weekly). The plugin registers one WP-Cron event (`tflg_cron_tick`); the first run happens about an hour after you save the setting. Each tick works in small chunks and chains a one-minute follow-up event until the pass is done, so no single request has to finish a whole large site; a short-lived lock stops two overlapping ticks from checking links twice. A separate daily event (`tflg_daily_snapshot`) records the health history and prunes old data, even when scanning is set to Off. Choosing Off removes the scan event, and deleting the plugin removes every event.
+
+WP-Cron is "pseudo-cron": it only runs when someone visits the site. On a low-traffic site, or if your host sets `DISABLE_WP_CRON`, trigger it from the server's own scheduler instead (for example, a system cron job that requests `wp-cron.php` or runs `wp cron event run --due-now`). Scans never run during visitor page loads; they run inside the cron request.
+
+= Does it send an email report? =
+
+Yes, by default. When a **scheduled** scan finishes and the number of broken links is higher than it was when that scan started, the plugin sends one plain-text email through `wp_mail()` with the number of new broken links, the total needing attention and a link to the filtered list in the admin. It goes to the address in **Settings → Email notification**, or to the site's admin email if that field is blank; untick the box to turn it off. It is not sent for manual scans or when nothing new is broken, and it does not list the individual URLs. If your server cannot send mail, use an SMTP plugin; the plugin does not include its own mail transport or any external email service.
+
+= Which external services can it contact? =
+
+None except the destinations your own content links to (that is what a link checker does) and one optional lookup: **Wayback Machine (archive.org)**, off by default, which sends the single dead URL you clicked "Find archived version" for to `archive.org/wayback/available`. The archive.today and Memento options are only links that your browser opens when you click them. See archive.org's terms and privacy policy at https://archive.org/about/terms.php (verify the current address before relying on it).
+
 == Screenshots ==
 
 1. Dashboard — tracked, broken, unverified, fixed, and ignored link counts, each a link straight into the filtered view behind it.
