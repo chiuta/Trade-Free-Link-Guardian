@@ -3,7 +3,7 @@
  * Plugin Name:       Trade-Free Link Guardian
  * Plugin URI:        https://trom.tf/
  * Description:       Finds broken links across your posts, pages, menus and widgets, then fixes what can be fixed deterministically (protocol/www swaps, permanent redirects, renamed slugs) and gives you a one-click path to resolve the rest. Runs entirely on this server: no SaaS account, no phone-home, no ads, no premium tier.
- * Version:           1.33.1
+ * Version:           1.34.0
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Tested up to:      7.1
@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * CONSTANTS
  * ========================================================================= */
 
-define( 'TFLG_VERSION', '1.33.1' );
+define( 'TFLG_VERSION', '1.34.0' );
 define( 'TFLG_DB_VERSION', '8' );
 define( 'TFLG_PLUGIN_FILE', __FILE__ );
 define( 'TFLG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -7754,18 +7754,67 @@ class TFLG_Cron {
 		}
 	}
 
+	/**
+	 * Turns a stored URL into one safe line of a plain-text e-mail: control
+	 * characters (including CR/LF, which could otherwise inject extra lines)
+	 * are removed and very long URLs are shortened.
+	 */
+	public static function mail_safe_url( $url ) {
+		$url = preg_replace( '/[\x00-\x1F\x7F]+/', '', (string) $url );
+		$url = trim( $url );
+		if ( strlen( $url ) > 200 ) {
+			$url = substr( $url, 0, 197 ) . '...';
+		}
+		return $url;
+	}
+
+	/**
+	 * Plain-text body of the notification. Pure (no WordPress calls) so it
+	 * can be tested on its own: counts, then up to $limit URLs, then the link
+	 * to the full list. $urls is an array of strings.
+	 */
+	public static function build_notification_body( $new_count, $total_broken, $admin_url, $urls, $limit = 10 ) {
+		/* translators: 1: newly broken link count, 2: total links needing attention */
+		$body = sprintf( __( 'A scheduled scan found %1$d new broken link(s), for %2$d total needing attention.', 'trade-free-link-guardian' ), $new_count, $total_broken ) . "\n\n";
+		$list = array();
+		foreach ( (array) $urls as $u ) {
+			$u = self::mail_safe_url( $u );
+			if ( '' !== $u ) {
+				$list[] = $u;
+			}
+			if ( count( $list ) >= $limit ) {
+				break;
+			}
+		}
+		if ( $list ) {
+			/* translators: %d: number of URLs listed below */
+			$body .= sprintf( __( 'The first %d broken URL(s):', 'trade-free-link-guardian' ), count( $list ) ) . "\n";
+			foreach ( $list as $u ) {
+				$body .= '- ' . $u . "\n";
+			}
+			if ( $total_broken > count( $list ) ) {
+				/* translators: %d: number of broken links not listed */
+				$body .= sprintf( __( '... and %d more.', 'trade-free-link-guardian' ), $total_broken - count( $list ) ) . "\n";
+			}
+			$body .= "\n";
+		}
+		/* translators: %s: admin URL */
+		$body .= sprintf( __( "Review them here:\n%s\n", 'trade-free-link-guardian' ), $admin_url );
+		return $body;
+	}
+
 	public static function send_notification_email( $total_broken, $new_count ) {
 		$configured = TFLG_Util::get_setting( 'notify_email' );
 		$to         = ( $configured && is_email( $configured ) ) ? $configured : get_option( 'admin_email' );
 		/* translators: %s: site name */
 		$subject = sprintf( __( '[%s] Link Guardian found broken links', 'trade-free-link-guardian' ), get_bloginfo( 'name' ) );
-		$body    = sprintf(
-			/* translators: 1: newly broken link count, 2: total links needing attention, 3: admin URL */
-			__( "A scheduled scan found %1\$d new broken link(s), for %2\$d total needing attention.\n\nReview them here:\n%3\$s\n", 'trade-free-link-guardian' ),
-			$new_count,
-			$total_broken,
-			admin_url( 'admin.php?page=tflg-links&status=broken' )
-		);
+		$urls    = array();
+		foreach ( (array) TFLG_DB::get_links_matching( 'broken', '', 0, 10 ) as $row ) {
+			if ( isset( $row->url ) ) {
+				$urls[] = $row->url;
+			}
+		}
+		$body = self::build_notification_body( $new_count, $total_broken, admin_url( 'admin.php?page=tflg-links&status=broken' ), $urls, 10 );
 		wp_mail( $to, $subject, $body );
 	}
 

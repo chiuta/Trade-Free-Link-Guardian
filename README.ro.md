@@ -2,9 +2,9 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 2.0.1 · **Ultima actualizare:** 2026-10-27
+**Versiune:** 2.1.0 · **Ultima actualizare:** 2026-10-27
 
-**Stare:** aplicația web — stabilă; pluginul WordPress (1.33.1) — experimental (neexecutat încă pe un WordPress real de un tester independent). **Offline:** aplicația web este complet offline; pluginul rulează pe serverul tău și cere internet doar pentru verificarea linkurilor externe (și, dacă o activezi, căutarea Wayback).
+**Stare:** aplicația web — stabilă; pluginul WordPress (1.34.0) — experimental (neexecutat încă pe un WordPress real de un tester independent). **Offline:** aplicația web este complet offline; pluginul rulează pe serverul tău și cere internet doar pentru verificarea linkurilor externe (și, dacă o activezi, căutarea Wayback).
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -51,7 +51,7 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 
 - **Compatibilitate declarată:** WordPress 6.5+ și PHP 7.4+ (antetele `Requires at least`, `Requires PHP`). Antetul `Tested up to: 7.1` este o declarație a autorului, **de verificat**: pluginul a fost verificat prin analiză de cod și `php -l` (PHP 8.3.6), nu rulat pe toate combinațiile WordPress/PHP. O căutare rapidă a construcțiilor PHP 8 uzuale (`match`, `?->`, enum, `readonly`, atribute) n-a găsit nimic, ceea ce susține, dar nu dovedește, compatibilitatea cu PHP 7.4. Conform make.wordpress.org, programul WordPress 7.0 indică lansarea la 20 mai 2026; dacă 7.1 este lansat nu s-a verificat.
 - **Programare (WP-Cron):** Setări → „Schedule & notifications”: Off / Daily / Weekly (implicit Weekly). Un eveniment `tflg_cron_tick` (prima rulare ≈ 1 oră după salvare), bucăți mici cu eveniment de continuare la un minut până se termină trecerea, blocare împotriva suprapunerii, plus un `tflg_daily_snapshot` zilnic pentru istoricul de sănătate. WP-Cron rulează doar când situl primește vizite: pe situri liniștite sau cu `DISABLE_WP_CRON`, declanșează `wp-cron.php` / `wp cron event run --due-now` din planificatorul serverului.
-- **Raport pe e-mail:** activ implicit; după o scanare **programată**, dacă linkurile stricate au crescut, se trimite un e-mail text simplu (`wp_mail()`) cu numărul nou/total și un link spre listă, la adresa configurată sau la e-mailul administratorului. Nu se trimite pentru scanări manuale; nu listează URL-urile individuale (planificat: listă detaliată în e-mail — nu e implementat, ar schimba cod de plugin netestabil pe un WordPress real).
+- **Raport pe e-mail:** activ implicit; după o scanare **programată**, dacă linkurile stricate au crescut, se trimite un e-mail text simplu (`wp_mail()`) cu numărul nou/total și un link spre listă, la adresa configurată sau la e-mailul administratorului. Nu se trimite pentru scanări manuale; începând cu pluginul 1.34.0 listează și până la 10 dintre URL-urile stricate (apoi „... and N more”); textul mesajului este testat cu un script PHP independent, dar `wp_mail()`, WP-Cron și interogarea bazei de date **nu** au rulat pe un WordPress real.
 - **Directorul WordPress.org:** `readme.txt` este în format wordpress.org (antete, FAQ cu cele trei subiecte de mai sus și serviciile externe, changelog), iar `.wordpress-org/` conține pictogramele și bannerele. **Nu a fost trimis și nici publicat**; înainte de trimitere: verifică dacă `Contributors: alexio` este un nume de utilizator real pe wordpress.org, verifică `Tested up to` și rulează Plugin Check pe o instalare reală.
 
 

@@ -1,4 +1,4 @@
-// Teste v2.0.1 (aplicația HTML): simulare de lot cu diferențe pe document, diferențe după aplicare, anulare pe document,
+// Teste v2.1.0 (aplicația HTML): simulare de lot cu diferențe pe document, diferențe după aplicare, anulare pe document,
 // export de jurnal, confirmare la „reanalizează”. Rulare din directorul aplicației: node tests/simulate-journal.test.mjs
 // [fff-portable] axe-core: FFF_AXE / AXE_PATH, apoi pachetul `axe-core`.
 import {createRequire as __fffCR} from 'node:module';

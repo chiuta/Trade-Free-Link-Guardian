@@ -4,7 +4,7 @@ Tags: broken links, link checker, maintenance, redirects, gutenberg
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.33.1
+Stable tag: 1.34.0
 License: MIT
 License URI: https://opensource.org/license/mit
 Donate link: https://buymeacoffee.com/echo.of.the.strings
@@ -80,6 +80,9 @@ None of this is independent, third-party verification. It's a description of wha
 4. Go to **Link Guardian → Dashboard** and click **Scan site now**.
 
 == Upgrade Notice ==
+
+= 1.34.0 =
+The notification e-mail after a scheduled scan now lists up to 10 of the broken URLs. No database or settings changes.
 
 = 1.33.1 =
 Security and data-integrity fixes: link checks run in concurrent mode now apply the same internal-network (SSRF) protection as single checks, and fixes no longer strip backslashes from post content. Recommended for everyone.
@@ -175,6 +178,10 @@ considered, not a promise.
 * Every test in this codebase was written by the same person who wrote the code it tests. That catches a real, wide range of mistakes, but it's not the same thing as independent review — a test author tends to test the cases they already thought of when writing the code, not necessarily the ones a different, unfamiliar user would actually hit. If something here behaves wrong on your site, that gap is almost certainly why — please open a support thread; that's exactly the kind of thing internal testing alone can't find.
 
 == Changelog ==
+
+= 1.34.0 =
+* The notification e-mail sent after a scheduled scan now lists up to 10 of the broken URLs (then "... and N more") before the link to the full list. Control characters are removed from every URL before it goes into the plain-text message and URLs longer than 200 characters are shortened. With no broken URLs to list, the message is the same as before. No setting, table or option was added or changed.
+* Tested only with a stand-alone PHP script (`tests/mail.test.php`) that checks the message text; `wp_mail()`, WP-Cron and the database query were NOT exercised on a real WordPress.
 
 = 1.33.1 =
 * Security: the concurrent link checker (the default path, used whenever
