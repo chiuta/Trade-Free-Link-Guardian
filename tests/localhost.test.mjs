@@ -1,4 +1,4 @@
-// Trade-Free Link Guardian 2.0.1 — gazde locale vs. nume care doar încep ca „localhost”/„10.”. Rulare: node localhost.test.mjs <dir>   (rețea blocată, file://)
+// Trade-Free Link Guardian 2.1.0 — gazde locale vs. nume care doar încep ca „localhost”/„10.”. Rulare: node localhost.test.mjs <dir>   (rețea blocată, file://)
 import {createRequire} from "module"; const require = createRequire(process.env.PW_ROOT || import.meta.url); const {chromium} = require("playwright");
 let fails = 0; const check = (n, c, x) => { c ? console.log("  ok  " + n) : (fails++, console.log("FAIL  " + n + (x !== undefined ? "  -> " + JSON.stringify(x) : ""))); };
 const b = await chromium.launch({executablePath: process.env.CHROMIUM_PATH || undefined});
