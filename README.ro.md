@@ -2,7 +2,9 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 2.0.0 · **Ultima actualizare:** 2026-10-26
+**Versiune:** 2.0.1 · **Ultima actualizare:** 2026-10-27
+
+**Stare:** aplicația web — stabilă; pluginul WordPress (1.33.1) — experimental (neexecutat încă pe un WordPress real de un tester independent). **Offline:** aplicația web este complet offline; pluginul rulează pe serverul tău și cere internet doar pentru verificarea linkurilor externe (și, dacă o activezi, căutarea Wayback).
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -45,6 +47,14 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 5. Înainte de corecturi în masă, folosește raportul de propuneri; după aceea poți anula din **Jurnal corecturi**.
 6. Fă o copie de siguranță a bazei de date înainte de primele corecturi în masă.
 
+## Compatibilitate, programare și raport pe e-mail (plugin)
+
+- **Compatibilitate declarată:** WordPress 6.5+ și PHP 7.4+ (antetele `Requires at least`, `Requires PHP`). Antetul `Tested up to: 7.1` este o declarație a autorului, **de verificat**: pluginul a fost verificat prin analiză de cod și `php -l` (PHP 8.3.6), nu rulat pe toate combinațiile WordPress/PHP. O căutare rapidă a construcțiilor PHP 8 uzuale (`match`, `?->`, enum, `readonly`, atribute) n-a găsit nimic, ceea ce susține, dar nu dovedește, compatibilitatea cu PHP 7.4. Conform make.wordpress.org, programul WordPress 7.0 indică lansarea la 20 mai 2026; dacă 7.1 este lansat nu s-a verificat.
+- **Programare (WP-Cron):** Setări → „Schedule & notifications”: Off / Daily / Weekly (implicit Weekly). Un eveniment `tflg_cron_tick` (prima rulare ≈ 1 oră după salvare), bucăți mici cu eveniment de continuare la un minut până se termină trecerea, blocare împotriva suprapunerii, plus un `tflg_daily_snapshot` zilnic pentru istoricul de sănătate. WP-Cron rulează doar când situl primește vizite: pe situri liniștite sau cu `DISABLE_WP_CRON`, declanșează `wp-cron.php` / `wp cron event run --due-now` din planificatorul serverului.
+- **Raport pe e-mail:** activ implicit; după o scanare **programată**, dacă linkurile stricate au crescut, se trimite un e-mail text simplu (`wp_mail()`) cu numărul nou/total și un link spre listă, la adresa configurată sau la e-mailul administratorului. Nu se trimite pentru scanări manuale; nu listează URL-urile individuale (planificat: listă detaliată în e-mail — nu e implementat, ar schimba cod de plugin netestabil pe un WordPress real).
+- **Directorul WordPress.org:** `readme.txt` este în format wordpress.org (antete, FAQ cu cele trei subiecte de mai sus și serviciile externe, changelog), iar `.wordpress-org/` conține pictogramele și bannerele. **Nu a fost trimis și nici publicat**; înainte de trimitere: verifică dacă `Contributors: alexio` este un nume de utilizator real pe wordpress.org, verifică `Tested up to` și rulează Plugin Check pe o instalare reală.
+
+
 ## Confidențialitate și rețea
 
 - Singurele cereri HTTP ieșite: (1) verificarea linkurilor din propriul tău conținut (inclusiv drift-ul opțional, care descarcă cel mult 1 MiB din pagină); (2) opțional, `archive.org/wayback/available?url=...` la clic pe „Găsește versiune arhivată", doar dacă setarea este activă. Linkurile archive.today / Memento / Buy Me a Coffee sunt simple linkuri deschise de browserul tău la clic.
@@ -67,6 +77,9 @@ Un verificator local de linkuri. Linkurile interne se verifică structural (baza
 Nu există build. Pentru dezvoltare: `wp-content/plugins/trade-free-link-guardian/` + o instanță WordPress locală. Vezi [`CONTRIBUTING.md`](CONTRIBUTING.md). Folderul `.wordpress-org/` conține iconițele și bannerele pentru directorul WordPress.org.
 
 ## Istoric / Changelog
+
+### 2.0.1 — 2026-10-27
+- Doar documentație (pluginul rămâne la 1.33.1, neatins): compatibilitate declarată, programare WP-Cron, raport pe e-mail și servicii externe în `README` și `readme.txt`; linii „Stare” și „Offline”; `CHANGELOG.md`. Anterior: v2.0.0.
 
 ### 1.36.4 — 2026-10-23
 - Detectarea gazdelor locale: `localhostile.com` sau `10.exemplu.ro` nu mai sunt tratate drept locale (și nu mai scapă de avertismentul „http, nu https”); `localhost`, adresele IP și `*.local/.internal/.lan` rămân locale.

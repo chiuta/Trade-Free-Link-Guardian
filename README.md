@@ -2,7 +2,9 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 2.0.0 · **Last updated:** 2026-10-26
+**Version:** 2.0.1 · **Last updated:** 2026-10-27
+
+**Status:** web app — stable; WordPress plugin (1.33.1) — experimental (not yet run on a real WordPress by an independent tester). **Offline:** the web app is fully offline; the plugin runs on your server and needs internet only to check external links (and, if you enable it, the Wayback lookup).
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -45,6 +47,14 @@ A local link checker. Internal links are checked structurally (database and file
 5. Before bulk fixes, use the proposals report; afterwards you can undo from **Fix log**.
 6. Back up the database before the first bulk fixes.
 
+## Compatibility, scheduling and e-mail report (plugin)
+
+- **Declared compatibility:** WordPress 6.5+ and PHP 7.4+ (`Requires at least`, `Requires PHP` headers). The `Tested up to: 7.1` header is a declaration by the maintainer, **to be verified**: the plugin was checked by code analysis and `php -l` (PHP 8.3.6), not run on every WordPress/PHP combination. A quick search for common PHP 8-only constructs (`match`, `?->`, enums, `readonly`, attributes) found none, which supports but does not prove PHP 7.4 compatibility. According to make.wordpress.org the WordPress 7.0 schedule lists 20 May 2026 as release date; whether 7.1 is released was not verified.
+- **Scheduling (WP-Cron):** Settings → “Schedule & notifications”: Off / Daily / Weekly (default Weekly). One event `tflg_cron_tick` (first run ≈ 1 hour after saving), small chunks with a one-minute follow-up event until the pass is done, a lock against overlapping ticks, plus a daily `tflg_daily_snapshot` for the health history. WP-Cron only runs when the site gets visits: on quiet sites or with `DISABLE_WP_CRON`, trigger `wp-cron.php` / `wp cron event run --due-now` from the server's scheduler.
+- **E-mail report:** on by default; after a **scheduled** scan, if broken links increased, one plain-text e-mail (`wp_mail()`) with the new/total counts and a link to the list is sent to the configured address or to the admin e-mail. Not sent for manual scans; it does not list individual URLs (planned: a detailed list in the e-mail — not implemented, it would change plugin code that could not be tested on a real WordPress).
+- **WordPress.org directory:** `readme.txt` is in wordpress.org format (headers, FAQ with the three topics above and the external services, changelog) and `.wordpress-org/` holds icons and banners. **Not submitted or published**; before submitting: check that `Contributors: alexio` is a real wordpress.org username, verify `Tested up to` and run the Plugin Check tool on a real installation.
+
+
 ## Privacy and network
 
 - The only outgoing HTTP requests: (1) checking the links in your own content (including the optional drift, which downloads at most 1 MiB of the page); (2) optionally, `archive.org/wayback/available?url=...` when you click "Find archived version", only if the setting is on. The archive.today / Memento / Buy Me a Coffee links are simple links opened by your browser on click.
@@ -67,6 +77,9 @@ A local link checker. Internal links are checked structurally (database and file
 There is no build. For development: `wp-content/plugins/trade-free-link-guardian/` + a local WordPress instance. See [`CONTRIBUTING.en.md`](CONTRIBUTING.en.md). The `.wordpress-org/` folder contains the icons and banners for the WordPress.org directory.
 
 ## History / Changelog
+
+### 2.0.1 — 2026-10-27
+- Documentation only (the plugin stays at 1.33.1, untouched): declared compatibility, WP-Cron scheduling, e-mail report and external services in `README` and `readme.txt`; “Status” and “Offline” lines; `CHANGELOG.md`. Previously: v2.0.0.
 
 ### 1.36.4 — 2026-10-23
 - Local-host detection: `localhostile.com` or `10.example.com` are no longer treated as local (and no longer escape the “http, not https” warning); `localhost`, IP addresses and `*.local/.internal/.lan` stay local.
