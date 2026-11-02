@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 2.1.0 · **Ultima actualizare:** 2026-10-27
+**Versiune:** 2.2.0 · **Ultima actualizare:** 2026-11-02
 
 **Stare:** aplicația web — stabilă; pluginul WordPress (1.34.0) — experimental (neexecutat încă pe un WordPress real de un tester independent). **Offline:** aplicația web este complet offline; pluginul rulează pe serverul tău și cere internet doar pentru verificarea linkurilor externe (și, dacă o activezi, căutarea Wayback).
 
