@@ -2,6 +2,13 @@
 
 Format SemVer (MAJOR.MINOR.PATCH). Versiunea de aici este a aplicației web / depozitului; pluginul WordPress are versiune proprie (1.33.1) în `readme.txt`.
 
+## 2.2.1 — 2026-11-02
+
+Actualizare surse (verificate la 2026-11-02). Fără schimbări de cod.
+
+- README (en, ro): WordPress 7.1 era deja lansat la 2 septembrie 2026 (make.wordpress.org, programul 7.1.1), deci `Tested up to: 7.1` indică o versiune lansată; pluginul tot nu a fost rulat pe ea.
+- Verificat: endpointul Wayback `archive.org/wayback/available` este documentat în continuare (archive.org/help/wayback_api.php).
+
 ## 2.2.0 — 2026-11-01
 
 - Corectat: adaptorul «Trimite la…» nu mai aruncă eroare când kitul FFF lipsește (gardian pe fiecare bloc; găsit de testul «fără kit» din CI).
