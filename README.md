@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 2.2.5 · **Last updated:** 2026-11-10
+**Version:** 2.2.6 · **Last updated:** 2026-11-10
 
 **Status:** web app — stable; WordPress plugin (1.34.0) — experimental (not yet run on a real WordPress by an independent tester). **Offline:** the web app is fully offline; the plugin runs on your server and needs internet only to check external links (and, if you enable it, the Wayback lookup).
 
