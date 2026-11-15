@@ -8,16 +8,18 @@
   "egress": [],
   "permissions": [
     "clipboard",
-    "serviceWorker"
+    "serviceWorker",
+    "localStorage",
+    "WebGL"
   ],
   "storageKeys": [],
-  "sizeBytes": 526377,
-  "sha256": "8b8258da6c32f086d5d5a52befed8ef5b13532734ea5db3f51f65c414a10c194",
+  "sizeBytes": 578432,
+  "sha256": "d84bcbda7257fb4c0ba1041b2e3e0ebecd4c35f21b7aef1a947d34bef29fc282",
   "csp": {
     "present": true,
     "directives": {
       "default-src": "'none'",
-      "script-src": "'self' sha256×4",
+      "script-src": "'self' sha256×5",
       "style-src": "'unsafe-inline'",
       "img-src": "'self' data:",
       "connect-src": "'none'",
