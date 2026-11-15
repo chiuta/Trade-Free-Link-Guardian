@@ -2,6 +2,10 @@
 
 Format SemVer (MAJOR.MINOR.PATCH). Versiunea de aici este a aplicației web / depozitului; pluginul WordPress are versiune proprie (1.33.1) în `readme.txt`.
 
+## 2.3.1 — 2026-11-15
+
+- Nou: butoane de distribuire pe rețele sociale (vertical, pe marginea din stânga; fără scripturi externe, doar linkuri deschise la clic); bara de zoom cu lupă și „potrivire ecran” revine pe marginea din dreapta, centrată pe verticală; corectat afișarea suprapusă la zoom mare (panourile cu înălțimi în vh/vw nu mai ies din ecran).
+
 ## 2.3.0 — 2026-11-15
 
 - Nou: accesibilitate pe toate ecranele — butonul „Aa” (mărimea textului, contrast ridicat, fără animații, text lizibil, linkuri subliniate, citire cu voce), săgeata „Înapoi sus” și „Sari la conținut”; fereastra se potrivește mereu ecranului; zoom-ul cu lupă și „potrivire ecran” stau acum pe marginea din stânga (fff-kit 1.6.0).
