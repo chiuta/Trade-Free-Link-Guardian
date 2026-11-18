@@ -12,8 +12,10 @@ const check = (n, c, x) => { if (c) { ok++; console.log('  ok   ' + n); } else {
 
 const block = /\/\* fff:idx:start \*\/([\s\S]*?)\/\* fff:idx:end \*\//.exec(html);
 check('blocul fff:idx există în index.html', !!block);
-const H = new Function(block[1] + '\nreturn {grp, attrVal, mdDest, refDest, locInner};')();
-const lit = (head, tail) => { const a = html.indexOf(head); const b = html.indexOf(tail, a); return new Function('return ' + html.slice(a + head.length, b))(); };
+// Pagina construiește expresiile cu d prin $fffRx (un literal cu d nu se poate parsa în motoarele vechi); aici $fffRx e constructorul nativ.
+const $fffRx = (s, f) => new RegExp(s, f);
+const H = new Function('$fffRx', block[1] + '\nreturn {grp, attrVal, mdDest, refDest, locInner};')($fffRx);
+const lit = (head, tail) => { const a = html.indexOf(head); const b = html.indexOf(tail, a); return new Function('$fffRx', 'return ' + html.slice(a + head.length, b))($fffRx); };
 const RX = {
   attr: lit('var ar = ', ', am, hit'),
   md: lit('var mdRe = ', ';\n'),
